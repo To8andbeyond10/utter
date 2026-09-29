@@ -1,10 +1,6 @@
-# utter — Clearband
+# Clearband beta 0.1: browser extension
 
 Clearband flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, and shows the evidence behind every flag. Pick a level per site: **Inform** adds a badge, **Warn** blurs the post until you choose to view it, **Block** hides it.
-
-This repo contains two projects:
-- [`extension/`](extension) — the Chrome/Edge/Firefox browser extension (Manifest V3, install & usage docs below apply to it).
-- [`site/`](site) — the Clearband marketing site (static site + Vercel API routes for health checks and the waitlist).
 
 ## Install on Windows
 
@@ -51,7 +47,7 @@ Open each site, scroll for a minute, and note anything wrong in a mistake report
 - [ ] Pause for 15 minutes, then Resume
 
 ## When a site breaks
-Platforms change their page code often. Everything site-specific lives in `extension/src/content/sites.js`: where posts are (`posts`), the label wording (`labels`), and how to read the account name (`author`). Most fixes are a one-line edit there, then click the reload icon on `chrome://extensions`.
+Platforms change their page code often. Everything site-specific lives in `src/content/sites.js`: where posts are (`posts`), the label wording (`labels`), and how to read the account name (`author`). Most fixes are a one-line edit there, then click the reload icon on `chrome://extensions`.
 
 ## Privacy
 Checks run on your computer. This beta makes no network requests at all. Settings sync through your browser account; mistake reports stay on this computer until you download them.
@@ -59,16 +55,16 @@ Checks run on your computer. This beta makes no network requests at all. Setting
 ## For developers
 ```
 npm install jsdom
-node --test extension/tests/detect.test.js
+node --test tests/detect.test.js
 ```
 14 tests cover labels, disclosures, negation, questions, hashtags, flair, account lists, level actions and settings validation.
 
 ```
-extension/manifest.json          Chrome/Edge/Firefox (Manifest V3)
-extension/src/shared/            settings + shared page styles
-extension/src/content/sites.js   per-site rules
-extension/src/content/detect.js  evidence ladder
-extension/src/content/ui.js      badges, card, blur, hidden note (shadow DOM)
-extension/src/content/main.js    finds posts, applies levels
-extension/src/popup/ extension/src/options/ extension/src/background.js
+manifest.json          Chrome/Edge/Firefox (Manifest V3)
+src/shared/            settings + shared page styles
+src/content/sites.js   per-site rules
+src/content/detect.js  evidence ladder
+src/content/ui.js      badges, card, blur, hidden note (shadow DOM)
+src/content/main.js    finds posts, applies levels
+src/popup/ src/options/ src/background.js
 ```

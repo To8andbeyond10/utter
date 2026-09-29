@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clearband settings</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main class="page">
+  <header class="top">
+    <span class="brand"><img src="../../icons/icon48.png" alt="" width="32" height="32">Clearband</span>
+    <p class="saved" id="saved" role="status" aria-live="polite"></p>
+  </header>
+
+  <h1>Know what's real in your feed.</h1>
+  <p class="lede">Clearband flags AI-made posts and shows the evidence behind every flag. Pick how far it goes on each site. Changes apply right away.</p>
+
+  <section aria-labelledby="levels-h">
+    <h2 id="levels-h">Level on each site</h2>
+    <p class="muted">Inform adds a badge. Warn blurs the post until you choose to view it. Block hides it.</p>
+    <div class="sites" id="sites"></div>
+  </section>
+
+  <section aria-labelledby="block-h">
+    <h2 id="block-h">Blocking</h2>
+    <label class="check"><input type="checkbox" id="blockIncludesLikely"><span>Also hide posts that are only <b>likely</b> AI. By default Block hides confirmed and strong evidence, and blurs likely posts instead.</span></label>
+    <fieldset class="radios">
+      <legend>When a post is hidden</legend>
+      <label class="check"><input type="radio" name="blockStyle" value="note"><span>Leave a one-line note with a "Show anyway" button</span></label>
+      <label class="check"><input type="radio" name="blockStyle" value="remove"><span>Remove it completely</span></label>
+    </fieldset>
+  </section>
+
+  <section aria-labelledby="detect-h">
+    <h2 id="detect-h">What Clearband checks</h2>
+    <label class="check"><input type="checkbox" id="useKeywords"><span>Use AI hashtags and phrases like #aiart as weaker signals. Three or more together count as likely AI.</span></label>
+    <ul class="checks">
+      <li><b>Confirmed:</b> the platform's own AI label, like Instagram's "AI info" or YouTube's "Altered or synthetic content"</li>
+      <li><b>Strong:</b> the post says it was made with an AI tool, Reddit flair such as "AI Art", or an account on your always-hide list</li>
+      <li><b>Likely and Possible:</b> AI hashtags and phrases, when turned on above</li>
+    </ul>
+    <p class="muted">Coming next: detector models for unlabeled posts, Content Credentials, and Deep Scan reports.</p>
+  </section>
+
+  <section aria-labelledby="rules-h">
+    <h2 id="rules-h">Your account lists</h2>
+    <p class="muted">Add accounts from any badge's card with "Always hide" or "Always allow".</p>
+    <div class="lists">
+      <div><h3>Always hide</h3><ul class="rules" id="rules-block"></ul></div>
+      <div><h3>Always allow</h3><ul class="rules" id="rules-allow"></ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="reports-h">
+    <h2 id="reports-h">Mistake reports</h2>
+    <p id="report-count" class="muted"></p>
+    <div class="row">
+      <button class="btn" type="button" id="download-reports">Download reports</button>
+      <button class="btn danger" type="button" id="clear-reports">Clear reports</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="privacy-h">
+    <h2 id="privacy-h">Privacy</h2>
+    <p class="muted">Clearband checks posts on this device. This beta makes no network requests at all, so nothing you browse leaves your computer.</p>
+  </section>
+
+  <footer class="bottom">
+    <button class="btn danger" type="button" id="reset">Reset all settings</button>
+    <span class="muted">Clearband beta 0.1</span>
+  </footer>
+</main>
+<script src="../shared/settings.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

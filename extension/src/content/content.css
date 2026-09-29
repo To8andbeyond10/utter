@@ -1,0 +1,4 @@
+/* Clearband page-level rules. Everything else lives in shadow DOM. */
+[data-cb-state="blocked-note"] > :not(clearband-layer) { display: none !important; }
+[data-cb-state="blocked-remove"] { display: none !important; }
+[data-cb-state="blocked-note"] { min-height: 0 !important; height: auto !important; }

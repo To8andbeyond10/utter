@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clearband</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header class="head">
+  <span class="brand"><img src="../../icons/icon32.png" alt="" width="22" height="22">Clearband</span>
+  <label class="switch" title="Turn Clearband on or off everywhere">
+    <input type="checkbox" id="enabled"><span class="track" aria-hidden="true"></span><span class="sr">Clearband on</span>
+  </label>
+</header>
+
+<section class="panel" id="site-panel" hidden>
+  <p class="site-line" id="site-name"></p>
+  <div class="seg" role="radiogroup" aria-label="Level on this site" id="levels">
+    <button type="button" role="radio" data-level="off">Off</button>
+    <button type="button" role="radio" data-level="inform">Inform</button>
+    <button type="button" role="radio" data-level="warn">Warn</button>
+    <button type="button" role="radio" data-level="block">Block</button>
+  </div>
+  <p class="note muted" id="level-note"></p>
+  <p class="count" id="count"></p>
+</section>
+
+<section class="panel" id="no-site" hidden>
+  <p class="muted">Open YouTube, TikTok, Instagram, X, Facebook, Threads or Reddit to see Clearband at work. Already there? Reload the page once after installing.</p>
+</section>
+
+<section class="panel pause">
+  <p class="pause-state" id="pause-state">Take a break from filtering:</p>
+  <div class="row" id="pause-buttons">
+    <button class="btn" type="button" data-pause="15">15 min</button>
+    <button class="btn" type="button" data-pause="60">1 hour</button>
+    <button class="btn" type="button" data-pause="forever">Until I resume</button>
+  </div>
+  <button class="btn primary" type="button" id="resume" hidden>Resume now</button>
+</section>
+
+<footer class="foot">
+  <a href="#" id="open-options">All settings</a>
+  <span class="muted">Beta 0.1</span>
+</footer>
+<script src="../shared/settings.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "clearband-site",
+  "private": true,
+  "type": "module",
+  "description": "Clearband landing page and waitlist",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}

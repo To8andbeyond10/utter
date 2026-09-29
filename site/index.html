@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clearband: know what's real in your feed</title>
+<meta name="description" content="Clearband spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, shows you the evidence, and blurs or hides them if you want.">
+<meta property="og:title" content="Clearband: know what's real in your feed">
+<meta property="og:description" content="See what's AI on social media, with the evidence. Join the waitlist.">
+<meta name="theme-color" content="#F3F6F5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312202A'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23F3F6F5' stroke-width='2.5'/%3E%3Crect x='3' y='13' width='26' height='6' rx='3' fill='%233CC7A2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F3F6F5; --panel: #FFFFFF; --ink: #12202A; --slate: #56656F; --rule: #D6DEDB;
+  --teal: #0B7F66; --teal-glass: #D3F1E7; --on-teal: #FFFFFF;
+  --ai-confirmed: #4A2FC9; --ai-strong: #6B52DB; --ai-likely: #9C88EC; --ai-possible: #CFC5F7;
+  --ai-ink: #FFFFFF; --ai-soft: #EEEAFD; --danger: #B3261E;
+  --radius-s: 6px; --radius-m: 12px; --radius-l: 20px;
+  --font: "Schibsted Grotesk", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
+    --teal: #3CC7A2; --teal-glass: rgba(60,199,162,.14); --on-teal: #0E181D;
+    --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
+    --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
+  --teal: #3CC7A2; --teal-glass: rgba(60,199,162,.14); --on-teal: #0E181D;
+  --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
+  --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+a { color: var(--teal); }
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.site-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+.brand svg { width: 28px; height: 28px; }
+.head-link { color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 999px; }
+.head-link:hover { background: var(--ink); color: var(--paper); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); grid-template-areas: "copy demo" "form demo"; column-gap: 56px; row-gap: 0; align-items: start; padding: 40px 0 88px; }
+.hero-copy { grid-area: copy; }
+.signup { grid-area: form; }
+.demo { grid-area: demo; }
+h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 800; margin: 0 0 24px; max-width: 11ch; }
+.lede { font-size: 20px; color: var(--slate); max-width: 34em; margin: 0 0 32px; }
+
+/* Form */
+.signup { background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 24px; max-width: 520px; }
+.signup h2 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.signup .hint { margin: 0 0 18px; color: var(--slate); font-size: 15px; }
+.field { margin-bottom: 16px; }
+.field label, .field legend { display: block; font-weight: 600; font-size: 15px; margin-bottom: 6px; padding: 0; }
+fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
+input[type="email"] { width: 100%; font: inherit; font-size: 17px; padding: 12px 14px; border: 1.5px solid var(--rule); border-radius: var(--radius-m); background: var(--paper); color: var(--ink); }
+input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-glass); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips label { position: relative; margin: 0; font-weight: 500; }
+.chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chips span { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--rule); border-radius: 999px; font-size: 15px; cursor: pointer; background: var(--paper); }
+.chips input:checked + span { border-color: var(--teal); background: var(--teal-glass); color: var(--ink); font-weight: 600; }
+.chips input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.btn { font: inherit; font-weight: 600; font-size: 17px; border: 0; border-radius: 999px; padding: 13px 24px; background: var(--teal); color: var(--on-teal); cursor: pointer; }
+.btn:hover { filter: brightness(1.08); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+.form-status { margin: 12px 0 0; font-size: 15px; min-height: 1.4em; }
+.form-status.ok { color: var(--teal); font-weight: 600; }
+.form-status.err { color: var(--danger); }
+.fine { font-size: 13px; color: var(--slate); margin: 14px 0 0; }
+
+/* Demo */
+.demo { position: relative; background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 16px; }
+.scan-clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 5; }
+.demo-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.demo-top p { margin: 0; font-weight: 600; font-size: 15px; }
+.levels { display: inline-flex; background: var(--paper); border: 1.5px solid var(--rule); border-radius: 999px; padding: 3px; }
+.levels button { font: inherit; font-size: 14px; font-weight: 600; border: 0; background: transparent; color: var(--slate); padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+.levels button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.level-note { font-size: 14px; color: var(--slate); margin: 0 0 12px; min-height: 2.9em; }
+.feed { display: grid; gap: 12px; position: relative; }
+.post { position: relative; border: 1px solid var(--rule); border-radius: var(--radius-m); overflow: hidden; background: var(--paper); }
+.post-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 14px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; flex: none; }
+.post-head b { font-weight: 600; }
+.post-head small { color: var(--slate); display: block; font-size: 12.5px; line-height: 1.2; }
+.scene { aspect-ratio: 16 / 7; position: relative; }
+.caption { padding: 10px 12px 12px; font-size: 14.5px; margin: 0; }
+.scene-bay { background: linear-gradient(180deg, #C9D6DA 0%, #E7ECE9 48%, #93ABAF 49%, #6D878C 100%); }
+.scene-bay::after { content: ""; position: absolute; inset: 38% 0 51% 0; background: radial-gradient(60% 100% at 30% 100%, #7F969A 60%, transparent 61%), radial-gradient(50% 100% at 78% 100%, #8CA2A5 60%, transparent 61%); }
+.scene-tiger { background: repeating-linear-gradient(115deg, #E8913A 0 22px, #2A1C12 22px 30px, #E8913A 30px 50px), #E8913A; }
+.scene-tiger::after { content: ""; position: absolute; width: 22%; aspect-ratio: 1; border-radius: 50%; left: 62%; top: 22%; background: #F6D9B8; box-shadow: 0 0 0 6px rgba(255,255,255,.35); }
+.scene-flood { background: linear-gradient(180deg, #1B2A44 0%, #2E3F5E 56%, #3B5476 57%, #22324D 100%); }
+.scene-flood::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: 43%; height: 38%; background: repeating-linear-gradient(90deg, #121C2E 0 34px, transparent 34px 46px); }
+.scene-flood::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 58%; height: 12%; background: repeating-linear-gradient(90deg, #F2C66D 0 5px, transparent 5px 19px); opacity: .7; }
+
+.badge { position: absolute; top: 10px; right: 10px; z-index: 3; font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 999px; padding: 5px 11px 5px 9px; display: none; align-items: center; gap: 6px; cursor: pointer; color: var(--ai-ink); }
+.badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .85; }
+.post[data-rung="confirmed"] .badge { background: var(--ai-confirmed); }
+.post[data-rung="likely"] .badge { background: var(--ai-likely); color: #1B1440; }
+.post.is-flagged .badge { display: inline-flex; }
+
+.shield { position: absolute; inset: 0; z-index: 2; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px; background: color-mix(in srgb, var(--panel) 55%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.shield p { margin: 0; font-weight: 600; font-size: 15px; max-width: 26ch; }
+.shield button { font: inherit; font-size: 14px; font-weight: 600; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.post.is-warned .shield { display: flex; }
+.post.is-warned .badge { z-index: 4; }
+
+.hidden-note { display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; font-size: 14px; color: var(--slate); border: 1px dashed var(--rule); border-radius: var(--radius-m); }
+.hidden-note button { font: inherit; font-size: 13px; font-weight: 600; background: none; border: 0; color: var(--teal); cursor: pointer; padding: 4px; }
+.post-slot.is-blocked .post { display: none; }
+.post-slot.is-blocked .hidden-note { display: flex; }
+
+.card { position: absolute; z-index: 10; width: min(330px, calc(100% - 32px)); background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink); border-radius: var(--radius-m); padding: 16px; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(18,32,42,.18); }
+.card.open { display: block; }
+.card h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
+.card .sure { margin: 2px 0 12px; color: var(--slate); font-size: 13.5px; }
+.card ul { margin: 0 0 12px; padding-left: 18px; }
+.card li { margin-bottom: 4px; }
+.card .what { margin: 0 0 12px; padding: 8px 10px; background: var(--ai-soft); border-radius: var(--radius-s); }
+.card .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.card .acts button { font: inherit; font-size: 13px; font-weight: 600; border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.card .acts .deep { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.demo-foot { font-size: 12.5px; color: var(--slate); margin: 12px 0 0; }
+
+.scanline { position: absolute; left: 0; right: 0; height: 64px; top: -64px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent, var(--teal-glass) 45%, color-mix(in srgb, var(--teal) 30%, transparent) 50%, var(--teal-glass) 55%, transparent); }
+.scanning .scanline { animation: sweep 1.6s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes sweep { to { top: 100%; } }
+
+/* Sections */
+section.block { padding: 72px 0; border-top: 1.5px solid var(--rule); }
+h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 14px; max-width: 18ch; }
+.section-lede { color: var(--slate); font-size: 18.5px; margin: 0 0 40px; max-width: 38em; }
+
+.ladder { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--radius-l); overflow: hidden; border: 1.5px solid var(--rule); }
+.rung { padding: 22px 20px 24px; background: var(--panel); border-left: 1.5px solid var(--rule); }
+.rung:first-child { border-left: 0; }
+.rung .bar { height: 10px; border-radius: 999px; margin-bottom: 18px; }
+.rung h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -0.01em; }
+.rung p { margin: 0 0 12px; font-size: 15px; color: var(--slate); }
+.rung .does { font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; }
+.ladder-note { font-size: 15px; color: var(--slate); margin: 16px 0 0; }
+
+.report { background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 32px; }
+.report h3 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.01em; }
+.report .sure { margin: 0 0 18px; color: var(--slate); font-size: 15px; }
+.facts { margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.facts li { padding: 10px 0; border-top: 1px solid var(--rule); }
+.facts b { display: block; font-size: 14px; }
+.tracks { display: grid; gap: 14px; align-content: start; }
+.track-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.track-label span:last-child { color: var(--slate); font-weight: 500; }
+.track { position: relative; height: 18px; border-radius: 999px; background: var(--paper); border: 1px solid var(--rule); overflow: hidden; }
+.track i { position: absolute; top: 0; bottom: 0; background: var(--ai-confirmed); border-radius: 999px; }
+.track i.soft { background: var(--ai-likely); }
+.ticks { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--slate); }
+
+.plans { display: grid; gap: 0; border-top: 1.5px solid var(--ink); }
+.plan { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+.plan h3 { margin: 0; font-size: 21px; letter-spacing: -0.01em; }
+.plan p { margin: 0; color: var(--slate); }
+.plan .who { color: var(--ink); font-weight: 600; }
+
+.faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 48px; }
+.faq h3 { font-size: 19px; margin: 0 0 6px; letter-spacing: -0.01em; }
+.faq p { margin: 0; color: var(--slate); }
+
+.closer { text-align: left; padding: 80px 0 96px; border-top: 1.5px solid var(--rule); }
+.closer h2 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.035em; line-height: 1; margin: 0 0 20px; }
+.site-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 0 32px; font-size: 14px; color: var(--slate); border-top: 1.5px solid var(--rule); }
+.site-foot a { color: var(--slate); }
+
+@media (max-width: 920px) {
+  .hero { grid-template-columns: 1fr; grid-template-areas: "copy" "demo" "form"; row-gap: 32px; padding-top: 16px; }
+  .ladder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rung:nth-child(3) { border-left: 0; }
+  .rung:nth-child(n+3) { border-top: 1.5px solid var(--rule); }
+  .report { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .wrap { padding: 0 18px; }
+  .lede { font-size: 18px; }
+  .ladder { grid-template-columns: 1fr; }
+  .rung { border-left: 0; border-top: 1.5px solid var(--rule); }
+  .rung:first-child { border-top: 0; }
+  .plan { grid-template-columns: 1fr; gap: 6px; }
+  .faq { grid-template-columns: 1fr; }
+  section.block { padding: 56px 0; }
+}
+@media (prefers-reduced-motion: reduce) { .scanning .scanline { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="brand" href="#top" aria-label="Clearband home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><circle cx="16" cy="16" r="9" fill="none" stroke="var(--paper)" stroke-width="2.5"/><rect x="3" y="13" width="26" height="6" rx="3" fill="#3CC7A2"/></svg>
+      Clearband
+    </a>
+    <a class="head-link" href="#join">Join the waitlist</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Know what's real in your feed.</h1>
+        <p class="lede">Clearband spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
+      </div>
+
+        <form class="signup" id="join" data-endpoint="/api/waitlist" novalidate>
+          <h2>Get early access</h2>
+          <p class="hint">The Windows beta opens to the waitlist first. Android follows.</p>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </div>
+          <fieldset>
+            <legend>Who's it for?</legend>
+            <div class="chips">
+              <label><input type="radio" name="audience" value="me" checked><span>Just me</span></label>
+              <label><input type="radio" name="audience" value="kids"><span>My kids</span></label>
+              <label><input type="radio" name="audience" value="both"><span>Both</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Where do you scroll most?</legend>
+            <div class="chips">
+              <label><input type="radio" name="device" value="android" checked><span>Android phone</span></label>
+              <label><input type="radio" name="device" value="windows"><span>Windows PC</span></label>
+              <label><input type="radio" name="device" value="both"><span>Both</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>What would you pay monthly for full Investigator reports?</legend>
+            <div class="chips">
+              <label><input type="radio" name="price" value="0" checked><span>Nothing</span></label>
+              <label><input type="radio" name="price" value="4.99"><span>$4.99</span></label>
+              <label><input type="radio" name="price" value="9.99"><span>$9.99</span></label>
+              <label><input type="radio" name="price" value="14.99"><span>$14.99</span></label>
+            </div>
+          </fieldset>
+          <div class="trap" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" tabindex="-1" autocomplete="off"></div>
+          <button class="btn" type="submit">Join the waitlist</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          <p class="fine">We only use your email to tell you when Clearband is ready. <a href="/privacy">Privacy</a></p>
+        </form>
+
+      <div class="demo" id="demo" aria-label="Interactive example of Clearband">
+        <div class="scan-clip" aria-hidden="true"><div class="scanline"></div></div>
+        <div class="demo-top">
+          <p>Try it: pick a level</p>
+          <div class="levels" role="group" aria-label="Protection level">
+            <button type="button" data-level="inform" aria-pressed="true">Inform</button>
+            <button type="button" data-level="warn" aria-pressed="false">Warn</button>
+            <button type="button" data-level="block" aria-pressed="false">Block</button>
+          </div>
+        </div>
+        <p class="level-note" id="level-note"></p>
+        <div class="feed">
+          <div class="post-slot">
+            <article class="post" data-rung="none">
+              <div class="post-head"><span class="avatar" style="background:#7FA8B0"></span><div><b>harbor.lights</b><small>Photographer</small></div></div>
+              <div class="scene scene-bay" role="img" aria-label="Photo of fog over a bay"></div>
+              <p class="caption">Fog rolling over the bay this morning.</p>
+            </article>
+          </div>
+          <div class="post-slot">
+            <article class="post" data-rung="confirmed" data-card="tiger">
+              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Labeled AI</button>
+              <div class="shield"><p>Labeled AI by Instagram</p><button type="button" class="reveal">Show post</button></div>
+              <div class="post-head"><span class="avatar" style="background:#E8913A"></span><div><b>petvids.daily</b><small>Suggested for you</small></div></div>
+              <div class="scene scene-tiger" role="img" aria-label="Video of a baby and a tiger"></div>
+              <p class="caption">Baby and tiger best friends forever #aivideo</p>
+            </article>
+            <div class="hidden-note"><span>Hidden: labeled AI by Instagram</span><button type="button" class="unhide">Show anyway</button></div>
+          </div>
+          <div class="post-slot">
+            <article class="post" data-rung="likely" data-card="flood">
+              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Likely AI 88%</button>
+              <div class="shield"><p>Likely AI (88%)</p><button type="button" class="reveal">Show post</button></div>
+              <div class="post-head"><span class="avatar" style="background:#2E3F5E"></span><div><b>newsflash_now</b><small>Trending</small></div></div>
+              <div class="scene scene-flood" role="img" aria-label="Video of a flooded street at night"></div>
+              <p class="caption">Downtown is underwater after tonight's storm. Share before it's deleted.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="card" id="card-tiger" role="dialog" aria-label="Why this post was flagged">
+          <h3>Labeled AI</h3>
+          <p class="sure">Confirmed: the platform says so</p>
+          <ul>
+            <li>Instagram shows its "AI info" label on this post</li>
+            <li>The caption includes #aivideo</li>
+          </ul>
+          <p class="what"><b>What's AI:</b> the whole video</p>
+          <div class="acts"><button type="button">Always hide this account</button><button type="button">Report a mistake</button></div>
+        </div>
+        <div class="card" id="card-flood" role="dialog" aria-label="Why this post was flagged">
+          <h3>Likely AI, 88%</h3>
+          <p class="sure">An estimate, not confirmed</p>
+          <ul>
+            <li>Detector model score: 88%</li>
+            <li>No platform label and no Content Credentials</li>
+            <li>Account is 9 days old and posts about 40 videos a day</li>
+          </ul>
+          <p class="what"><b>What's likely AI:</b> the video; the audio sounds real</p>
+          <div class="acts"><button type="button" class="deep">Deep Scan</button><button type="button">Report a mistake</button></div>
+        </div>
+        <p class="demo-foot">Example posts, not real accounts. Tap a badge to see why it was flagged.</p>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="ladder-h">
+      <h2 class="section" id="ladder-h">Every flag shows how sure it is.</h2>
+      <p class="section-lede">A platform's own AI label is a fact. A detector's score is an estimate. Clearband never mixes them up, and it only hides posts on strong evidence unless you tell it otherwise.</p>
+      <div class="ladder">
+        <div class="rung"><div class="bar" style="background:var(--ai-confirmed)"></div><h3>Confirmed</h3><p>The platform labeled it AI, or its Content Credentials name an AI tool.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="rung"><div class="bar" style="background:var(--ai-strong)"></div><h3>Strong</h3><p>A hidden AI watermark, the creator says it's AI, or the account is on our reviewed list.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="rung"><div class="bar" style="background:var(--ai-likely)"></div><h3>Likely</h3><p>A detector scores it high, or several weaker signals line up.</p><p class="does">Can inform or warn; block if you opt in</p></div>
+        <div class="rung"><div class="bar" style="background:var(--ai-possible)"></div><h3>Possible</h3><p>AI hashtags or a middling detector score, nothing more.</p><p class="does">Can only inform</p></div>
+      </div>
+      <p class="ladder-note">Think a flag is wrong? Every card has a "Report a mistake" button, and creators can dispute flags.</p>
+    </section>
+
+    <section class="block" aria-labelledby="inv-h">
+      <h2 class="section" id="inv-h">Investigator shows exactly what's AI.</h2>
+      <p class="section-lede">Run a Deep Scan on any post to get a full breakdown: which parts are AI, where in the video, where it came from, and who's posting it.</p>
+      <div class="report">
+        <div>
+          <h3>Likely AI, 88%</h3>
+          <p class="sure">Deep Scan of a 30-second video (example)</p>
+          <ul class="facts">
+            <li><b>What's AI</b>The water and the lights; the street sign looks real</li>
+            <li><b>Provenance</b>No Content Credentials found</li>
+            <li><b>Source trace</b>Oldest copy found 2 days earlier, on a different account</li>
+            <li><b>Account</b>9 days old, 31 of its last 40 posts flagged</li>
+          </ul>
+        </div>
+        <div class="tracks" aria-label="Video timeline with flagged seconds">
+          <div><div class="track-label"><span>Background</span><span>0:03 to 0:24</span></div><div class="track"><i style="left:10%;width:70%"></i></div></div>
+          <div><div class="track-label"><span>Lights and water motion</span><span>0:04 to 0:11, 0:18 to 0:27</span></div><div class="track"><i style="left:13%;width:24%"></i><i style="left:60%;width:30%"></i></div></div>
+          <div><div class="track-label"><span>Voice</span><span>Sounds real</span></div><div class="track"></div></div>
+          <div><div class="track-label"><span>On-screen text</span><span>Possibly AI</span></div><div class="track"><i class="soft" style="left:0;width:18%"></i></div></div>
+          <div class="ticks" aria-hidden="true"><span>0:00</span><span>0:10</span><span>0:20</span><span>0:30</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="plans-h">
+      <h2 class="section" id="plans-h">Free to start. More when you want it.</h2>
+      <p class="section-lede">Waitlist members get launch pricing.</p>
+      <div class="plans">
+        <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and hover cards that explain what's AI, using platform labels, Content Credentials and creator disclosures.</p></div>
+        <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
+        <div class="plan"><h3>Investigator</h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
+        <div class="plan"><h3>Family</h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="faq-h">
+      <h2 class="section" id="faq-h">Questions</h2>
+      <div class="faq">
+        <div><h3>Where does it work?</h3><p>First as an extension for Chrome, Edge and Firefox on Windows. The Android app follows and works inside the YouTube, TikTok, Instagram and X apps.</p></div>
+        <div><h3>Does Clearband see what I browse?</h3><p>Checks run on your device. Nothing leaves it unless you run a Deep Scan on a specific post, and we don't keep your browsing history.</p></div>
+        <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI, 88%" is an estimate, and the card says so.</p></div>
+        <div><h3>Will it hide real posts?</h3><p>Block only acts on confirmed or strong evidence unless you choose otherwise. You can always show a hidden post with one tap.</p></div>
+      </div>
+    </section>
+
+    <section class="closer">
+      <h2>See your feed clearly.</h2>
+      <a class="btn" href="#join" style="display:inline-block;text-decoration:none">Join the waitlist</a>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <span>&copy; 2026 Clearband</span>
+    <a href="/privacy">Privacy</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var notes = {
+    inform: "AI posts show a badge. Tap it to see the evidence.",
+    warn: "AI posts are blurred until you choose to view them.",
+    block: "Confirmed AI posts are hidden. Likely ones are blurred, unless you opt in to hiding them too."
+  };
+  var demo = document.getElementById('demo');
+  var levelNote = document.getElementById('level-note');
+  var buttons = demo.querySelectorAll('.levels button');
+  var slots = demo.querySelectorAll('.post-slot');
+  var cards = demo.querySelectorAll('.card');
+  var level = 'inform';
+
+  function closeCards() {
+    cards.forEach(function (c) { c.classList.remove('open'); });
+    demo.querySelectorAll('.badge').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+  }
+
+  function render() {
+    closeCards();
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.level === level)); });
+    levelNote.textContent = notes[level];
+    slots.forEach(function (slot) {
+      var post = slot.querySelector('.post');
+      var rung = post.dataset.rung;
+      var flagged = rung !== 'none';
+      var strong = rung === 'confirmed' || rung === 'strong';
+      post.classList.toggle('is-flagged', flagged);
+      post.classList.toggle('is-warned', flagged && (level === 'warn' || (level === 'block' && !strong)));
+      slot.classList.toggle('is-blocked', flagged && strong && level === 'block');
+    });
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { level = b.dataset.level; render(); });
+  });
+
+  demo.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.classList.contains('reveal')) {
+      t.closest('.post').classList.remove('is-warned');
+      return;
+    }
+    if (t.classList.contains('unhide')) {
+      t.closest('.post-slot').classList.remove('is-blocked');
+      return;
+    }
+    if (t.classList.contains('badge')) {
+      var post = t.closest('.post');
+      var card = document.getElementById('card-' + post.dataset.card);
+      var wasOpen = card.classList.contains('open');
+      closeCards();
+      if (!wasOpen) {
+        var d = demo.getBoundingClientRect();
+        var b = t.getBoundingClientRect();
+        card.classList.add('open');
+        var left = Math.max(16, Math.min(b.right - d.left - card.offsetWidth, d.width - card.offsetWidth - 16));
+        card.style.left = left + 'px';
+        card.style.top = (b.bottom - d.top + 8) + 'px';
+        t.setAttribute('aria-expanded', 'true');
+      }
+      return;
+    }
+    if (!t.closest('.card')) closeCards();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCards(); });
+
+  render();
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var seen = false;
+    new IntersectionObserver(function (entries, obs) {
+      if (!seen && entries[0].isIntersecting) { seen = true; demo.classList.add('scanning'); obs.disconnect(); }
+    }, { threshold: 0.4 }).observe(demo);
+  }
+
+  // Waitlist
+  var form = document.getElementById('join');
+  var status = document.getElementById('form-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    status.className = 'form-status';
+    var email = form.email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      status.className = 'form-status err';
+      status.textContent = 'Enter a valid email address, like you@example.com.';
+      form.email.focus();
+      return;
+    }
+    var endpoint = form.dataset.endpoint;
+    if (!endpoint) {
+      status.className = 'form-status ok';
+      status.textContent = 'This is a preview. The waitlist starts saving signups once the site is live.';
+      return;
+    }
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Joining...';
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        audience: form.audience.value,
+        device: form.device.value,
+        price: form.price.value,
+        company: form.company.value
+      })
+    }).then(function (r) {
+      if (!r.ok) throw new Error(String(r.status));
+      form.reset();
+      status.className = 'form-status ok';
+      status.textContent = "You're on the list. We'll email you when the Windows beta opens.";
+    }).catch(function () {
+      status.className = 'form-status err';
+      status.textContent = "Couldn't save your spot. Check your connection and try again.";
+    }).finally(function () {
+      btn.disabled = false;
+      btn.textContent = 'Join the waitlist';
+    });
+  });
+})();
+</script>
+</body>
+</html>
