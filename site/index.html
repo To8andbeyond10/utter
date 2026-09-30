@@ -7,7 +7,7 @@
 <meta name="description" content="ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, shows you the evidence, and blurs or hides them if you want.">
 <meta property="og:title" content="ClariFi: know what's real in your feed">
 <meta property="og:description" content="See what's AI on social media, with the evidence. Join the waitlist.">
-<meta name="theme-color" content="#F3F6F5">
+<meta name="theme-color" content="#06070D">
 <link rel="icon" type="image/png" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,10 +15,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --paper: #F3F6F5; --panel: #FFFFFF; --ink: #12202A; --slate: #56656F; --rule: #D6DEDB;
-  --teal: #4A2FC9; --teal-glass: #E9E4FB; --on-teal: #FFFFFF;
-  --ai-confirmed: #4A2FC9; --ai-strong: #6B52DB; --ai-likely: #9C88EC; --ai-possible: #CFC5F7;
-  --ai-ink: #FFFFFF; --ai-soft: #EEEAFD; --danger: #B3261E;
+  --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
+  --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.14); --on-teal: #0A0618;
+  --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
+  --ai-ink: #0A0618; --ai-soft: rgba(143,123,242,.14); --danger: #F2867E;
+  --neon: #A78BFA;
   --radius-s: 6px; --radius-m: 12px; --radius-l: 20px;
   --font: "Schibsted Grotesk", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   box-sizing: border-box;
@@ -26,21 +27,21 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
+    --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
     --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
     --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
     --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
+  --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
   --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
   --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
   --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
 }
 *, *::before, *::after { box-sizing: inherit; }
 html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: radial-gradient(70% 42% at 50% -4%, rgba(124,77,255,.14), transparent 70%), var(--paper); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
 img, svg { max-width: 100%; }
 a { color: var(--teal); }
 :focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
@@ -59,6 +60,13 @@ a { color: var(--teal); }
 .signup { grid-area: form; }
 .demo { grid-area: demo; }
 h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 800; margin: 0 0 24px; max-width: 11ch; }
+.neon { color: var(--neon); text-shadow: 0 0 22px rgba(143,123,242,.65), 0 0 60px rgba(124,77,255,.3); }
+.mascot-hero { width: 200px; height: auto; display: block; margin: 6px 0 20px; border-radius: 28px;
+  box-shadow: 0 0 48px rgba(143,123,242,.45), 0 0 130px rgba(124,77,255,.22); }
+.eyebrow { box-shadow: inset 0 0 0 1px rgba(143,123,242,.35), 0 0 18px rgba(143,123,242,.18); }
+.btn { box-shadow: 0 0 26px rgba(143,123,242,.38); }
+.btn:hover { filter: brightness(1.1); box-shadow: 0 0 34px rgba(143,123,242,.55); }
+.demo { box-shadow: 0 0 40px rgba(143,123,242,.10); }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 15px 7px 9px; border-radius: 999px; background: var(--teal-glass); color: var(--ink); font-size: 14px; font-weight: 600; }
 .eyebrow img { border-radius: 50%; }
 .lede { font-size: 20px; color: var(--slate); max-width: 34em; margin: 0 0 32px; }
@@ -228,8 +236,9 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
+        <img class="mascot-hero" src="mascot.png" width="200" height="200" alt="ClariFi neon detective mascot">
         <p class="eyebrow"><img src="favicon-32.png" width="18" height="18" alt=""> The AI-spotting detective for your feed</p>
-        <h1>Know what's real in your feed.</h1>
+        <h1>Know what's <span class="neon">real</span> in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
       </div>
 
