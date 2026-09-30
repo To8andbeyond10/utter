@@ -1,4 +1,4 @@
-// Clearband on-page UI. Everything renders inside shadow roots so site CSS
+// ClariFi on-page UI. Everything renders inside shadow roots so site CSS
 // can't break it and our CSS can't break the site. Post text is only ever
 // inserted with textContent, never as HTML.
 (function (root) {
@@ -7,74 +7,107 @@
   const TOKENS = `
     :host { all: initial; }
     * { box-sizing: border-box; }
-    .t { --panel:#FFFFFF; --paper:#F3F6F5; --ink:#12202A; --slate:#56656F; --rule:#D6DEDB;
-         --teal:#0B7F66; --teal-glass:#D3F1E7;
-         --confirmed:#4A2FC9; --strong:#6B52DB; --likely:#9C88EC; --possible:#CFC5F7; --ai-soft:#EEEAFD;
-         font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    .t { --panel:#FFFFFF; --paper:#F4F6F8; --ink:#141B22; --slate:#5B6B76; --rule:#E1E7EA;
+         --brand:#4A2FC9; --brand-soft:#EEEAFD;
+         --c-confirmed:#4A2FC9; --c-strong:#7C66E8; --c-likely:#C77E1F; --c-possible:#9AA0A8;
+         --shadow-card:0 1px 2px rgba(16,24,40,.06),0 16px 40px -12px rgba(16,24,40,.22);
+         font-family: "Inter","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
          color: var(--ink); -webkit-font-smoothing: antialiased; }
     @media (prefers-color-scheme: dark) {
-      .t { --panel:#15232A; --paper:#0E181D; --ink:#E4ECEA; --slate:#9AA9B0; --rule:#2B3D45;
-           --teal:#3CC7A2; --teal-glass:rgba(60,199,162,.16); --ai-soft:rgba(143,123,242,.18); }
+      .t { --panel:#142027; --paper:#0D1418; --ink:#E6EEEC; --slate:#93A2AB; --rule:#24333B;
+           --brand:#8F7BF2; --brand-soft:rgba(143,123,242,.16);
+           --c-confirmed:#8F7BF2; --c-strong:#A48FF5; --c-likely:#E8A33D; --c-possible:#8B9096;
+           --shadow-card:0 1px 2px rgba(0,0,0,.35),0 16px 40px -12px rgba(0,0,0,.6); }
     }
     button { font: inherit; cursor: pointer; }
-    button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+    button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+    @keyframes cb-in { from { opacity: 0; transform: translateY(4px) scale(.98); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   `;
 
   const LAYER_CSS = TOKENS + `
     .t { position: absolute; inset: 0; pointer-events: none; }
-    .badge { position: absolute; pointer-events: auto; display: inline-flex; align-items: center; gap: 6px;
-             border: 0; border-radius: 999px; padding: 5px 11px 5px 9px; font-size: 12.5px; font-weight: 650;
-             line-height: 1.2; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); z-index: 3; white-space: nowrap; }
-    .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: .85; }
-    .badge.confirmed { background: #4A2FC9; }
-    .badge.strong { background: #6B52DB; }
-    .badge.likely { background: #9C88EC; color: #1B1440; }
-    .badge.possible { background: #CFC5F7; color: #1B1440; }
+    .badge { position: absolute; pointer-events: auto; display: inline-flex; align-items: center; gap: 7px;
+             border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 5px 12px 5px 10px;
+             font-size: 12px; font-weight: 650; letter-spacing: .01em; line-height: 1.2; color: #fff;
+             background: rgba(16,20,26,.78);
+             -webkit-backdrop-filter: blur(10px) saturate(1.25); backdrop-filter: blur(10px) saturate(1.25);
+             box-shadow: 0 2px 10px rgba(0,0,0,.3); z-index: 3; white-space: nowrap;
+             animation: cb-in .16s ease-out; transition: transform .14s ease-out; }
+    .badge:hover { transform: translateY(-1px); }
+    .badge .bdot { width: 7px; height: 7px; border-radius: 50%; background: var(--rc); flex: none; box-shadow: 0 0 7px var(--rc); }
+    .badge.confirmed { --rc: var(--c-confirmed); }
+    .badge.strong { --rc: var(--c-strong); }
+    .badge.likely { --rc: var(--c-likely); }
+    .badge.possible { --rc: var(--c-possible); }
     .shield { position: absolute; inset: 0; pointer-events: auto; display: flex; align-items: center; justify-content: center;
-              padding: 16px; text-align: center; z-index: 2;
-              background: color-mix(in srgb, var(--panel) 74%, transparent);
-              -webkit-backdrop-filter: blur(28px) saturate(.6); backdrop-filter: blur(28px) saturate(.6); }
+              padding: 18px; text-align: center; z-index: 2;
+              background: color-mix(in srgb, var(--panel) 72%, transparent);
+              -webkit-backdrop-filter: blur(30px) saturate(.55); backdrop-filter: blur(30px) saturate(.55); }
     .shield[hidden], .note[hidden], .badge[hidden] { display: none; }
-    .shield-inner { max-width: 280px; }
-    .shield-title { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--ink); }
-    .shield-sub { margin: 0 0 12px; font-size: 13px; color: var(--slate); }
-    .reveal { border: 0; border-radius: 999px; padding: 8px 16px; font-size: 13.5px; font-weight: 650;
-              background: var(--ink); color: var(--panel); }
+    .shield-inner { max-width: 300px; animation: cb-in .18s ease-out; }
+    .shield-title { margin: 0 0 5px; font-size: 16px; font-weight: 750; letter-spacing: -0.015em; color: var(--ink); }
+    .shield-sub { margin: 0 0 14px; font-size: 13px; color: var(--slate); }
+    .reveal { border: 0; border-radius: 999px; padding: 9px 20px; font-size: 13.5px; font-weight: 700;
+              background: var(--brand); color: #fff; box-shadow: 0 4px 16px rgba(74,47,201,.35);
+              transition: transform .14s ease-out, box-shadow .14s ease-out; }
+    .reveal:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,47,201,.42); }
     :host([data-mode="note"]) .t { position: relative; inset: auto; pointer-events: auto; }
     .note { display: flex; align-items: center; justify-content: space-between; gap: 12px; pointer-events: auto;
             margin: 6px 0; padding: 10px 14px; border: 1px dashed var(--rule); border-radius: 12px;
-            background: var(--paper); font-size: 13.5px; color: var(--slate); }
+            background: var(--paper); font-size: 13px; color: var(--slate); animation: cb-in .16s ease-out; }
     .note-text { display: inline-flex; align-items: center; gap: 8px; }
-    .note-text::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--confirmed); flex: none; }
-    .unhide { border: 0; background: none; color: var(--teal); font-weight: 650; font-size: 13px; padding: 4px; }
+    .note-text::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--brand); flex: none; }
+    .unhide { border: 0; background: none; color: var(--brand); font-weight: 700; font-size: 13px; padding: 4px; }
   `;
 
   const CARD_CSS = TOKENS + `
-    .card { position: fixed; z-index: 2147483647; width: 320px; max-width: calc(100vw - 24px);
-            background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 12px;
-            padding: 14px 16px 16px; font-size: 13.5px; line-height: 1.45; box-shadow: 0 12px 32px rgba(18,32,42,.22); }
+    .card { position: fixed; z-index: 2147483647; width: 332px; max-width: calc(100vw - 24px);
+            background: var(--panel); color: var(--ink);
+            border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 16px;
+            padding: 16px 18px 14px; font-size: 13.5px; line-height: 1.5;
+            box-shadow: var(--shadow-card); animation: cb-in .16s ease-out; }
     .card[hidden] { display: none; }
-    .top { display: flex; align-items: center; gap: 8px; margin: 0 0 2px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-    .title { margin: 0; font-size: 16px; font-weight: 700; }
+    .top { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex: none;
+           background: var(--rc); box-shadow: 0 0 9px var(--rc); }
+    .title { margin: 0; font-size: 16px; font-weight: 750; letter-spacing: -0.015em; }
+    .meter { display: flex; gap: 4px; margin: 0 0 6px; }
+    .meter i { height: 4px; flex: 1; border-radius: 99px;
+               background: color-mix(in srgb, var(--ink) 10%, transparent); }
+    .meter i.on { background: var(--rc); }
     .sure { margin: 0 0 10px; color: var(--slate); font-size: 12.5px; }
-    ul { margin: 0 0 10px; padding-left: 18px; }
-    li { margin: 0 0 4px; }
-    .acct { margin: 0 0 12px; padding: 7px 10px; border-radius: 8px; background: var(--ai-soft); font-size: 12.5px; }
+    ul.ev { margin: 0 0 12px; padding: 0; list-style: none; }
+    ul.ev li { display: flex; gap: 9px; align-items: flex-start; margin: 0 0 7px; font-size: 13px; }
+    ul.ev li::before { content: ""; width: 6px; height: 6px; border-radius: 50%;
+                       background: var(--erc, var(--slate)); flex: none; margin-top: 7px; }
+    .acct { margin: 0 0 12px; padding: 8px 11px; border-radius: 10px;
+            background: var(--brand-soft); font-size: 12.5px; }
     .acct[hidden] { display: none; }
     .acts { display: flex; flex-wrap: wrap; gap: 6px; }
-    .acts button { border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink);
-                   border-radius: 999px; padding: 5px 11px; font-size: 12.5px; font-weight: 600; }
+    .acts button { border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+                   border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600;
+                   transition: border-color .14s ease-out, transform .14s ease-out; }
+    .acts button:hover { border-color: var(--ink); }
+    .acts button:active { transform: scale(.97); }
     .acts button[hidden] { display: none; }
-    .acts button:disabled { opacity: .55; cursor: default; }
-    .brand { margin: 12px 0 0; font-size: 11.5px; color: var(--slate); }
+    .upsell { display: flex; align-items: center; gap: 9px; width: 100%; margin-top: 10px;
+              padding: 10px 13px; border: 0; border-radius: 12px; text-align: left;
+              background: var(--brand-soft); color: var(--ink);
+              font-size: 13px; font-weight: 650; transition: transform .14s ease-out; }
+    .upsell:hover { transform: translateY(-1px); }
+    .upsell .tag { margin-left: auto; font-size: 10.5px; font-weight: 800; letter-spacing: .07em;
+                   text-transform: uppercase; color: var(--brand); }
+    .brand { margin: 12px 0 0; font-size: 11px; letter-spacing: .05em; color: var(--slate); }
     .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 2147483647;
-             background: var(--ink); color: var(--panel); padding: 10px 16px; border-radius: 999px;
-             font-size: 13.5px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+             background: rgba(16,20,26,.92); color: #fff; padding: 10px 18px; border-radius: 999px;
+             font-size: 13.5px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.3);
+             -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+             border: 1px solid rgba(255,255,255,.12); animation: cb-in .16s ease-out; }
     .toast[hidden] { display: none; }
   `;
 
-  const RUNG_COLOR = { confirmed: '#4A2FC9', strong: '#6B52DB', likely: '#9C88EC', possible: '#CFC5F7' };
+  const RUNG_ORDER = ['possible', 'likely', 'strong', 'confirmed'];
   const SURE = {
     confirmed: 'Confirmed: the platform says so',
     strong: 'Strong evidence',
@@ -120,7 +153,7 @@
 
   // ---------- Per-post layer ----------
 
-  const LAYER_TAG = 'clearband-layer';
+  const LAYER_TAG = 'clarifi-layer';
   const OVERLAY_STYLE = 'position:absolute!important;inset:0!important;z-index:2147483000!important;pointer-events:none!important;display:block!important;margin:0!important;padding:0!important;border:0!important;background:none!important;';
   const NOTE_STYLE = 'position:relative!important;display:block!important;pointer-events:auto!important;margin:0!important;padding:0!important;border:0!important;background:none!important;';
 
@@ -145,22 +178,22 @@
   }
 
   function ensurePositioned(target) {
-    if (target.dataset.cbPos) return;
+    if (target.dataset.cfPos) return;
     if (getComputedStyle(target).position === 'static') {
       target.style.setProperty('position', 'relative');
-      target.dataset.cbPos = 'set';
+      target.dataset.cfPos = 'set';
     } else {
-      target.dataset.cbPos = 'kept';
+      target.dataset.cfPos = 'kept';
     }
   }
 
   function pauseMedia(target) {
     target.querySelectorAll('video, audio').forEach((m) => {
       try { m.pause(); } catch (e) { /* ignore */ }
-      if (!m.dataset.cbHooked) {
-        m.dataset.cbHooked = '1';
+      if (!m.dataset.cfHooked) {
+        m.dataset.cfHooked = '1';
         m.addEventListener('play', () => {
-          const st = target.dataset.cbState;
+          const st = target.dataset.cfState;
           if (st === 'warned' || st === 'blocked-note' || st === 'blocked-remove') m.pause();
         });
       }
@@ -168,9 +201,9 @@
   }
 
   /**
-   * Draw Clearband on one post.
+   * Draw ClariFi on one post.
    * @param {Element} target  element the layer mounts on
-   * @param {object} result   from ClearbandDetect.evaluate
+   * @param {object} result   from ClariFiDetect.evaluate
    * @param {string} action   'badge' | 'warn' | 'block'
    */
   function decorate(target, result, action, site, settings, handlers) {
@@ -182,11 +215,12 @@
     const rung = result.rung;
 
     badge.className = 'badge ' + rung;
-    badge.textContent = badgeFor(result);
+    badge.textContent = '';
+    badge.append(el('span', { class: 'bdot', 'aria-hidden': 'true' }), document.createTextNode(badgeFor(result)));
     const inset = site.badgeInset || { top: 8, right: 8 };
     badge.style.top = inset.top + 'px';
     badge.style.right = inset.right + 'px';
-    badge.setAttribute('aria-label', 'Clearband: ' + titleFor(result) + '. Show why.');
+    badge.setAttribute('aria-label', 'ClariFi: ' + titleFor(result) + '. Show why.');
 
     badge.onmouseenter = () => Card.hoverIn(badge, result, site, target, handlers);
     badge.onmouseleave = () => Card.hoverOut();
@@ -202,10 +236,10 @@
     host.setAttribute('style', OVERLAY_STYLE);
 
     if (action === 'badge') {
-      target.dataset.cbState = 'badged';
+      target.dataset.cfState = 'badged';
       ensurePositioned(target);
     } else if (action === 'warn') {
-      target.dataset.cbState = 'warned';
+      target.dataset.cfState = 'warned';
       ensurePositioned(target);
       shield.hidden = false;
       s.querySelector('.shield-title').textContent = titleFor(result);
@@ -213,14 +247,14 @@
       pauseMedia(target);
     } else if (action === 'block') {
       if (settings.blockStyle === 'remove') {
-        target.dataset.cbState = 'blocked-remove';
+        target.dataset.cfState = 'blocked-remove';
       } else {
-        target.dataset.cbState = 'blocked-note';
+        target.dataset.cfState = 'blocked-note';
         host.setAttribute('data-mode', 'note');
         host.setAttribute('style', NOTE_STYLE);
         badge.hidden = true;
         note.hidden = false;
-        s.querySelector('.note-text').textContent = 'Hidden by Clearband: ' + shortReason(result, site);
+        s.querySelector('.note-text').textContent = 'Hidden by ClariFi: ' + shortReason(result, site);
       }
       pauseMedia(target);
     }
@@ -229,34 +263,40 @@
   function clear(target) {
     const host = target.querySelector(':scope > ' + LAYER_TAG);
     if (host) host.remove();
-    delete target.dataset.cbState;
-    if (target.dataset.cbPos === 'set') target.style.removeProperty('position');
-    delete target.dataset.cbPos;
+    delete target.dataset.cfState;
+    if (target.dataset.cfPos === 'set') target.style.removeProperty('position');
+    delete target.dataset.cfPos;
   }
 
   // ---------- Hover card (one per page) ----------
 
   const Card = (function () {
-    let host, card, toastEl, toastTimer, showTimer, hideTimer, pinned = false, current = null;
+    let host, card, meter, toastEl, toastTimer, showTimer, hideTimer, pinned = false, current = null;
 
     function build() {
       if (host && host.isConnected) return;
-      host = document.createElement('clearband-card');
+      host = document.createElement('clarifi-card');
       host.setAttribute('style', 'position:fixed!important;inset:auto!important;width:0!important;height:0!important;z-index:2147483647!important;');
       const shadow = host.attachShadow({ mode: 'open' });
       const style = el('style'); style.textContent = CARD_CSS;
       const wrap = el('div', { class: 't' });
-      card = el('div', { class: 'card', role: 'dialog', 'aria-label': 'Why Clearband flagged this post', hidden: '' });
+      card = el('div', { class: 'card', role: 'dialog', 'aria-label': 'Why ClariFi flagged this post', hidden: '' });
       const top = el('div', { class: 'top' });
       top.append(el('span', { class: 'dot' }), el('p', { class: 'title' }));
+      meter = el('div', { class: 'meter', 'aria-hidden': 'true' });
+      for (let i = 0; i < 4; i++) meter.append(el('i'));
       const acts = el('div', { class: 'acts' });
       acts.append(
         el('button', { type: 'button', 'data-act': 'hide' }),
         el('button', { type: 'button', 'data-act': 'allow' }),
-        el('button', { type: 'button', 'data-act': 'report' }, 'Report a mistake'),
-        el('button', { type: 'button', 'data-act': 'deep', disabled: '', title: 'Deep Scan arrives with the Investigator plan' }, 'Deep Scan (soon)')
+        el('button', { type: 'button', 'data-act': 'report' }, 'Report a mistake')
       );
-      card.append(top, el('p', { class: 'sure' }), el('ul'), el('p', { class: 'acct' }), acts, el('p', { class: 'brand' }, 'Clearband beta'));
+      const upsell = el('button', { type: 'button', class: 'upsell', 'data-act': 'deep' });
+      upsell.append(
+        el('span', null, 'Deep Scan'),
+        el('span', { class: 'tag' }, 'Investigator')
+      );
+      card.append(top, meter, el('p', { class: 'sure' }), el('ul', { class: 'ev' }), el('p', { class: 'acct' }), acts, upsell, el('p', { class: 'brand' }, 'ClariFi'));
       toastEl = el('div', { class: 'toast', role: 'status', hidden: '' });
       wrap.append(card, toastEl);
       shadow.append(style, wrap);
@@ -274,12 +314,19 @@
 
     function fill(result, site) {
       const s = card;
-      s.querySelector('.dot').style.background = RUNG_COLOR[result.rung];
+      card.style.setProperty('--rc', 'var(--c-' + result.rung + ')');
+      const filled = RUNG_ORDER.indexOf(result.rung) + 1;
+      Array.prototype.forEach.call(meter.children, (seg, i) => seg.classList.toggle('on', i < filled));
       s.querySelector('.title').textContent = titleFor(result);
       s.querySelector('.sure').textContent = SURE[result.rung];
-      const ul = s.querySelector('ul');
+      const ul = s.querySelector('ul.ev');
       ul.textContent = '';
-      result.evidence.forEach((e) => ul.append(el('li', null, e.text)));
+      result.evidence.forEach((e) => {
+        const li = el('li');
+        li.style.setProperty('--erc', 'var(--c-' + e.rung + ')');
+        li.textContent = e.text;
+        ul.append(li);
+      });
       const acct = s.querySelector('.acct');
       const hideBtn = s.querySelector('[data-act="hide"]');
       const allowBtn = s.querySelector('[data-act="allow"]');
@@ -350,10 +397,14 @@
 
     function onAction(e) {
       const btn = e.target.closest('button[data-act]');
-      if (!btn || !current || btn.disabled) return;
+      if (!btn || !current) return;
       e.preventDefault();
       const c = current;
       const act = btn.getAttribute('data-act');
+      if (act === 'deep') {
+        toast('Deep Scan arrives with the Investigator plan');
+        return;
+      }
       hide();
       if (act === 'hide') c.handlers.onAlwaysHide(c.result.author);
       if (act === 'allow') c.handlers.onAlwaysAllow(c.result.author);
@@ -371,5 +422,5 @@
     return { hoverIn, hoverOut, toggle, hide, toast };
   })();
 
-  root.ClearbandUI = { decorate, clear, hideCard: Card.hide, toast: Card.toast, titleFor, LAYER_TAG };
+  root.ClariFiUI = { decorate, clear, hideCard: Card.hide, toast: Card.toast, titleFor, LAYER_TAG };
 })(globalThis);

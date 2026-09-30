@@ -2,20 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Clearband</title>
+<title>ClariFi</title>
 <link rel="stylesheet" href="../shared/ui.css">
 <link rel="stylesheet" href="popup.css">
 </head>
 <body>
 <header class="head">
-  <span class="brand"><img src="../../icons/icon32.png" alt="" width="22" height="22">Clearband</span>
-  <label class="switch" title="Turn Clearband on or off everywhere">
-    <input type="checkbox" id="enabled"><span class="track" aria-hidden="true"></span><span class="sr">Clearband on</span>
+  <span class="brand"><img src="../../icons/icon32.png" alt="" width="22" height="22">ClariFi</span>
+  <label class="switch" title="Turn ClariFi on or off everywhere">
+    <input type="checkbox" id="enabled"><span class="track" aria-hidden="true"></span><span class="sr">ClariFi on</span>
   </label>
 </header>
 
-<section class="panel" id="site-panel" hidden>
-  <p class="site-line" id="site-name"></p>
+<section class="hero" id="site-panel" hidden>
+  <div class="hero-mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+      <path d="M12 2.5 20 6v6c0 5-3.4 8.3-8 9.5C7.4 20.3 4 17 4 12V6l8-3.5Z" fill="var(--brand)" opacity=".14"/>
+      <path d="M12 2.5 20 6v6c0 5-3.4 8.3-8 9.5C7.4 20.3 4 17 4 12V6l8-3.5Z" stroke="var(--brand)" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="m8.8 12 2.2 2.2 4.2-4.4" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <p class="hero-site" id="site-name"></p>
+  <p class="hero-count" id="count"></p>
   <div class="seg" role="radiogroup" aria-label="Level on this site" id="levels">
     <button type="button" role="radio" data-level="off">Off</button>
     <button type="button" role="radio" data-level="inform">Inform</button>
@@ -23,11 +31,10 @@
     <button type="button" role="radio" data-level="block">Block</button>
   </div>
   <p class="note muted" id="level-note"></p>
-  <p class="count" id="count"></p>
 </section>
 
 <section class="panel" id="no-site" hidden>
-  <p class="muted">Open YouTube, TikTok, Instagram, X, Facebook, Threads or Reddit to see Clearband at work. Already there? Reload the page once after installing.</p>
+  <p class="muted">Open YouTube, TikTok, Instagram, X, Facebook, Threads or Reddit to see ClariFi at work. Already there? Reload the page once after installing.</p>
 </section>
 
 <section class="panel pause">
@@ -42,7 +49,7 @@
 
 <footer class="foot">
   <a href="#" id="open-options">All settings</a>
-  <span class="muted">Beta 0.1</span>
+  <span class="muted">v0.1.0</span>
 </footer>
 <script src="../shared/settings.js"></script>
 <script src="popup.js"></script>

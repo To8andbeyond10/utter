@@ -1,4 +1,4 @@
-// Clearband shared settings. Loaded by content scripts, popup, options and background.
+// ClariFi shared settings. Loaded by content scripts, popup, options and background.
 (function (root) {
   'use strict';
 
@@ -75,7 +75,7 @@
     return site ? site.name : id;
   }
 
-  root.ClearbandSettings = {
+  root.ClariFiSettings = {
     SITES, LEVELS, DEFAULTS, PAUSE_FOREVER,
     normalize, load, save, isPaused, ruleKey, siteName
   };

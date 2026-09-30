@@ -1,9 +1,9 @@
-// Clearband background: fills in default settings, shows the per-tab count
+// ClariFi background: fills in default settings, shows the per-tab count
 // on the toolbar icon, and ends timed pauses.
-if (typeof importScripts === 'function' && !globalThis.ClearbandSettings) {
+if (typeof importScripts === 'function' && !globalThis.ClariFiSettings) {
   importScripts('shared/settings.js');
 }
-const S = globalThis.ClearbandSettings;
+const S = globalThis.ClariFiSettings;
 
 chrome.runtime.onInstalled.addListener(async (details) => {
   const raw = await chrome.storage.sync.get(null);

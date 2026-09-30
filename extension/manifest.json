@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Clearband",
-  "short_name": "Clearband",
+  "name": "ClariFi",
+  "short_name": "ClariFi",
   "version": "0.1.0",
   "description": "See what's AI in your feed. Flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, with the evidence.",
   "icons": {
@@ -11,14 +11,13 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "Clearband",
+    "default_title": "ClariFi",
     "default_popup": "src/popup/popup.html",
     "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
   },
   "options_ui": { "page": "src/options/options.html", "open_in_tab": true },
   "background": {
-    "service_worker": "src/background.js",
-    "scripts": ["src/shared/settings.js", "src/background.js"]
+    "service_worker": "src/background.js"
   },
   "permissions": ["storage", "alarms"],
   "content_scripts": [
@@ -44,6 +43,6 @@
     }
   ],
   "browser_specific_settings": {
-    "gecko": { "id": "clearband-beta@clearband.extension", "strict_min_version": "121.0" }
+    "gecko": { "id": "clarifi-beta@clarifi.extension", "strict_min_version": "121.0" }
   }
 }

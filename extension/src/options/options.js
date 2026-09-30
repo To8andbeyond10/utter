@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const S = globalThis.ClearbandSettings;
+  const S = globalThis.ClariFiSettings;
   const $ = (id) => document.getElementById(id);
   let settings = S.normalize(null);
   let savedTimer = null;
@@ -90,8 +90,8 @@
   async function renderReports() {
     const { mistakeReports = [] } = await chrome.storage.local.get('mistakeReports');
     $('report-count').textContent = mistakeReports.length === 0
-      ? 'No reports yet. Use "Report a mistake" on any badge card when Clearband gets one wrong.'
-      : mistakeReports.length + (mistakeReports.length === 1 ? ' report' : ' reports') + ' saved on this computer. Download them to share with the Clearband team.';
+      ? 'No reports yet. Use "Report a mistake" on any badge card when ClariFi gets one wrong.'
+      : mistakeReports.length + (mistakeReports.length === 1 ? ' report' : ' reports') + ' saved on this computer. Download them to share with the ClariFi team.';
     $('download-reports').disabled = mistakeReports.length === 0;
     $('clear-reports').disabled = mistakeReports.length === 0;
     return mistakeReports;
@@ -115,7 +115,7 @@
     const blob = new Blob([JSON.stringify(reports, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'clearband-mistake-reports.json';
+    a.download = 'clarifi-mistake-reports.json';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   });

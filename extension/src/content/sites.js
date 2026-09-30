@@ -1,4 +1,4 @@
-// Clearband site rules. Platforms change their pages often, so everything
+// ClariFi site rules. Platforms change their pages often, so everything
 // site-specific lives here: where posts are, what their AI labels say,
 // and how to read the account name. Fix a broken site by editing this file.
 (function (root) {
@@ -129,5 +129,5 @@
     return SITES.find((s) => s.hosts.test(hostname)) || null;
   }
 
-  root.ClearbandSites = { SITES, siteForHost };
+  root.ClariFiSites = { SITES, siteForHost };
 })(globalThis);

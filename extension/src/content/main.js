@@ -1,15 +1,15 @@
-// Clearband content script entry point. Finds posts, evaluates them,
+// ClariFi content script entry point. Finds posts, evaluates them,
 // applies the user's level, and keeps up as feeds scroll and change.
 // Makes no network requests: everything runs on this page.
 (function () {
   'use strict';
 
-  const S = globalThis.ClearbandSettings;
-  const D = globalThis.ClearbandDetect;
-  const UI = globalThis.ClearbandUI;
-  const site = globalThis.ClearbandSites.siteForHost(location.hostname);
-  if (!site || window.__clearbandRunning) return;
-  window.__clearbandRunning = true;
+  const S = globalThis.ClariFiSettings;
+  const D = globalThis.ClariFiDetect;
+  const UI = globalThis.ClariFiUI;
+  const site = globalThis.ClariFiSites.siteForHost(location.hostname);
+  if (!site || window.__clarifiRunning) return;
+  window.__clarifiRunning = true;
 
   const SELECTOR = site.posts.join(',');
   const MAX_PER_SCAN = 400;
@@ -52,12 +52,12 @@
 
   function clearTarget(target) {
     UI.clear(target);
-    delete target.dataset.cbFlag;
+    delete target.dataset.cfFlag;
   }
 
   function draw(target, result, action) {
     UI.decorate(target, result, action, site, settings, handlersFor(target));
-    target.dataset.cbFlag = result.rung;
+    target.dataset.cfFlag = result.rung;
   }
 
   function processPost(post) {
@@ -79,7 +79,7 @@
   }
 
   function reportCount() {
-    const count = document.querySelectorAll('[data-cb-flag]').length;
+    const count = document.querySelectorAll('[data-cf-flag]').length;
     if (count === lastCount || !alive()) return;
     lastCount = count;
     chrome.runtime.sendMessage({ type: 'count', count }).catch(() => {});
@@ -103,7 +103,7 @@
 
   function resetAll() {
     UI.hideCard();
-    document.querySelectorAll('[data-cb-state], [data-cb-flag]').forEach(clearTarget);
+    document.querySelectorAll('[data-cf-state], [data-cf-flag]').forEach(clearTarget);
     seen = new WeakMap();
     scan();
     armPauseTimer();
@@ -141,8 +141,8 @@
     await S.save({ rules });
     const name = site.id === 'facebook' ? author : '@' + author.replace(/^@/, '');
     UI.toast(list === 'block'
-      ? 'Always hiding ' + name + ' on ' + site.name + '. Undo in Clearband settings.'
-      : 'Always allowing ' + name + ' on ' + site.name + '. Undo in Clearband settings.');
+      ? 'Always hiding ' + name + ' on ' + site.name + '. Undo in ClariFi settings.'
+      : 'Always allowing ' + name + ' on ' + site.name + '. Undo in ClariFi settings.');
   }
 
   async function reportMistake(target, result) {
@@ -162,7 +162,7 @@
       });
       await chrome.storage.local.set({ mistakeReports: mistakeReports.slice(-200) });
     } catch (e) { /* storage full or context gone */ }
-    UI.toast('Thanks. Clearband will stop flagging this post, and your report is saved.');
+    UI.toast('Thanks. ClariFi will stop flagging this post, and your report is saved.');
   }
 
   // ---------- Wiring ----------
@@ -172,11 +172,11 @@
       if (m.type !== 'childList') continue;
       let onlyOurs = m.addedNodes.length > 0 || m.removedNodes.length > 0;
       for (const n of m.addedNodes) {
-        if (!(n.nodeName && n.nodeName.toLowerCase().startsWith('clearband-'))) { onlyOurs = false; break; }
+        if (!(n.nodeName && n.nodeName.toLowerCase().startsWith('clarifi-'))) { onlyOurs = false; break; }
       }
       if (onlyOurs) {
         for (const n of m.removedNodes) {
-          if (!(n.nodeName && n.nodeName.toLowerCase().startsWith('clearband-'))) { onlyOurs = false; break; }
+          if (!(n.nodeName && n.nodeName.toLowerCase().startsWith('clarifi-'))) { onlyOurs = false; break; }
         }
       }
       if (!onlyOurs) { schedule(); return; }
@@ -195,7 +195,7 @@
         siteName: site.name,
         level: settings.levels[site.id],
         active: currentLevel() !== 'off',
-        count: document.querySelectorAll('[data-cb-flag]').length
+        count: document.querySelectorAll('[data-cf-flag]').length
       });
     }
   });

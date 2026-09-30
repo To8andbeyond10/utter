@@ -1,19 +1,19 @@
-# utter — Clearband
+# utter — ClariFi
 
-Clearband flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, and shows the evidence behind every flag. Pick a level per site: **Inform** adds a badge, **Warn** blurs the post until you choose to view it, **Block** hides it.
+ClariFi flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, and shows the evidence behind every flag. Pick a level per site: **Inform** adds a badge, **Warn** blurs the post until you choose to view it, **Block** hides it.
 
 This repo contains two projects:
 - [`extension/`](extension) — the Chrome/Edge/Firefox browser extension (Manifest V3, install & usage docs below apply to it).
-- [`site/`](site) — the Clearband marketing site (static site + Vercel API routes for health checks and the waitlist).
+- [`site/`](site) — the ClariFi marketing site (static site + Vercel API routes for health checks and the waitlist).
 
 ## Install on Windows
 
 **Chrome or Edge**
-1. Unzip `clearband-extension.zip` somewhere permanent, like `Documents\Clearband`. Chrome loads it from that folder, so don't delete it.
+1. Unzip `clarifi-extension.zip` somewhere permanent, like `Documents\ClariFi`. Chrome loads it from that folder, so don't delete it.
 2. Open `chrome://extensions` (Chrome) or `edge://extensions` (Edge).
 3. Turn on **Developer mode**.
-4. Click **Load unpacked** and pick the unzipped `clearband-extension` folder (the one containing `manifest.json`).
-5. Pin Clearband from the puzzle-piece menu so its icon stays in the toolbar.
+4. Click **Load unpacked** and pick the unzipped `clarifi-extension` folder (the one containing `manifest.json`).
+5. Pin ClariFi from the puzzle-piece menu so its icon stays in the toolbar.
 6. Reload any social media tabs that were already open.
 
 **Firefox** (for testing; removed when Firefox restarts until the add-on is signed)
@@ -21,9 +21,9 @@ This repo contains two projects:
 2. Click **Load Temporary Add-on** and pick `manifest.json`.
 
 ## Using it
-- **Badge:** hover (or click) to see why a post was flagged, how sure Clearband is, and who posted it.
+- **Badge:** hover (or click) to see why a post was flagged, how sure ClariFi is, and who posted it.
 - **Card actions:** Always hide or always allow an account, or Report a mistake.
-- **Toolbar icon:** shows how many posts are flagged on the page. The popup changes the level for the current site and pauses Clearband for 15 minutes, 1 hour, or until you resume.
+- **Toolbar icon:** shows how many posts are flagged on the page. The popup changes the level for the current site and pauses ClariFi for 15 minutes, 1 hour, or until you resume.
 - **Settings:** per-site levels, whether Block also hides Likely posts, note vs. full removal, hashtag signals, your account lists, and mistake reports.
 
 ## What this beta checks

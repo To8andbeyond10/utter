@@ -1,4 +1,4 @@
-// Clearband detection core. Gathers evidence for one post and ranks it on
+// ClariFi detection core. Gathers evidence for one post and ranks it on
 // the evidence ladder: confirmed > strong > likely > possible.
 // Beta scope: platform labels, flair, creator disclosures, hashtags,
 // and the user's own account rules. Detector models come in v0.2.
@@ -105,8 +105,8 @@
 
   /**
    * @param {Element} post
-   * @param {object} site   entry from ClearbandSites
-   * @param {object} settings  normalized ClearbandSettings
+   * @param {object} site   entry from ClariFiSites
+   * @param {object} settings  normalized ClariFiSettings
    * @returns {{rung: string|null, evidence: Array, author: string|null, allowed: boolean}}
    */
   function evaluate(post, site, settings) {
@@ -114,7 +114,7 @@
     let author = null;
     try { author = site.author(post); } catch (e) { author = null; }
 
-    const key = author ? root.ClearbandSettings.ruleKey(site.id, author) : null;
+    const key = author ? root.ClariFiSettings.ruleKey(site.id, author) : null;
     if (key && settings.rules.allow.includes(key)) {
       return { rung: null, evidence, author, allowed: true };
     }
@@ -175,5 +175,5 @@
     return 'badge';
   }
 
-  root.ClearbandDetect = { RUNGS, rank, evaluate, actionFor, findDisclosure, findTags, matchLabel, norm };
+  root.ClariFiDetect = { RUNGS, rank, evaluate, actionFor, findDisclosure, findTags, matchLabel, norm };
 })(globalThis);

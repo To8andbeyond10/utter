@@ -1,13 +1,13 @@
 (function () {
   'use strict';
-  const S = globalThis.ClearbandSettings;
+  const S = globalThis.ClariFiSettings;
   const $ = (id) => document.getElementById(id);
   let settings = S.normalize(null);
   let tab = null;
   let status = null;
 
   function levelNote(level) {
-    if (level === 'off') return 'Clearband is off on this site.';
+    if (level === 'off') return 'ClariFi is off on this site.';
     if (level === 'inform') return 'AI posts get a badge. Hover or tap it to see the evidence.';
     if (level === 'warn') return 'AI posts are blurred until you choose to view them.';
     return settings.blockIncludesLikely
@@ -29,7 +29,7 @@
       $('level-note').textContent = levelNote(level);
       const count = $('count');
       count.textContent = '';
-      if (!settings.enabled) count.textContent = 'Clearband is turned off.';
+      if (!settings.enabled) count.textContent = 'ClariFi is turned off.';
       else if (paused) count.textContent = 'Paused, so nothing is flagged right now.';
       else if (level === 'off') count.textContent = '';
       else if (status.count === 0) count.textContent = 'No AI posts flagged on this page yet.';

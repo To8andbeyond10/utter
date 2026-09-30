@@ -12,9 +12,9 @@ global.NodeFilter = dom.window.NodeFilter;
 for (const f of ['src/shared/settings.js', 'src/content/sites.js', 'src/content/detect.js']) {
   new Function(fs.readFileSync(path.join(__dirname, '..', f), 'utf8'))();
 }
-const S = globalThis.ClearbandSettings;
-const D = globalThis.ClearbandDetect;
-const site = (id) => globalThis.ClearbandSites.SITES.find((s) => s.id === id);
+const S = globalThis.ClariFiSettings;
+const D = globalThis.ClariFiDetect;
+const site = (id) => globalThis.ClariFiSites.SITES.find((s) => s.id === id);
 
 function post(html, selector) {
   document.body.innerHTML = html;
