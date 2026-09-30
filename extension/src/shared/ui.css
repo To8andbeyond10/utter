@@ -15,7 +15,7 @@
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --paper:#0D1418; --panel:#142027; --ink:#E6EEEC; --slate:#93A2AB; --rule:#24333B;
+  :root { --paper:#0B0E12; --panel:#151A20; --ink:#E9EDEF; --slate:#98A4AE; --rule:#222B33;
           --brand:#8F7BF2; --brand-ink:#141126; --brand-soft:rgba(143,123,242,.16); --brand-deep:#8F7BF2;
           --teal:#3CC7A2; --teal-soft:rgba(60,199,162,.14);
           --danger:#F2867E;

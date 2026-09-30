@@ -2,7 +2,7 @@
 .top { display:flex; align-items:center; justify-content:space-between; }
 .top .brand { font-size: 20px; }
 .saved { margin:0; font-size:13px; font-weight:600; color:var(--brand); min-height:1.4em; }
-h1 { font-size: 34px; line-height:1.05; letter-spacing:-0.03em; margin: 28px 0 10px; font-weight:800; }
+h1 { font-size: 30px; line-height:1.08; letter-spacing:-0.025em; margin: 28px 0 10px; font-weight:750; }
 .lede { color:var(--slate); margin:0 0 24px; max-width: 36em; }
 section { padding: 26px 0; border-top: 1px solid var(--rule); }
 h2 { font-size: 19px; letter-spacing:-0.015em; margin: 0 0 6px; font-weight:750; }

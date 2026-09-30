@@ -14,7 +14,7 @@
          font-family: "Inter","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
          color: var(--ink); -webkit-font-smoothing: antialiased; }
     @media (prefers-color-scheme: dark) {
-      .t { --panel:#142027; --paper:#0D1418; --ink:#E6EEEC; --slate:#93A2AB; --rule:#24333B;
+      .t { --panel:#151A20; --paper:#0B0E12; --ink:#E9EDEF; --slate:#98A4AE; --rule:#222B33;
            --brand:#8F7BF2; --brand-ink:#141126; --brand-soft:rgba(143,123,242,.16);
            --c-confirmed:#8F7BF2; --c-strong:#A48FF5; --c-likely:#E8A33D; --c-possible:#8B9096;
            --shadow-card:0 1px 2px rgba(0,0,0,.35),0 16px 40px -12px rgba(0,0,0,.6); }
@@ -27,15 +27,15 @@
 
   const LAYER_CSS = TOKENS + `
     .t { position: absolute; inset: 0; pointer-events: none; }
-    .badge { position: absolute; pointer-events: auto; display: inline-flex; align-items: center; gap: 7px;
-             border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 5px 12px 5px 10px;
-             font-size: 12px; font-weight: 650; letter-spacing: .01em; line-height: 1.2; color: #fff;
+    .badge { position: absolute; pointer-events: auto; display: inline-flex; align-items: center; gap: 6px;
+             border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 4px 11px 4px 9px;
+             font-size: 11.5px; font-weight: 600; letter-spacing: .015em; line-height: 1.2; color: #fff;
              background: rgba(16,20,26,.78);
              -webkit-backdrop-filter: blur(10px) saturate(1.25); backdrop-filter: blur(10px) saturate(1.25);
              box-shadow: 0 2px 10px rgba(0,0,0,.3); z-index: 3; white-space: nowrap;
              animation: cb-in .16s ease-out; transition: transform .14s ease-out; }
     .badge:hover { transform: translateY(-1px); }
-    .badge .bdot { width: 7px; height: 7px; border-radius: 50%; background: var(--rc); flex: none; box-shadow: 0 0 7px var(--rc); }
+    .badge .bdot { width: 7px; height: 7px; border-radius: 50%; background: var(--rc); flex: none; box-shadow: 0 0 4px var(--rc); }
     .badge.confirmed { --rc: var(--c-confirmed); }
     .badge.strong { --rc: var(--c-strong); }
     .badge.likely { --rc: var(--c-likely); }
@@ -65,15 +65,15 @@
     .card { position: fixed; z-index: 2147483647; width: 332px; max-width: calc(100vw - 24px);
             background: var(--panel); color: var(--ink);
             border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 16px;
-            padding: 16px 18px 14px; font-size: 13.5px; line-height: 1.5;
+            padding: 18px 20px 16px; font-size: 13.5px; line-height: 1.55;
             box-shadow: var(--shadow-card); animation: cb-in .16s ease-out; }
     .card[hidden] { display: none; }
-    .top { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; }
+    .top { display: flex; align-items: center; gap: 9px; margin: 0 0 8px; }
     .dot { width: 10px; height: 10px; border-radius: 50%; flex: none;
            background: var(--rc); box-shadow: 0 0 9px var(--rc); }
-    .title { margin: 0; font-size: 16px; font-weight: 750; letter-spacing: -0.015em; }
+    .title { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -0.015em; }
     .meter { display: flex; gap: 4px; margin: 0 0 6px; }
-    .meter i { height: 4px; flex: 1; border-radius: 99px;
+    .meter i { height: 3px; flex: 1; border-radius: 99px;
                background: color-mix(in srgb, var(--ink) 10%, transparent); }
     .meter i.on { background: var(--rc); }
     .sure { margin: 0 0 10px; color: var(--slate); font-size: 12.5px; }
@@ -94,7 +94,7 @@
     .upsell { display: flex; align-items: center; gap: 9px; width: 100%; margin-top: 10px;
               padding: 10px 13px; border: 0; border-radius: 12px; text-align: left;
               background: var(--brand-soft); color: var(--ink);
-              font-size: 13px; font-weight: 650; transition: transform .14s ease-out; }
+              font-size: 13px; font-weight: 600; transition: transform .14s ease-out; }
     .upsell:hover { transform: translateY(-1px); }
     .upsell .tag { margin-left: auto; font-size: 10.5px; font-weight: 800; letter-spacing: .07em;
                    text-transform: uppercase; color: var(--brand); }
