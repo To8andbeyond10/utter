@@ -149,4 +149,5 @@
   });
 
   S.load().then((s) => { settings = s; renderAll(); });
+  try { $('version').textContent = 'ClariFi v' + chrome.runtime.getManifest().version; } catch (e) { /* ignore */ }
 })();

@@ -3,6 +3,7 @@ body { width: 348px; }
 .hero { padding:22px 18px 18px; border-bottom:1px solid var(--rule); text-align:center;
         background:radial-gradient(120% 100% at 50% 0%, var(--brand-soft) 0%, transparent 72%); }
 .hero-mark { display:flex; justify-content:center; margin-bottom:10px; }
+.hero-mark img { border-radius:50%; background:#101014; box-shadow:var(--shadow-md), 0 0 0 5px var(--brand-soft); }
 .hero-site { margin:0; font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--slate); }
 .hero-count { margin:8px 0 14px; font-size:13px; color:var(--slate); }
 .hero-count b { display:block; font-size:36px; font-weight:800; letter-spacing:-0.03em; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.1; }

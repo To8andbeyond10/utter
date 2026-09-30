@@ -29,6 +29,7 @@ button { font:inherit; cursor:pointer; }
 :focus-visible { outline:2px solid var(--brand); outline-offset:2px; border-radius:6px; }
 .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 .brand { display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:16px; letter-spacing:-0.02em; }
+.brand img { border-radius:50%; box-shadow:var(--shadow-sm); background:#101014; }
 .num { font-variant-numeric: tabular-nums; }
 .seg { display:inline-flex; background:var(--paper); border:1px solid var(--rule); border-radius:var(--pill); padding:3px; box-shadow:var(--shadow-sm); }
 .seg button { border:0; background:transparent; color:var(--slate); font-weight:600; font-size:13px; padding:6px 12px; border-radius:var(--pill); transition:background .14s ease-out,color .14s ease-out; }
@@ -46,6 +47,8 @@ button { font:inherit; cursor:pointer; }
 .btn:active { transform:scale(.98); }
 .btn.primary { background:var(--brand); border-color:var(--brand); color:var(--brand-ink); box-shadow:0 4px 14px rgba(74,47,201,.32); }
 .btn.danger { color:var(--danger); }
+.btn[disabled] { opacity:.5; cursor:not-allowed; box-shadow:none; }
+.btn[disabled]:hover { border-color:var(--rule); }
 .muted { color:var(--slate); }
 a { color:var(--brand); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }

@@ -4,25 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Privacy | ClariFi</title>
+<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root { --paper:#F3F6F5; --ink:#12202A; --slate:#56656F; --teal:#0B7F66; }
-@media (prefers-color-scheme: dark) { :root { --paper:#0E181D; --ink:#E4ECEA; --slate:#9AA9B0; --teal:#3CC7A2; } }
+:root { --paper:#F3F6F5; --ink:#12202A; --slate:#56656F; --brand:#4A2FC9; }
+@media (prefers-color-scheme: dark) { :root { --paper:#0E181D; --ink:#E4ECEA; --slate:#9AA9B0; --brand:#8F7BF2; } }
 body { margin:0; background:var(--paper); color:var(--ink); font-family:"Schibsted Grotesk","Segoe UI",system-ui,sans-serif; font-size:17px; line-height:1.6; }
 main { max-width: 680px; margin: 0 auto; padding: 48px 22px 80px; }
+.brand { display:inline-flex; align-items:center; gap:10px; color:var(--ink); text-decoration:none; font-weight:800; font-size:19px; letter-spacing:-0.01em; }
+.brand img { border-radius:50%; }
 h1 { font-size: 40px; letter-spacing: -0.03em; line-height: 1.05; margin: 24px 0 8px; }
 h2 { font-size: 20px; margin: 32px 0 6px; }
 p, li { color: var(--slate); }
-a { color: var(--teal); }
+a { color: var(--brand); }
 </style>
 </head>
 <body>
 <main>
-  <a href="/">Back to ClariFi</a>
+  <a class="brand" href="/"><img src="favicon-32.png" width="26" height="26" alt="">ClariFi</a>
   <h1>Privacy</h1>
-  <p>Last updated September 28, 2026.</p>
+  <p>Last updated September 30, 2026.</p>
   <h2>What the waitlist collects</h2>
   <p>Your email address, the three answers you pick on the form, and the date you joined. Nothing else.</p>
   <h2>How it's used</h2>

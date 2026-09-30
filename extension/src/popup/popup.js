@@ -63,6 +63,7 @@
   async function init() {
     settings = await S.load();
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    try { $('version').textContent = 'v' + chrome.runtime.getManifest().version; } catch (e) { /* ignore */ }
     await refreshStatus();
   }
 

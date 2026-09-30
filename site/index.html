@@ -8,14 +8,15 @@
 <meta property="og:title" content="ClariFi: know what's real in your feed">
 <meta property="og:description" content="See what's AI on social media, with the evidence. Join the waitlist.">
 <meta name="theme-color" content="#F3F6F5">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312202A'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23F3F6F5' stroke-width='2.5'/%3E%3Crect x='3' y='13' width='26' height='6' rx='3' fill='%233CC7A2'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --paper: #F3F6F5; --panel: #FFFFFF; --ink: #12202A; --slate: #56656F; --rule: #D6DEDB;
-  --teal: #0B7F66; --teal-glass: #D3F1E7; --on-teal: #FFFFFF;
+  --teal: #4A2FC9; --teal-glass: #E9E4FB; --on-teal: #FFFFFF;
   --ai-confirmed: #4A2FC9; --ai-strong: #6B52DB; --ai-likely: #9C88EC; --ai-possible: #CFC5F7;
   --ai-ink: #FFFFFF; --ai-soft: #EEEAFD; --danger: #B3261E;
   --radius-s: 6px; --radius-m: 12px; --radius-l: 20px;
@@ -26,14 +27,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
-    --teal: #3CC7A2; --teal-glass: rgba(60,199,162,.14); --on-teal: #0E181D;
+    --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
     --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
     --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0E181D; --panel: #15232A; --ink: #E4ECEA; --slate: #9AA9B0; --rule: #25363E;
-  --teal: #3CC7A2; --teal-glass: rgba(60,199,162,.14); --on-teal: #0E181D;
+  --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
   --ai-confirmed: #8F7BF2; --ai-strong: #A391F5; --ai-likely: #BDB0F8; --ai-possible: #D9D1FB;
   --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
 }
@@ -48,8 +49,8 @@ a { color: var(--teal); }
 /* Header */
 .site-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
-.brand svg { width: 28px; height: 28px; }
-.head-link { color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 999px; }
+.brand img { width: 28px; height: 28px; border-radius: 50%; }
+.head-link { color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 999px; transition: background .14s ease-out, color .14s ease-out; }
 .head-link:hover { background: var(--ink); color: var(--paper); }
 
 /* Hero */
@@ -58,6 +59,8 @@ a { color: var(--teal); }
 .signup { grid-area: form; }
 .demo { grid-area: demo; }
 h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 800; margin: 0 0 24px; max-width: 11ch; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 15px 7px 9px; border-radius: 999px; background: var(--teal-glass); color: var(--ink); font-size: 14px; font-weight: 600; }
+.eyebrow img { border-radius: 50%; }
 .lede { font-size: 20px; color: var(--slate); max-width: 34em; margin: 0 0 32px; }
 
 /* Form */
@@ -72,12 +75,13 @@ input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chips label { position: relative; margin: 0; font-weight: 500; }
 .chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.chips span { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--rule); border-radius: 999px; font-size: 15px; cursor: pointer; background: var(--paper); }
+.chips span { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--rule); border-radius: 999px; font-size: 15px; cursor: pointer; background: var(--paper); transition: border-color .14s ease-out, background .14s ease-out; }
 .chips input:checked + span { border-color: var(--teal); background: var(--teal-glass); color: var(--ink); font-weight: 600; }
 .chips input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
 .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.btn { font: inherit; font-weight: 600; font-size: 17px; border: 0; border-radius: 999px; padding: 13px 24px; background: var(--teal); color: var(--on-teal); cursor: pointer; }
+.btn { font: inherit; font-weight: 600; font-size: 17px; border: 0; border-radius: 999px; padding: 13px 24px; background: var(--teal); color: var(--on-teal); cursor: pointer; transition: filter .14s ease-out, transform .14s ease-out; }
 .btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(.98); }
 .btn[disabled] { opacity: .6; cursor: progress; }
 .form-status { margin: 12px 0 0; font-size: 15px; min-height: 1.4em; }
 .form-status.ok { color: var(--teal); font-weight: 600; }
@@ -90,7 +94,7 @@ input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow
 .demo-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .demo-top p { margin: 0; font-weight: 600; font-size: 15px; }
 .levels { display: inline-flex; background: var(--paper); border: 1.5px solid var(--rule); border-radius: 999px; padding: 3px; }
-.levels button { font: inherit; font-size: 14px; font-weight: 600; border: 0; background: transparent; color: var(--slate); padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+.levels button { font: inherit; font-size: 14px; font-weight: 600; border: 0; background: transparent; color: var(--slate); padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: background .14s ease-out, color .14s ease-out; }
 .levels button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .level-note { font-size: 14px; color: var(--slate); margin: 0 0 12px; min-height: 2.9em; }
 .feed { display: grid; gap: 12px; position: relative; }
@@ -117,7 +121,8 @@ input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow
 
 .shield { position: absolute; inset: 0; z-index: 2; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px; background: color-mix(in srgb, var(--panel) 55%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .shield p { margin: 0; font-weight: 600; font-size: 15px; max-width: 26ch; }
-.shield button { font: inherit; font-size: 14px; font-weight: 600; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.shield button { font: inherit; font-size: 14px; font-weight: 600; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; transition: transform .14s ease-out; }
+.shield button:hover { transform: translateY(-1px); }
 .post.is-warned .shield { display: flex; }
 .post.is-warned .badge { z-index: 4; }
 
@@ -134,9 +139,13 @@ input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow
 .card li { margin-bottom: 4px; }
 .card .what { margin: 0 0 12px; padding: 8px 10px; background: var(--ai-soft); border-radius: var(--radius-s); }
 .card .acts { display: flex; flex-wrap: wrap; gap: 8px; }
-.card .acts button { font: inherit; font-size: 13px; font-weight: 600; border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.card .acts button { font: inherit; font-size: 13px; font-weight: 600; border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: border-color .14s ease-out, transform .14s ease-out; }
+.card .acts button:hover { border-color: var(--ink); }
+.card .acts button:active { transform: scale(.97); }
 .card .acts .deep { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .demo-foot { font-size: 12.5px; color: var(--slate); margin: 12px 0 0; }
+.demo-toast { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20; max-width: calc(100% - 32px); background: rgba(18,22,28,.94); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 600; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.demo-toast[hidden] { display: none; }
 
 .scanline { position: absolute; left: 0; right: 0; height: 64px; top: -64px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent, var(--teal-glass) 45%, color-mix(in srgb, var(--teal) 30%, transparent) 50%, var(--teal-glass) 55%, transparent); }
 .scanning .scanline { animation: sweep 1.6s cubic-bezier(.4,0,.2,1) forwards; }
@@ -203,14 +212,14 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   .faq { grid-template-columns: 1fr; }
   section.block { padding: 56px 0; }
 }
-@media (prefers-reduced-motion: reduce) { .scanning .scanline { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .scanning .scanline { animation: none; } *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="site-head">
     <a class="brand" href="#top" aria-label="ClariFi home">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><circle cx="16" cy="16" r="9" fill="none" stroke="var(--paper)" stroke-width="2.5"/><rect x="3" y="13" width="26" height="6" rx="3" fill="#3CC7A2"/></svg>
+      <img src="favicon-32.png" width="28" height="28" alt="">
       ClariFi
     </a>
     <a class="head-link" href="#join">Join the waitlist</a>
@@ -219,6 +228,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
+        <p class="eyebrow"><img src="favicon-32.png" width="18" height="18" alt=""> The AI-spotting detective for your feed</p>
         <h1>Know what's real in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
       </div>
@@ -323,6 +333,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
           <div class="acts"><button type="button" class="deep">Deep Scan</button><button type="button">Report a mistake</button></div>
         </div>
         <p class="demo-foot">Example posts, not real accounts. Tap a badge to see why it was flagged.</p>
+        <div class="demo-toast" id="demo-toast" role="status" hidden></div>
       </div>
     </section>
 
@@ -408,6 +419,15 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   var slots = demo.querySelectorAll('.post-slot');
   var cards = demo.querySelectorAll('.card');
   var level = 'inform';
+  var toastEl = document.getElementById('demo-toast');
+  var toastTimer = null;
+
+  function demoToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.hidden = true; }, 2600);
+  }
 
   function closeCards() {
     cards.forEach(function (c) { c.classList.remove('open'); });
@@ -441,6 +461,19 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
     }
     if (t.classList.contains('unhide')) {
       t.closest('.post-slot').classList.remove('is-blocked');
+      return;
+    }
+    if (t.classList.contains('deep')) {
+      document.getElementById('join').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    var label = (t.textContent || '').trim();
+    if (label === 'Report a mistake') {
+      demoToast('In the real extension, this sends the post to the ClariFi team.');
+      return;
+    }
+    if (label === 'Always hide this account') {
+      demoToast('In the real extension, this account would always be hidden.');
       return;
     }
     if (t.classList.contains('badge')) {
