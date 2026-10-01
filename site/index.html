@@ -6,7 +6,7 @@
 <title>ClariFi — your internet detective</title>
 <meta name="description" content="ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, shows you the evidence, and blurs or hides them if you want.">
 <meta property="og:title" content="ClariFi — your internet detective">
-<meta property="og:description" content="See what's AI on social media, with the evidence. Join the waitlist.">
+<meta property="og:description" content="See what's AI on social media, with the evidence. Download the beta.">
 <meta name="theme-color" content="#06070D">
 <link rel="icon" type="image/png" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -76,6 +76,10 @@ h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.03
 .eyebrow { box-shadow: inset 0 0 0 1px rgba(143,123,242,.35), 0 0 18px rgba(143,123,242,.18); }
 .btn { box-shadow: 0 0 26px rgba(143,123,242,.38); }
 .btn:hover { filter: brightness(1.1); box-shadow: 0 0 34px rgba(143,123,242,.55); }
+.btn-download { font-size: 19px; padding: 16px 36px; box-shadow: 0 0 36px rgba(143,123,242,.5); }
+.btn-download:hover { box-shadow: 0 0 48px rgba(143,123,242,.7); }
+.hero-cta { margin: 4px 0 10px; }
+.cta-note { font-size: 14px; color: var(--slate); margin: 12px 0 0; }
 .demo { box-shadow: 0 0 40px rgba(143,123,242,.10); }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 15px 7px 9px; border-radius: 999px; background: var(--teal-glass); color: var(--ink); font-size: 14px; font-weight: 600; }
 .eyebrow img { border-radius: 50%; }
@@ -242,7 +246,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       <img src="favicon-32.png" width="28" height="28" alt="">
       ClariFi
     </a>
-    <a class="head-link" href="#join">Join the waitlist</a>
+    <a class="head-link" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download the beta</a>
   </header>
 
   <main id="top">
@@ -252,44 +256,23 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
         <p class="eyebrow"><img src="favicon-32.png" width="18" height="18" alt=""> Your internet detective</p>
         <h1>Know what's <span class="neon">real</span> in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
+        <div class="hero-cta">
+          <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download the beta</a>
+          <p class="cta-note">Free during beta &middot; Chrome, Edge &amp; Firefox</p>
+        </div>
       </div>
 
         <form class="signup" id="join" data-endpoint="/api/waitlist" novalidate>
-          <h2>Get early access</h2>
-          <p class="hint">The Windows beta opens to the waitlist first. Android follows.</p>
+          <h2>Stay in the loop</h2>
+          <p class="hint">Beta updates and product news. No spam, ever.</p>
           <div class="field">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
           </div>
-          <fieldset>
-            <legend>Who's it for?</legend>
-            <div class="chips">
-              <label><input type="radio" name="audience" value="me" checked><span>Just me</span></label>
-              <label><input type="radio" name="audience" value="kids"><span>My kids</span></label>
-              <label><input type="radio" name="audience" value="both"><span>Both</span></label>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Where do you scroll most?</legend>
-            <div class="chips">
-              <label><input type="radio" name="device" value="android" checked><span>Android phone</span></label>
-              <label><input type="radio" name="device" value="windows"><span>Windows PC</span></label>
-              <label><input type="radio" name="device" value="both"><span>Both</span></label>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>What would you pay monthly for full Investigator reports?</legend>
-            <div class="chips">
-              <label><input type="radio" name="price" value="0" checked><span>Nothing</span></label>
-              <label><input type="radio" name="price" value="4.99"><span>$4.99</span></label>
-              <label><input type="radio" name="price" value="9.99"><span>$9.99</span></label>
-              <label><input type="radio" name="price" value="14.99"><span>$14.99</span></label>
-            </div>
-          </fieldset>
           <div class="trap" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" tabindex="-1" autocomplete="off"></div>
-          <button class="btn" type="submit">Join the waitlist</button>
+          <button class="btn" type="submit">Stay in the loop</button>
           <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-          <p class="fine">We only use your email to tell you when ClariFi is ready. <a href="/privacy">Privacy</a></p>
+          <p class="fine">We only use your email for ClariFi news. <a href="/privacy">Privacy</a></p>
         </form>
 
       <div class="demo" id="demo" aria-label="Interactive example of ClariFi">
@@ -396,7 +379,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
 
     <section class="block" aria-labelledby="plans-h">
       <h2 class="section" id="plans-h">Free to start. More when you want it.</h2>
-      <p class="section-lede">Waitlist members get launch pricing.</p>
+      <p class="section-lede">Beta members get launch pricing.</p>
       <div class="plans">
         <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and hover cards that explain what's AI, using platform labels, Content Credentials and creator disclosures.</p></div>
         <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
@@ -417,7 +400,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
 
     <section class="closer">
       <h2>See your feed clearly.</h2>
-      <a class="btn" href="#join" style="display:inline-block;text-decoration:none">Join the waitlist</a>
+      <a class="btn" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip" style="display:inline-block;text-decoration:none">Download the beta</a>
     </section>
   </main>
 
@@ -525,7 +508,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
     }, { threshold: 0.4 }).observe(demo);
   }
 
-  // Waitlist
+  // Stay in the loop
   var form = document.getElementById('join');
   var status = document.getElementById('form-status');
   form.addEventListener('submit', function (e) {
@@ -541,7 +524,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
     var endpoint = form.dataset.endpoint;
     if (!endpoint) {
       status.className = 'form-status ok';
-      status.textContent = 'This is a preview. The waitlist starts saving signups once the site is live.';
+      status.textContent = 'This is a preview. Email capture starts working once the site is live.';
       return;
     }
     var btn = form.querySelector('button[type="submit"]');
@@ -552,22 +535,19 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        audience: form.audience.value,
-        device: form.device.value,
-        price: form.price.value,
         company: form.company.value
       })
     }).then(function (r) {
       if (!r.ok) throw new Error(String(r.status));
       form.reset();
       status.className = 'form-status ok';
-      status.textContent = "You're on the list. We'll email you when the Windows beta opens.";
+      status.textContent = "You're in the loop. Now go download the beta above.";
     }).catch(function () {
       status.className = 'form-status err';
       status.textContent = "Couldn't save your spot. Check your connection and try again.";
     }).finally(function () {
       btn.disabled = false;
-      btn.textContent = 'Join the waitlist';
+      btn.textContent = 'Stay in the loop';
     });
   });
 })();
