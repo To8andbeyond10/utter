@@ -508,6 +508,19 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
     }, { threshold: 0.4 }).observe(demo);
   }
 
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  // The beta is a desktop extension: on phones the zip is useless, so point
+  // download CTAs at the email form instead of dumping project files on people.
+  if (isMobile) {
+    document.querySelectorAll('a[href*="releases/download"]').forEach(function (a) {
+      a.setAttribute('href', '#join');
+      a.textContent = 'Notify me at launch';
+    });
+    document.querySelectorAll('.cta-note').forEach(function (n) {
+      n.textContent = 'The beta runs on desktop Chrome, Edge & Firefox';
+    });
+  }
+
   // Stay in the loop
   var form = document.getElementById('join');
   var status = document.getElementById('form-status');
@@ -541,7 +554,9 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       if (!r.ok) throw new Error(String(r.status));
       form.reset();
       status.className = 'form-status ok';
-      status.textContent = "You're in the loop. Now go download the beta above.";
+      status.textContent = isMobile
+        ? "You're in the loop. We'll email you with beta news."
+        : "You're in the loop. Now go download the beta above.";
     }).catch(function () {
       status.className = 'form-status err';
       status.textContent = "Couldn't save your spot. Check your connection and try again.";
