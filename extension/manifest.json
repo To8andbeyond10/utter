@@ -44,7 +44,10 @@
         "https://web.facebook.com/*",
         "https://www.threads.net/*",
         "https://www.threads.com/*",
-        "https://www.reddit.com/*"
+        "https://www.reddit.com/*",
+        "https://www.google.com/search*",
+        "https://www.google.co.uk/search*",
+        "https://www.google.ca/search*"
       ],
       "js": [
         "src/shared/settings.js",

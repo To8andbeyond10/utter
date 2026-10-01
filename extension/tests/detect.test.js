@@ -152,3 +152,31 @@ test('hover-scan context with a disclosure evaluates Strong', () => {
   const r = D.evaluate(post, site('x'), S.normalize(null));
   assert.equal(r.rung, 'strong');
 });
+
+test('siteForHost matches Google TLDs', () => {
+  assert.equal(globalThis.ClariFiSites.siteForHost('www.google.com').id, 'google');
+  assert.equal(globalThis.ClariFiSites.siteForHost('www.google.co.uk').id, 'google');
+  assert.equal(globalThis.ClariFiSites.siteForHost('www.google.ca').id, 'google');
+  assert.equal(globalThis.ClariFiSites.siteForHost('www.bing.com'), null);
+});
+
+test('Google adapter exposes image-result containers for future use', () => {
+  const g = site('google');
+  assert.ok(Array.isArray(g.media) && g.media.length > 0);
+  assert.ok(g.posts.includes('div.g'));
+});
+
+test('Google web result with AI disclosure is Strong', () => {
+  const r = run('google', '<div class="g"><h3>Stunning prints</h3><div>Made with Midjourney, gallery quality AI art prints</div></div>', 'div.g');
+  assert.equal(r.rung, 'strong');
+  assert.equal(r.author, null);
+});
+
+test('Plain Google web result is not flagged', () => {
+  const r = run('google', '<div class="g"><h3>National park guide</h3><div>Trail maps, opening hours and visitor information for the park.</div></div>', 'div.g');
+  assert.equal(r.rung, null);
+});
+
+test('Google defaults to inform level', () => {
+  assert.equal(S.normalize(null).levels.google, 'inform');
+});

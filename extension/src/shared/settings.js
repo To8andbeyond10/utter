@@ -9,7 +9,8 @@
     { id: 'x', name: 'X' },
     { id: 'facebook', name: 'Facebook' },
     { id: 'threads', name: 'Threads' },
-    { id: 'reddit', name: 'Reddit' }
+    { id: 'reddit', name: 'Reddit' },
+    { id: 'google', name: 'Google' }
   ];
 
   const LEVELS = ['off', 'inform', 'warn', 'block'];
@@ -20,7 +21,7 @@
     pausedUntil: 0,
     levels: {
       youtube: 'inform', tiktok: 'inform', instagram: 'inform', x: 'inform',
-      facebook: 'inform', threads: 'inform', reddit: 'inform'
+      facebook: 'inform', threads: 'inform', reddit: 'inform', google: 'inform'
     },
     blockIncludesLikely: false, // Block acts on Confirmed and Strong only, unless opted in
     blockStyle: 'note',         // 'note' = one-line note; 'remove' = hide completely

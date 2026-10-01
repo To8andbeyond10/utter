@@ -122,6 +122,26 @@
         return a && a !== '[deleted]' ? a : null;
       },
       badgeInset: { top: 10, right: 12 }
+    },
+    {
+      id: 'google',
+      name: 'Google',
+      // google.com is the must-have; co.uk and ca cover the obvious
+      // English-language country TLDs. More TLDs can be added here AND to
+      // the manifest match patterns together. Deliberately not *.google.*
+      // to avoid running on unrelated Google properties.
+      hosts: /(^|\.)google\.(com|co\.uk|ca)$/,
+      // Organic web results get the standard text evaluation over
+      // titles/snippets. Google Images thumbnails carry too little text
+      // for the auto pipeline, so they are covered by the generic
+      // HoverScan instead (hover any image, click the detective).
+      posts: ['div.g'],
+      // Image-result containers, informational for now (future use).
+      media: ['div.isv-r'],
+      labels: [],
+      disclosures: [],
+      author() { return null; }, // search results have no author
+      badgeInset: { top: 10, right: 10 }
     }
   ];
 
