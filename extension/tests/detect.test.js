@@ -167,7 +167,7 @@ test('Google adapter exposes image-result containers for future use', () => {
 });
 
 test('Google web result with AI disclosure is Strong', () => {
-  const r = run('google', '<div class="g"><h3>Stunning prints</h3><div>Made with Midjourney, gallery quality AI art prints</div></div>', 'div.g');
+  const r = run('google', '<div class="g"><h3>Stunning prints</h3> <div>Made with Midjourney, gallery quality AI art prints</div></div>', 'div.g');
   assert.equal(r.rung, 'strong');
   assert.equal(r.author, null);
 });
