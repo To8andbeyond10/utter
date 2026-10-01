@@ -422,5 +422,175 @@
     return { hoverIn, hoverOut, toggle, hide, toast };
   })();
 
-  root.ClariFiUI = { decorate, clear, hideCard: Card.hide, toast: Card.toast, titleFor, LAYER_TAG };
+  // ---------- Mascot hover-scan ----------
+
+  const HOVER_TAG = 'clarifi-hover';
+  const HOVER_CSS = TOKENS + `
+    .t { position: fixed; inset: 0; pointer-events: none; z-index: 2147483646; }
+    .hs { position: absolute; pointer-events: auto; width: 34px; height: 34px; padding: 0;
+          border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(10,8,24,.85);
+          cursor: pointer; opacity: 0; transform: scale(.85);
+          box-shadow: 0 0 14px rgba(143,123,242,.55), 0 4px 14px rgba(0,0,0,.4);
+          transition: opacity .14s ease-out, transform .14s ease-out;
+          -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    .hs.show { opacity: 1; transform: none; }
+    .hs img { width: 100%; height: 100%; border-radius: 50%; display: block; }
+    .hs:focus-visible { outline: 2px solid #8F7BF2; outline-offset: 2px; }
+  `;
+
+  /**
+   * Gather checkable context around a media element. Pure helper:
+   * reads the element and its ancestors only, never writes.
+   * @param {Element} media  an <img> or <video>
+   * @returns {string} up to 500 chars of alt text, captions and nearby copy
+   */
+  function gatherMediaContext(media) {
+    const parts = [];
+    const push = (v) => {
+      if (typeof v === 'string') {
+        const t = v.replace(/\s+/g, ' ').trim();
+        if (t) parts.push(t);
+      }
+    };
+    push(media.getAttribute('alt'));
+    push(media.getAttribute('title'));
+    push(media.getAttribute('aria-label'));
+    const fig = media.closest('figure');
+    if (fig) {
+      const cap = fig.querySelector('figcaption');
+      if (cap) push(cap.textContent);
+    }
+    const doc = media.ownerDocument;
+    let node = media.parentElement, depth = 0;
+    while (node && depth < 6 && node !== doc.body && node !== doc.documentElement) {
+      const cls = (node.getAttribute && node.getAttribute('class')) || '';
+      if (/^(ARTICLE|FIGURE|BLOCKQUOTE)$/.test(node.tagName) ||
+          /(^|\s)(post|tweet|article|feed|card|message|content)(\s|$)/i.test(cls)) {
+        push(node.textContent);
+        break;
+      }
+      node = node.parentElement; depth++;
+    }
+    return parts.join('\n').slice(0, 500);
+  }
+
+  const HoverScan = (function () {
+    let deps = null;
+    let host = null, btn = null, currentMedia = null;
+    let lastMove = 0;
+
+    function iconUrl() {
+      try {
+        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
+          return chrome.runtime.getURL('icons/icon32.png');
+        }
+      } catch (e) { /* ignore */ }
+      return 'icons/icon32.png';
+    }
+
+    function ensureButton() {
+      if (host && host.isConnected) return btn;
+      host = document.createElement(HOVER_TAG);
+      const shadow = host.attachShadow({ mode: 'open' });
+      const style = el('style'); style.textContent = HOVER_CSS;
+      const wrap = el('div', { class: 't' });
+      btn = el('button', { class: 'hs', type: 'button', 'aria-label': 'ClariFi: check this media' });
+      const img = el('img', { alt: '' });
+      img.src = iconUrl();
+      btn.append(img);
+      btn.addEventListener('click', onClick);
+      wrap.append(btn);
+      shadow.append(style, wrap);
+      document.documentElement.append(host);
+      return btn;
+    }
+
+    function ours(node) {
+      return !!host && (node === host || host.contains(node));
+    }
+
+    function eligible(media) {
+      if (!media || media.closest('clarifi-layer, clarifi-card, clarifi-hover')) return false;
+      if (media.closest('[data-cf-flag]')) return false; // already badged: redundant
+      let r;
+      try { r = media.getBoundingClientRect(); } catch (e) { return false; }
+      return r.width >= 48 && r.height >= 48;
+    }
+
+    function showFor(media) {
+      const b = ensureButton();
+      const r = media.getBoundingClientRect();
+      b.style.left = Math.max(8, Math.min(r.right - 40, window.innerWidth - 42)) + 'px';
+      b.style.top = Math.max(8, r.top + 6) + 'px';
+      currentMedia = media;
+      requestAnimationFrame(() => b.classList.add('show'));
+    }
+
+    function hide() {
+      currentMedia = null;
+      if (btn) btn.classList.remove('show');
+    }
+
+    function onMouseOver(e) {
+      if (ours(e.target)) return;
+      const now = Date.now();
+      if (now - lastMove < 80) return; // throttle
+      lastMove = now;
+      if (!deps || !deps.getSettings().hoverScan || !deps.isActive()) { hide(); return; }
+      const t = e.target;
+      const media = t && t.closest ? t.closest('img,video') : null;
+      if (media && eligible(media)) {
+        if (media !== currentMedia) showFor(media);
+      } else {
+        hide();
+      }
+    }
+
+    function onMouseOut(e) {
+      if (ours(e.relatedTarget)) return; // moving onto our button: keep it
+      if (currentMedia && (!e.relatedTarget || !currentMedia.contains(e.relatedTarget))) hide();
+    }
+
+    function onScroll() { hide(); }
+
+    function onClick(e) {
+      e.preventDefault();
+      e.stopPropagation(); // never trigger the page's own media click
+      const media = currentMedia;
+      hide();
+      if (!media || !media.isConnected || !deps) return;
+      let result = null;
+      try {
+        const ctx = document.createElement('div');
+        ctx.textContent = gatherMediaContext(media);
+        result = deps.evaluate(ctx, deps.site, deps.getSettings());
+      } catch (err) { return; }
+      if (result && result.rung) {
+        Card.toggle(btn, result, deps.site, media, {
+          onReveal: () => Card.hide(),
+          onUnhide: () => Card.hide(),
+          onAlwaysHide: () => Card.toast('Use a badge card to manage account rules.'),
+          onAlwaysAllow: () => Card.toast('Use a badge card to manage account rules.'),
+          onReport: (t, r) => deps.onReport(media, r)
+        });
+      } else {
+        Card.toast('ClariFi found no AI signals around this media.');
+      }
+    }
+
+    function init(d) {
+      if (deps) return; // idempotent
+      deps = d;
+      document.addEventListener('mouseover', onMouseOver, { passive: true });
+      document.addEventListener('mouseout', onMouseOut, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    }
+
+    return { init, hide };
+  })();
+
+  function initHoverScan(deps) { HoverScan.init(deps); }
+  function hideHoverScan() { HoverScan.hide(); }
+
+  root.ClariFiUI = { decorate, clear, hideCard: Card.hide, toast: Card.toast, titleFor, LAYER_TAG, initHoverScan, hideHoverScan, gatherMediaContext };
 })(globalThis);

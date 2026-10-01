@@ -25,6 +25,7 @@
     blockIncludesLikely: false, // Block acts on Confirmed and Strong only, unless opted in
     blockStyle: 'note',         // 'note' = one-line note; 'remove' = hide completely
     useKeywords: true,          // hashtags and phrases (Possible / Likely rungs)
+    hoverScan: true,            // mascot hover button on images & videos
     rules: { block: [], allow: [] } // entries look like "x:handle"
   };
 
@@ -43,6 +44,7 @@
     if (typeof raw.blockIncludesLikely === 'boolean') s.blockIncludesLikely = raw.blockIncludesLikely;
     if (raw.blockStyle === 'note' || raw.blockStyle === 'remove') s.blockStyle = raw.blockStyle;
     if (typeof raw.useKeywords === 'boolean') s.useKeywords = raw.useKeywords;
+    if (typeof raw.hoverScan === 'boolean') s.hoverScan = raw.hoverScan;
     if (raw.rules && typeof raw.rules === 'object') {
       const clean = (list) => Array.isArray(list)
         ? [...new Set(list.filter((k) => typeof k === 'string' && /^[a-z]+:.{1,100}$/.test(k)))]

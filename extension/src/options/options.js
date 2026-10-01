@@ -102,6 +102,7 @@
     $('blockIncludesLikely').checked = settings.blockIncludesLikely;
     document.querySelectorAll('input[name="blockStyle"]').forEach((r) => { r.checked = r.value === settings.blockStyle; });
     $('useKeywords').checked = settings.useKeywords;
+    $('hoverScan').checked = settings.hoverScan;
     renderRules();
     renderReports();
   }
@@ -109,6 +110,7 @@
   $('blockIncludesLikely').addEventListener('change', (e) => save({ blockIncludesLikely: e.target.checked }));
   document.querySelectorAll('input[name="blockStyle"]').forEach((r) => r.addEventListener('change', () => save({ blockStyle: r.value })));
   $('useKeywords').addEventListener('change', (e) => save({ useKeywords: e.target.checked }));
+  $('hoverScan').addEventListener('change', (e) => save({ hoverScan: e.target.checked }));
 
   $('download-reports').addEventListener('click', async () => {
     const reports = await renderReports();

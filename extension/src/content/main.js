@@ -103,6 +103,7 @@
 
   function resetAll() {
     UI.hideCard();
+    UI.hideHoverScan();
     document.querySelectorAll('[data-cf-state], [data-cf-flag]').forEach(clearTarget);
     seen = new WeakMap();
     scan();
@@ -204,6 +205,13 @@
     settings = s;
     scan();
     armPauseTimer();
+    UI.initHoverScan({
+      site,
+      getSettings: () => settings,
+      isActive: () => currentLevel() !== 'off',
+      evaluate: (post, siteEntry, st) => D.evaluate(post, siteEntry, st),
+      onReport: (target, result) => reportMistake(target, result)
+    });
     observer.observe(document.documentElement, { childList: true, subtree: true });
   });
 })();

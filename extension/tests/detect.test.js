@@ -9,11 +9,12 @@ const dom = new JSDOM('<!doctype html><body></body>');
 global.window = dom.window;
 global.document = dom.window.document;
 global.NodeFilter = dom.window.NodeFilter;
-for (const f of ['src/shared/settings.js', 'src/content/sites.js', 'src/content/detect.js']) {
+for (const f of ['src/shared/settings.js', 'src/content/sites.js', 'src/content/detect.js', 'src/content/ui.js']) {
   new Function(fs.readFileSync(path.join(__dirname, '..', f), 'utf8'))();
 }
 const S = globalThis.ClariFiSettings;
 const D = globalThis.ClariFiDetect;
+const UI = globalThis.ClariFiUI;
 const site = (id) => globalThis.ClariFiSites.SITES.find((s) => s.id === id);
 
 function post(html, selector) {
@@ -113,4 +114,41 @@ test('Settings reject junk values', () => {
   assert.equal(s.levels.youtube, 'inform');
   assert.equal(s.blockStyle, 'note');
   assert.deepEqual(s.rules.block, ['x:ok']);
+});
+
+test('hoverScan defaults on and normalizes booleans', () => {
+  assert.equal(S.normalize(null).hoverScan, true);
+  assert.equal(S.normalize({ hoverScan: false }).hoverScan, false);
+  assert.equal(S.normalize({ hoverScan: 'yes' }).hoverScan, true); // junk ignored
+});
+
+test('gatherMediaContext collects alt, title, caption and nearby text', () => {
+  document.body.innerHTML = '<article class="post"><figure><img alt="tiger cub" title="AI video"><figcaption>Made with Luma #aiart</figcaption></figure></article>';
+  const ctx = UI.gatherMediaContext(document.querySelector('img'));
+  assert.match(ctx, /tiger cub/);
+  assert.match(ctx, /AI video/);
+  assert.match(ctx, /Made with Luma #aiart/);
+  assert.ok(ctx.length <= 500);
+});
+
+test('gatherMediaContext climbs to the nearest post container', () => {
+  document.body.innerHTML = '<article class="tweet"><div><span><img alt="pic"></span></div><p>Check this out, made with Midjourney v7</p></article>';
+  const ctx = UI.gatherMediaContext(document.querySelector('img'));
+  assert.match(ctx, /^pic$/m);
+  assert.match(ctx, /made with Midjourney v7/);
+});
+
+test('gatherMediaContext returns empty string for bare media', () => {
+  document.body.innerHTML = '<div><img src="x.png"><video src="y.mp4"></video></div>';
+  assert.equal(UI.gatherMediaContext(document.querySelector('img')), '');
+  assert.equal(UI.gatherMediaContext(document.querySelector('video')), '');
+});
+
+test('hover-scan context with a disclosure evaluates Strong', () => {
+  document.body.innerHTML = '<article><img alt="art"><p>New piece, made with Midjourney v7</p></article>';
+  const ctx = UI.gatherMediaContext(document.querySelector('img'));
+  const post = document.createElement('div');
+  post.textContent = ctx;
+  const r = D.evaluate(post, site('x'), S.normalize(null));
+  assert.equal(r.rung, 'strong');
 });
