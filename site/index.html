@@ -6,7 +6,7 @@
 <title>ClariFi — your internet detective</title>
 <meta name="description" content="ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, shows you the evidence, and blurs or hides them if you want.">
 <meta property="og:title" content="ClariFi — your internet detective">
-<meta property="og:description" content="See what's AI on social media, with the evidence. Download the beta.">
+<meta property="og:description" content="See what's AI on social media, with the evidence. Get it free.">
 <meta name="theme-color" content="#06070D">
 <link rel="icon" type="image/png" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -246,7 +246,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       <img src="favicon-32.png" width="28" height="28" alt="">
       ClariFi
     </a>
-    <a class="head-link" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download the beta</a>
+    <a class="head-link" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
   </header>
 
   <main id="top">
@@ -257,14 +257,14 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
         <h1>Know what's <span class="neon">real</span> in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
         <div class="hero-cta">
-          <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download the beta</a>
-          <p class="cta-note">Free during beta &middot; Chrome, Edge &amp; Firefox</p>
+          <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
+          <p class="cta-note">Free &middot; Chrome, Edge &amp; Firefox</p>
         </div>
       </div>
 
         <form class="signup" id="join" data-endpoint="/api/waitlist" novalidate>
           <h2>Stay in the loop</h2>
-          <p class="hint">Beta updates and product news. No spam, ever.</p>
+          <p class="hint">Product updates and news. No spam, ever.</p>
           <div class="field">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
@@ -379,7 +379,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
 
     <section class="block" aria-labelledby="plans-h">
       <h2 class="section" id="plans-h">Free to start. More when you want it.</h2>
-      <p class="section-lede">Beta members get launch pricing.</p>
+      <p class="section-lede">Early supporters lock in launch pricing.</p>
       <div class="plans">
         <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and hover cards that explain what's AI, using platform labels, Content Credentials and creator disclosures.</p></div>
         <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
@@ -400,7 +400,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
 
     <section class="closer">
       <h2>See your feed clearly.</h2>
-      <a class="btn" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip" style="display:inline-block;text-decoration:none">Download the beta</a>
+      <a class="btn" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip" style="display:inline-block;text-decoration:none">Download free</a>
     </section>
   </main>
 
@@ -509,7 +509,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   }
 
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
-  // The beta is a desktop extension: on phones the zip is useless, so point
+  // ClariFi is a desktop extension: on phones the zip is useless, so point
   // download CTAs at the email form instead of dumping project files on people.
   if (isMobile) {
     document.querySelectorAll('a[href*="releases/download"]').forEach(function (a) {
@@ -517,7 +517,7 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       a.textContent = 'Notify me at launch';
     });
     document.querySelectorAll('.cta-note').forEach(function (n) {
-      n.textContent = 'The beta runs on desktop Chrome, Edge & Firefox';
+      n.textContent = 'ClariFi runs on desktop Chrome, Edge & Firefox';
     });
   }
 
@@ -555,8 +555,8 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       form.reset();
       status.className = 'form-status ok';
       status.textContent = isMobile
-        ? "You're in the loop. We'll email you with beta news."
-        : "You're in the loop. Now go download the beta above.";
+        ? "You're in the loop. We'll email you with launch news."
+        : "You're in the loop. Now go download it above.";
     }).catch(function () {
       status.className = 'form-status err';
       status.textContent = "Couldn't save your spot. Check your connection and try again.";
