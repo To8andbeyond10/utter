@@ -1,9 +1,18 @@
 (function () {
   'use strict';
   const S = globalThis.ClariFiSettings;
+  const CB = globalThis.ClariFiBilling;
   const $ = (id) => document.getElementById(id);
   let settings = S.normalize(null);
   let savedTimer = null;
+  let tier = 'free';
+
+  const PLAN_DESC = {
+    free: 'Free: badges and evidence on every post.',
+    plus: 'Plus: Warn and Block levels, account rules, synced settings.',
+    investigator: 'Investigator: everything in Plus, plus Deep Scan reports.',
+    family: 'Family: everything in Investigator, plus protection for kids\u2019 devices.'
+  };
 
   function flashSaved(text) {
     $('saved').textContent = text || 'Saved';
@@ -35,7 +44,14 @@
         b.setAttribute('role', 'radio');
         b.textContent = level[0].toUpperCase() + level.slice(1);
         b.setAttribute('aria-checked', String(settings.levels[site.id] === level));
+        if (level === 'warn' || level === 'block') {
+          b.title = 'Plus feature';
+        }
         b.addEventListener('click', () => {
+          if ((level === 'warn' || level === 'block') && !CB.canUse(tier, 'levels')) {
+            CB.openUpgrade(); // Warn/Block are Plus features
+            return;
+          }
           const levels = Object.assign({}, settings.levels, { [site.id]: level });
           save({ levels });
           renderSites();
@@ -97,7 +113,17 @@
     return mistakeReports;
   }
 
+  function renderPlan() {
+    const paid = tier !== 'free';
+    const pill = $('plan-pill');
+    pill.textContent = CB.tierLabel(tier);
+    pill.classList.toggle('paid', paid);
+    $('plan-desc').textContent = PLAN_DESC[tier] || PLAN_DESC.free;
+    $('upgrade').textContent = paid ? 'Manage subscription' : 'Upgrade';
+  }
+
   function renderAll() {
+    renderPlan();
     renderSites();
     $('blockIncludesLikely').checked = settings.blockIncludesLikely;
     document.querySelectorAll('input[name="blockStyle"]').forEach((r) => { r.checked = r.value === settings.blockStyle; });
@@ -150,6 +176,12 @@
     if (area === 'local' && changes.mistakeReports) renderReports();
   });
 
-  S.load().then((s) => { settings = s; renderAll(); });
+  $('upgrade').addEventListener('click', () => CB.openUpgrade());
+
+  S.load().then(async (s) => {
+    settings = s;
+    tier = await CB.getTier();
+    renderAll();
+  });
   try { $('version').textContent = 'ClariFi v' + chrome.runtime.getManifest().version; } catch (e) { /* ignore */ }
 })();

@@ -17,9 +17,22 @@
   <h1>Know what's real in your feed.</h1>
   <p class="lede">ClariFi flags AI-made posts and shows the evidence behind every flag. Pick how far it goes on each site. Changes apply right away.</p>
 
+  <section class="plan" aria-labelledby="plan-h">
+    <div class="plan-row">
+      <div>
+        <h2 id="plan-h">Your plan</h2>
+        <p class="muted" id="plan-desc">Free: badges and evidence on every post.</p>
+      </div>
+      <div class="plan-cta">
+        <span class="plan-pill" id="plan-pill">Free</span>
+        <button class="btn primary" type="button" id="upgrade">Upgrade</button>
+      </div>
+    </div>
+  </section>
+
   <section aria-labelledby="levels-h">
     <h2 id="levels-h">Level on each site</h2>
-    <p class="muted">Inform adds a badge. Warn blurs the post until you choose to view it. Block hides it.</p>
+    <p class="muted">Inform adds a badge. Warn blurs the post until you choose to view it. Block hides it. <b>Warn and Block need Plus.</b></p>
     <div class="sites" id="sites"></div>
   </section>
 
@@ -74,6 +87,7 @@
   </footer>
 </main>
 <script src="../shared/settings.js"></script>
+<script src="../shared/billing.js"></script>
 <script src="options.js"></script>
 </body>
 </html>

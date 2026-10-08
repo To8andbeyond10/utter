@@ -1,10 +1,12 @@
 (function () {
   'use strict';
   const S = globalThis.ClariFiSettings;
+  const CB = globalThis.ClariFiBilling;
   const $ = (id) => document.getElementById(id);
   let settings = S.normalize(null);
   let tab = null;
   let status = null;
+  let tier = 'free';
 
   function levelNote(level) {
     if (level === 'off') return 'ClariFi is off on this site.';
@@ -19,6 +21,16 @@
     $('enabled').checked = settings.enabled;
     document.body.classList.toggle('is-off', !settings.enabled);
     const paused = S.isPaused(settings);
+
+    // Plan pill + upgrade button
+    const pill = $('plan-pill');
+    const upg = $('upgrade');
+    const paid = tier !== 'free';
+    pill.hidden = false;
+    pill.textContent = CB.tierLabel(tier);
+    pill.classList.toggle('paid', paid);
+    upg.hidden = false;
+    upg.textContent = paid ? 'Manage' : 'Upgrade';
 
     if (status) {
       $('site-panel').hidden = false;
@@ -64,13 +76,30 @@
     settings = await S.load();
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     try { $('version').textContent = 'v' + chrome.runtime.getManifest().version; } catch (e) { /* ignore */ }
+    // Mark the paid levels once; gating happens on click.
+    document.querySelectorAll('#levels button').forEach((b) => {
+      if ((b.dataset.level === 'warn' || b.dataset.level === 'block') && !b.querySelector('.plus-tag')) {
+        const tag = document.createElement('span');
+        tag.className = 'plus-tag';
+        tag.textContent = 'Plus';
+        b.append(tag);
+      }
+    });
+    tier = await CB.getTier();
     await refreshStatus();
   }
+
+  $('upgrade').addEventListener('click', () => CB.openUpgrade());
 
   $('levels').addEventListener('click', async (e) => {
     const b = e.target.closest('button[data-level]');
     if (!b || !status) return;
-    settings.levels[status.site] = b.dataset.level;
+    const level = b.dataset.level;
+    if ((level === 'warn' || level === 'block') && !CB.canUse(tier, 'levels')) {
+      CB.openUpgrade(); // Warn/Block are Plus features
+      return;
+    }
+    settings.levels[status.site] = level;
     render();
     await S.save({ levels: settings.levels });
     setTimeout(refreshStatus, 700);

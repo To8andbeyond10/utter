@@ -402,13 +402,28 @@
       const c = current;
       const act = btn.getAttribute('data-act');
       if (act === 'deep') {
-        toast('Deep Scan arrives with the Investigator plan');
+        deepScanOrUpsell();
         return;
       }
       hide();
       if (act === 'hide') c.handlers.onAlwaysHide(c.result.author);
       if (act === 'allow') c.handlers.onAlwaysAllow(c.result.author);
       if (act === 'report') c.handlers.onReport(c.target, c.result);
+    }
+
+    function deepScanOrUpsell() {
+      const B = root.ClariFiBilling;
+      const hasRuntime = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage;
+      if (!B || !hasRuntime) { toast('Deep Scan arrives with the Investigator plan'); return; }
+      chrome.runtime.sendMessage({ type: 'clarifi-tier' }).then((res) => {
+        const t = (res && res.tier) || 'free';
+        if (B.canUse(t, 'deepscan')) {
+          toast('Deep Scan is coming soon — investigators get it first');
+        } else {
+          toast('Deep Scan is part of the Investigator plan');
+          try { chrome.runtime.sendMessage({ type: 'clarifi-upgrade' }).catch(function () {}); } catch (e) {}
+        }
+      }).catch(() => toast('Deep Scan arrives with the Investigator plan'));
     }
 
     function toast(msg) {

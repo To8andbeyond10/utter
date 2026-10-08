@@ -27,3 +27,10 @@ section > .muted { margin: 0 0 14px; }
 .row { display:flex; gap:8px; flex-wrap:wrap; }
 .bottom { display:flex; justify-content:space-between; align-items:center; padding-top:24px; border-top:1px solid var(--rule); }
 @media (max-width: 600px) { .lists { grid-template-columns: 1fr; } h1 { font-size: 28px; } }
+.plan { border:1px solid var(--rule); border-radius:14px; padding:16px 18px; margin:18px 0 26px; background:var(--panel); }
+.plan-row { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.plan h2 { margin:0 0 4px; font-size:16px; }
+.plan .muted { margin:0; }
+.plan-cta { display:flex; align-items:center; gap:10px; }
+.plan-pill { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--brand); background:var(--brand-soft); border-radius:99px; padding:4px 12px; }
+.plan-pill.paid { color:#fff; background:var(--brand); }
