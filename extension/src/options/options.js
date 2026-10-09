@@ -9,7 +9,7 @@
 
   const PLAN_DESC = {
     free: 'Free: badges and evidence on every post.',
-    plus: 'Plus: Warn and Block levels, account rules, synced settings.',
+    plus: 'Plus: Warn and Block levels, which blur or hide flagged posts instead of only badging them.',
     investigator: 'Investigator: everything in Plus, plus Deep Scan reports.',
     family: 'Family: everything in Investigator, plus protection for kids\u2019 devices.'
   };
