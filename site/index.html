@@ -299,11 +299,11 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
           </div>
           <div class="post-slot">
             <article class="post" data-rung="likely" data-card="flood">
-              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Likely AI 88%</button>
-              <div class="shield"><p>Likely AI (88%)</p><button type="button" class="reveal">Show post</button></div>
+              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Likely AI</button>
+              <div class="shield"><p>Likely AI</p><button type="button" class="reveal">Show post</button></div>
               <div class="post-head"><span class="avatar" style="background:#2E3F5E"></span><div><b>newsflash_now</b><small>Trending</small></div></div>
               <div class="scene scene-flood" role="img" aria-label="Video of a flooded street at night"></div>
-              <p class="caption">Downtown is underwater after tonight's storm. Share before it's deleted.</p>
+              <p class="caption">Downtown is underwater after tonight's storm. Share before it's deleted. #aivideo #midjourney #aiart</p>
             </article>
           </div>
         </div>
@@ -315,19 +315,16 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
             <li>Instagram shows its "AI info" label on this post</li>
             <li>The caption includes #aivideo</li>
           </ul>
-          <p class="what"><b>What's AI:</b> the whole video</p>
           <div class="acts"><button type="button">Always hide this account</button><button type="button">Report a mistake</button></div>
         </div>
         <div class="card" id="card-flood" role="dialog" aria-label="Why this post was flagged">
-          <h3>Likely AI, 88%</h3>
+          <h3>Likely AI</h3>
           <p class="sure">An estimate, not confirmed</p>
           <ul>
-            <li>Detector model score: 88%</li>
-            <li>No platform label and no Content Credentials</li>
-            <li>Account is 9 days old and posts about 40 videos a day</li>
+            <li>Uses AI hashtags: #aivideo, #midjourney, #aiart</li>
+            <li>Several weaker AI signals line up</li>
           </ul>
-          <p class="what"><b>What's likely AI:</b> the video; the audio sounds real</p>
-          <div class="acts"><button type="button" class="deep">Deep Scan</button><button type="button">Report a mistake</button></div>
+          <div class="acts"><button type="button">Always hide this account</button><button type="button">Report a mistake</button></div>
         </div>
         <p class="demo-foot">Example posts, not real accounts. Tap a badge to see why it was flagged.</p>
         <div class="demo-toast" id="demo-toast" role="status" hidden></div>
@@ -336,12 +333,12 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
 
     <section class="block" aria-labelledby="ladder-h">
       <h2 class="section" id="ladder-h">Every flag shows how sure it is.</h2>
-      <p class="section-lede">A platform's own AI label is a fact. A detector's score is an estimate. ClariFi never mixes them up, and it only hides posts on strong evidence unless you tell it otherwise.</p>
+      <p class="section-lede">A platform's own AI label is a fact. A guess from weaker signals is only an estimate. ClariFi never mixes them up, and it only hides posts on strong evidence unless you tell it otherwise.</p>
       <div class="scale">
-        <div class="stop stop-confirmed"><h3>Confirmed</h3><p>The platform labeled it AI, or its Content Credentials name an AI tool.</p><p class="does">Can inform, warn or block</p></div>
-        <div class="stop stop-strong"><h3>Strong</h3><p>A hidden AI watermark, the creator says it's AI, or the account is on our reviewed list.</p><p class="does">Can inform, warn or block</p></div>
-        <div class="stop stop-likely"><h3>Likely</h3><p>A detector scores it high, or several weaker signals line up.</p><p class="does">Can inform or warn; block if you opt in</p></div>
-        <div class="stop stop-possible"><h3>Possible</h3><p>AI hashtags or a middling detector score, nothing more.</p><p class="does">Can only inform</p></div>
+        <div class="stop stop-confirmed"><h3>Confirmed</h3><p>The platform put its own AI label on the post.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="stop stop-strong"><h3>Strong</h3><p>The creator says it's AI, the community marks it as AI, or the account is on your always-hide list.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="stop stop-likely"><h3>Likely</h3><p>Several weaker signals line up, like AI hashtags and phrases together.</p><p class="does">Can inform or warn; block if you opt in</p></div>
+        <div class="stop stop-possible"><h3>Possible</h3><p>AI hashtags or an AI phrase on their own, nothing more.</p><p class="does">Can only inform</p></div>
       </div>
       <p class="ladder-note">Think a flag is wrong? Every card has a "Report a mistake" button, and creators can dispute flags.</p>
     </section>
@@ -351,7 +348,7 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
       <p class="section-lede">Screenshots of ClariFi running on example feeds with made-up accounts, plus its settings page.</p>
       <div class="shots">
         <figure class="shot">
-          <img src="img/feed-youtube.webp" width="1120" height="640" loading="lazy" alt="Example YouTube-style feed with ClariFi badges: Labeled AI, Likely AI 88%, Possibly AI and Says it's AI on different videos">
+          <img src="img/feed-youtube.webp" width="1120" height="640" loading="lazy" alt="Example YouTube-style feed with ClariFi badges: Labeled AI, Likely AI, Possibly AI and Says it's AI on different videos">
           <figcaption><b>Know what's AI in your feed.</b> Every badge says how sure ClariFi is.</figcaption>
         </figure>
         <div class="shots shots-2">
@@ -382,7 +379,7 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
       <p class="section-lede">Run a Deep Scan on any post to get a full breakdown: which parts are AI, where in the video, where it came from, and who's posting it.</p>
       <div class="report">
         <div>
-          <h3>Likely AI, 88%</h3>
+          <h3>Likely AI</h3>
           <p class="sure">Deep Scan of a 30-second video (example)</p>
           <ul class="facts">
             <li><b>What's AI</b>The water and the lights; the street sign looks real</li>
@@ -416,8 +413,8 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
       <h2 class="section" id="faq-h">Questions</h2>
       <div class="faq">
         <div><h3>Where does it work?</h3><p>First as an extension for Chrome, Edge and Firefox on Windows. The Android app follows and works inside the YouTube, TikTok, Instagram and X apps.</p></div>
-        <div><h3>Does ClariFi see what I browse?</h3><p>Checks run on your device. Nothing leaves it unless you run a Deep Scan on a specific post, and we don't keep your browsing history.</p></div>
-        <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI, 88%" is an estimate, and the card says so.</p></div>
+        <div><h3>Does ClariFi see what I browse?</h3><p>Checks run on your device. ClariFi never sends the pages you visit or the posts you see anywhere, and it doesn't keep your browsing history.</p></div>
+        <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI" is an estimate, and the card says so.</p></div>
         <div><h3>Will it hide real posts?</h3><p>Block only acts on confirmed or strong evidence unless you choose otherwise. You can always show a hidden post with one tap.</p></div>
       </div>
     </section>
