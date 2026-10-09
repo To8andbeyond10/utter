@@ -57,7 +57,7 @@ Checks run on your computer, and ClariFi never sends the pages you visit or the 
 npm install jsdom
 node --test tests/detect.test.js
 ```
-25 tests cover labels, disclosures, negation, questions, hashtags, flair, account lists, level actions and settings validation.
+29 tests cover labels, disclosures, negation, questions, hashtags, flair, account lists, level actions, what happens when Plus ends, and settings validation.
 
 ```
 manifest.json          Chrome/Edge/Firefox (Manifest V3)

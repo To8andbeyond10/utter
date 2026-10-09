@@ -4,6 +4,7 @@ const assert = require('node:assert');
 const { JSDOM } = require('jsdom');
 const path = require('node:path');
 const fs = require('node:fs');
+const vm = require('node:vm');
 
 const dom = new JSDOM('<!doctype html><body></body>');
 global.window = dom.window;
@@ -187,4 +188,69 @@ test('A hashtag right before another element still counts', () => {
   const r = run('youtube', '<ytd-rich-item-renderer><h3>Sky jellyfish #aivideo</h3><a href="/@SkyDrift">SkyDrift</a><div>61K views</div></ytd-rich-item-renderer>', 'ytd-rich-item-renderer');
   assert.equal(r.rung, 'possible');
   assert.match(r.evidence[0].text, /#aivideo/);
+});
+
+// Runs background.js against a fake chrome and a stub ExtensionPay that
+// answers with `user`, or fails when `user` is an Error.
+function loadBackground(user, stored) {
+  const on = {};
+  const ev = (name) => ({ addListener: (fn) => { (on[name] = on[name] || []).push(fn); } });
+  const sync = JSON.parse(JSON.stringify(stored));
+  const chrome = {
+    storage: {
+      sync: {
+        get: async () => JSON.parse(JSON.stringify(sync)),
+        set: async (patch) => { Object.assign(sync, JSON.parse(JSON.stringify(patch))); }
+      },
+      onChanged: ev('changed')
+    },
+    runtime: { onInstalled: ev('installed'), onStartup: ev('startup'), onMessage: ev('message'), openOptionsPage() {} },
+    alarms: { create() {}, clear: async () => {}, onAlarm: ev('alarm') },
+    action: { setBadgeText() {}, setBadgeBackgroundColor() {} }
+  };
+  const ExtPay = () => ({
+    startBackground() {},
+    openPaymentPage() {},
+    getUser: async () => { if (user instanceof Error) throw user; return user; }
+  });
+  const ctx = vm.createContext({ chrome, ExtPay });
+  for (const f of ['src/shared/settings.js', 'src/shared/billing.js', 'src/background.js']) {
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '..', f), 'utf8'), ctx);
+  }
+  const askTier = () => new Promise((resolve) => {
+    for (const fn of on.message) fn({ type: 'clarifi-tier' }, {}, resolve);
+  });
+  return { sync, planCheck: () => on.alarm[0]({ name: 'plan-check' }), askTier };
+}
+const PAID_LEVELS = { levels: { youtube: 'warn', x: 'block', reddit: 'off' } };
+
+test('When Plus ends, Warn and Block sites go back to Inform', async () => {
+  const bg = loadBackground({ paid: false, subscriptionStatus: 'canceled', plan: null }, PAID_LEVELS);
+  await bg.planCheck();
+  assert.equal(bg.sync.levels.youtube, 'inform');
+  assert.equal(bg.sync.levels.x, 'inform');
+  assert.equal(bg.sync.levels.reddit, 'off');
+});
+
+test('Opening the popup after Plus ends also resets Warn and Block', async () => {
+  const bg = loadBackground({ paid: false, subscriptionStatus: 'past_due', plan: null }, PAID_LEVELS);
+  assert.deepEqual(await bg.askTier(), { tier: 'free' });
+  assert.equal(bg.sync.levels.youtube, 'inform');
+  assert.equal(bg.sync.levels.x, 'inform');
+});
+
+test('An active Plus plan keeps Warn and Block', async () => {
+  const bg = loadBackground({ paid: true, subscriptionStatus: 'active', plan: { unitAmountCents: 4900 } }, PAID_LEVELS);
+  await bg.planCheck();
+  assert.equal((await bg.askTier()).tier, 'plus');
+  assert.equal(bg.sync.levels.youtube, 'warn');
+  assert.equal(bg.sync.levels.x, 'block');
+});
+
+test('A failed plan check changes nothing', async () => {
+  const bg = loadBackground(new Error('offline'), PAID_LEVELS);
+  await bg.planCheck();
+  assert.equal((await bg.askTier()).tier, 'free');
+  assert.equal(bg.sync.levels.youtube, 'warn');
+  assert.equal(bg.sync.levels.x, 'block');
 });
