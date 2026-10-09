@@ -7,7 +7,7 @@
 <meta name="description" content="ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, shows you the evidence, and blurs or hides them if you want.">
 <meta property="og:title" content="ClariFi — your internet detective">
 <meta property="og:description" content="See what's AI on social media, with the evidence. Get it free.">
-<meta name="theme-color" content="#06070D">
+<meta name="theme-color" content="#07080E">
 <link rel="icon" type="image/png" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,228 +15,267 @@
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
-  --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.14); --on-teal: #0A0618;
-  --ai-confirmed: #7C3AED; --ai-strong: #A78BFA; --ai-likely: #E8A33D; --ai-possible: #8B9096;
-  --ai-ink: #0A0618; --ai-soft: rgba(143,123,242,.14); --danger: #F2867E;
-  --neon: #A78BFA;
-  --radius-s: 6px; --radius-m: 12px; --radius-l: 20px;
+  color-scheme: dark;
+  --bg: #07080E; --surface: #0E1019; --raised: #161927; --line: #262B3D;
+  --text: #F3F1FA; --muted: #A9B0C4;
+  --accent: #A78BFA; --action: #8F7BF2; --on-action: #0A0618;
+  --confirmed: #7C3AED; --strong: #A78BFA; --likely: #E8A33D; --possible: #8B9096;
+  --danger: #F2867E;
+  --r-s: 8px; --r-m: 14px; --r-l: 22px;
   --font: "Schibsted Grotesk", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
-    --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
-    --ai-confirmed: #7C3AED; --ai-strong: #A78BFA; --ai-likely: #E8A33D; --ai-possible: #8B9096;
-    --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #06070D; --panel: #0D0F1A; --ink: #F2F0FA; --slate: #9AA3B8; --rule: rgba(143,123,242,.22);
-  --teal: #8F7BF2; --teal-glass: rgba(143,123,242,.16); --on-teal: #141126;
-  --ai-confirmed: #7C3AED; --ai-strong: #A78BFA; --ai-likely: #E8A33D; --ai-possible: #8B9096;
-  --ai-ink: #0E181D; --ai-soft: rgba(143,123,242,.16); --danger: #F2867E;
-}
 *, *::before, *::after { box-sizing: inherit; }
-html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-body { margin: 0; background: radial-gradient(70% 42% at 50% -4%, rgba(124,77,255,.16), transparent 70%),
-            radial-gradient(46% 30% at 88% 22%, rgba(143,123,242,.07), transparent 70%),
-            radial-gradient(55% 36% at 8% 88%, rgba(76,47,201,.12), transparent 70%),
-            var(--paper); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
-img, svg { max-width: 100%; }
-a { color: var(--teal); }
-:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+html { scroll-padding-top: 24px; background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+img, svg { max-width: 100%; display: block; }
+a { color: var(--accent); text-underline-offset: 3px; }
+::selection { background: rgba(167,139,250,.35); color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: 800; }
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 
 /* Header */
-.site-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+.site-head { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
 .brand img { width: 28px; height: 28px; border-radius: 50%; }
-.head-link { color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; padding: 8px 14px; border: 1.5px solid var(--ink); border-radius: 999px; transition: background .14s ease-out, color .14s ease-out; }
-.head-link:hover { background: var(--ink); color: var(--paper); }
+.head-link { color: var(--text); font-weight: 600; font-size: 15px; text-decoration: none; padding: 9px 16px; border: 1.5px solid var(--line); border-radius: 999px; transition: border-color .16s ease-out, background .16s ease-out; }
+.head-link:hover { border-color: var(--text); background: var(--raised); }
 
-/* Hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); grid-template-areas: "copy demo" "form demo"; column-gap: 56px; row-gap: 0; align-items: start; padding: 40px 0 88px; }
-.hero-copy { grid-area: copy; }
-.signup { grid-area: form; }
-.demo { grid-area: demo; }
-h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 800; margin: 0 0 24px; max-width: 11ch; }
-.neon { color: var(--neon); text-shadow: 0 0 22px rgba(143,123,242,.65), 0 0 60px rgba(124,77,255,.3); }
-.mascot-hero { width: 200px; height: auto; display: block; margin: 6px 0 20px; border-radius: 28px;
-  box-shadow: 0 0 52px rgba(143,123,242,.5), 0 0 140px rgba(124,77,255,.25); }
-@media (prefers-reduced-motion: no-preference) {
-  .mascot-hero { animation: halo-pulse 5.5s ease-in-out infinite; }
-  @keyframes halo-pulse {
-    0%, 100% { box-shadow: 0 0 52px rgba(143,123,242,.5), 0 0 140px rgba(124,77,255,.25); }
-    50% { box-shadow: 0 0 72px rgba(143,123,242,.65), 0 0 175px rgba(124,77,255,.34); }
-  }
-}
-.eyebrow { box-shadow: inset 0 0 0 1px rgba(143,123,242,.35), 0 0 18px rgba(143,123,242,.18); }
-.btn { box-shadow: 0 0 26px rgba(143,123,242,.38); }
-.btn:hover { filter: brightness(1.1); box-shadow: 0 0 34px rgba(143,123,242,.55); }
-.btn-download { font-size: 19px; padding: 16px 36px; box-shadow: 0 0 36px rgba(143,123,242,.5); }
-.btn-download:hover { box-shadow: 0 0 48px rgba(143,123,242,.7); }
-.hero-cta { margin: 4px 0 10px; }
-.cta-note { font-size: 14px; color: var(--slate); margin: 12px 0 0; }
-.demo { box-shadow: 0 0 40px rgba(143,123,242,.10); }
-.eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; padding: 7px 15px 7px 9px; border-radius: 999px; background: var(--teal-glass); color: var(--ink); font-size: 14px; font-weight: 600; }
-.eyebrow img { border-radius: 50%; }
-.lede { font-size: 20px; color: var(--slate); max-width: 34em; margin: 0 0 32px; }
-
-/* Form */
-.signup { background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 24px; max-width: 520px; }
-.signup h2 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
-.signup .hint { margin: 0 0 18px; color: var(--slate); font-size: 15px; }
-.field { margin-bottom: 16px; }
-.field label, .field legend { display: block; font-weight: 600; font-size: 15px; margin-bottom: 6px; padding: 0; }
-fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
-input[type="email"] { width: 100%; font: inherit; font-size: 17px; padding: 12px 14px; border: 1.5px solid var(--rule); border-radius: var(--radius-m); background: var(--paper); color: var(--ink); }
-input[type="email"]:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-glass), 0 0 24px rgba(143,123,242,.35); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chips label { position: relative; margin: 0; font-weight: 500; }
-.chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.chips span { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--rule); border-radius: 999px; font-size: 15px; cursor: pointer; background: var(--paper); transition: border-color .14s ease-out, background .14s ease-out; }
-.chips input:checked + span { border-color: var(--teal); background: var(--teal-glass); color: var(--ink); font-weight: 600; box-shadow: 0 0 14px rgba(143,123,242,.28); }
-.chips input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
-.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.btn { font: inherit; font-weight: 600; font-size: 17px; border: 0; border-radius: 999px; padding: 13px 24px; background: var(--teal); color: var(--on-teal); cursor: pointer; transition: filter .14s ease-out, transform .14s ease-out; }
-.btn:hover { filter: brightness(1.08); }
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; font: inherit; font-weight: 700; font-size: 17px; border: 0; border-radius: 999px; padding: 14px 26px; background: var(--action); color: var(--on-action); cursor: pointer; text-decoration: none; transition: background .16s ease-out, transform .16s ease-out; }
+.btn:hover { background: #A493F7; }
 .btn:active { transform: scale(.98); }
 .btn[disabled] { opacity: .6; cursor: progress; }
-.form-status { margin: 12px 0 0; font-size: 15px; min-height: 1.4em; }
-.form-status.ok { color: var(--teal); font-weight: 600; }
+.btn-download { font-size: 18px; padding: 16px 32px; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); grid-template-areas: "copy demo"; column-gap: 64px; align-items: start; padding: 56px 0 104px; }
+.hero-copy { grid-area: copy; }
+.demo { grid-area: demo; }
+.mascot-hero { width: 148px; height: 148px; border-radius: 32px; margin: 0 0 32px; }
+h1 { font-size: clamp(46px, 6.6vw, 84px); line-height: .98; letter-spacing: -0.04em; max-width: 11ch; margin-bottom: 28px; }
+h1 .real { color: var(--accent); }
+.lede { font-size: 20px; color: var(--muted); max-width: 33em; margin: 0 0 36px; }
+.hero-cta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.cta-note { font-size: 14px; color: var(--muted); }
+
+/* Email capture: a single row under the hero, not a boxed card */
+.signup { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); max-width: 520px; }
+.signup h2 { font-size: 18px; letter-spacing: -0.01em; margin: 0 0 4px; }
+.signup .hint { color: var(--muted); font-size: 15px; margin: 0 0 16px; }
+.signup-row { display: flex; gap: 10px; }
+.field { flex: 1; min-width: 0; }
+.field label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+input[type="email"] { width: 100%; height: 100%; font: inherit; font-size: 16px; padding: 13px 16px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); }
+input[type="email"]::placeholder { color: #7D8498; }
+input[type="email"]:focus { outline: none; border-color: var(--accent); }
+.signup .btn { white-space: nowrap; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-status { margin: 12px 0 0; font-size: 15px; min-height: 1.4em; color: var(--muted); }
+.form-status.ok { color: var(--accent); font-weight: 600; }
 .form-status.err { color: var(--danger); }
-.fine { font-size: 13px; color: var(--slate); margin: 14px 0 0; }
+.fine { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
 
-/* Demo */
-.demo { position: relative; background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 16px; }
-.scan-clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 5; }
-.demo-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
-.demo-top p { margin: 0; font-weight: 600; font-size: 15px; }
-.levels { display: inline-flex; background: var(--paper); border: 1.5px solid var(--rule); border-radius: 999px; padding: 3px; }
-.levels button { font: inherit; font-size: 14px; font-weight: 600; border: 0; background: transparent; color: var(--slate); padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: background .14s ease-out, color .14s ease-out; }
-.levels button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.level-note { font-size: 14px; color: var(--slate); margin: 0 0 12px; min-height: 2.9em; }
-.feed { display: grid; gap: 12px; position: relative; }
-.post { position: relative; border: 1px solid var(--rule); border-radius: var(--radius-m); overflow: hidden; background: var(--paper); }
-.post-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 14px; }
-.avatar { width: 28px; height: 28px; border-radius: 50%; flex: none; }
-.post-head b { font-weight: 600; }
-.post-head small { color: var(--slate); display: block; font-size: 12.5px; line-height: 1.2; }
-.scene { aspect-ratio: 16 / 7; position: relative; }
-.caption { padding: 10px 12px 12px; font-size: 14.5px; margin: 0; }
-.scene-bay { background: linear-gradient(180deg, #C9D6DA 0%, #E7ECE9 48%, #93ABAF 49%, #6D878C 100%); }
-.scene-bay::after { content: ""; position: absolute; inset: 38% 0 51% 0; background: radial-gradient(60% 100% at 30% 100%, #7F969A 60%, transparent 61%), radial-gradient(50% 100% at 78% 100%, #8CA2A5 60%, transparent 61%); }
-.scene-tiger { background: repeating-linear-gradient(115deg, #E8913A 0 22px, #2A1C12 22px 30px, #E8913A 30px 50px), #E8913A; }
-.scene-tiger::after { content: ""; position: absolute; width: 22%; aspect-ratio: 1; border-radius: 50%; left: 62%; top: 22%; background: #F6D9B8; box-shadow: 0 0 0 6px rgba(255,255,255,.35); }
-.scene-flood { background: linear-gradient(180deg, #1B2A44 0%, #2E3F5E 56%, #3B5476 57%, #22324D 100%); }
-.scene-flood::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: 43%; height: 38%; background: repeating-linear-gradient(90deg, #121C2E 0 34px, transparent 34px 46px); }
-.scene-flood::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 58%; height: 12%; background: repeating-linear-gradient(90deg, #F2C66D 0 5px, transparent 5px 19px); opacity: .7; }
+/* Demo: the feed is one surface; posts are rows, not cards inside a card */
+.demo { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-l); overflow: hidden; }
+.demo-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.demo-top p { margin: 0; font-weight: 700; font-size: 15px; }
+.levels { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.levels button { font: inherit; font-size: 14px; font-weight: 600; border: 0; background: transparent; color: var(--muted); padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: background .16s ease-out, color .16s ease-out; }
+.levels button:hover { color: var(--text); }
+.levels button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+.level-note { font-size: 14px; color: var(--muted); padding: 12px 18px 0; min-height: 3em; }
+.feed { position: relative; }
+.post-slot { border-top: 1px solid var(--line); padding-top: 8px; }
+.post-slot:first-child { border-top: 0; padding-top: 0; }
+.post { position: relative; overflow: hidden; }
+.post-head { display: flex; align-items: center; gap: 10px; padding: 14px 18px 10px; font-size: 14px; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; flex: none; }
+.post-head b { font-weight: 700; }
+.post-head small { color: var(--muted); display: block; font-size: 12.5px; line-height: 1.2; }
+.scene { aspect-ratio: 16 / 8; position: relative; margin: 0 18px; border-radius: var(--r-s); overflow: hidden; }
+.caption { padding: 12px 18px 16px; font-size: 14.5px; color: var(--text); }
+/* Flat illustrations: solid planes only, no glow or stripe textures */
+.scene-bay { background: linear-gradient(180deg, #B9C8CC 0 46%, #8FA6AA 46% 62%, #5F7A7F 62%); }
+.scene-bay::after { content: ""; position: absolute; left: 0; right: 0; top: 30%; height: 16%; background: #A4B9BC; clip-path: polygon(0 60%, 14% 30%, 27% 58%, 44% 18%, 60% 52%, 76% 26%, 100% 56%, 100% 100%, 0 100%); }
+.scene-sun { background: #E8913A; }
+.scene-sun::before { content: ""; position: absolute; width: 26%; aspect-ratio: 1; border-radius: 50%; left: 60%; top: 22%; background: #F7DDBE; }
+.scene-sun::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: #B8642A; }
+.scene-flood { background: #22324D; }
+.scene-flood::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42%; background: #2E4367; }
+.scene-flood::after { content: ""; position: absolute; left: 12%; right: 12%; top: 40%; height: 10%; background: #F2C66D; opacity: .55; }
 
-.badge { position: absolute; top: 10px; right: 10px; z-index: 3; font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 999px; padding: 5px 11px 5px 9px; display: none; align-items: center; gap: 6px; cursor: pointer; color: var(--ai-ink); }
-.badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .85; }
-.post[data-rung="confirmed"] .badge { background: var(--ai-confirmed); }
-.post[data-rung="likely"] .badge { background: var(--ai-likely); color: #1B1440; }
+.badge { position: absolute; top: 14px; right: 16px; z-index: 3; font: inherit; font-size: 13px; font-weight: 700; border: 0; border-radius: 999px; padding: 6px 12px 6px 10px; display: none; align-items: center; gap: 7px; cursor: pointer; color: var(--bg); }
+.badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.post[data-rung="confirmed"] .badge { background: var(--confirmed); color: #FFFFFF; }
+.post[data-rung="likely"] .badge { background: var(--likely); color: #1B1440; }
 .post.is-flagged .badge { display: inline-flex; }
-
-.shield { position: absolute; inset: 0; z-index: 2; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px; background: color-mix(in srgb, var(--panel) 55%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
-.shield p { margin: 0; font-weight: 600; font-size: 15px; max-width: 26ch; }
-.shield button { font: inherit; font-size: 14px; font-weight: 600; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; transition: transform .14s ease-out; }
-.shield button:hover { transform: translateY(-1px); }
+.shield { position: absolute; inset: 0; z-index: 2; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px; background: rgba(14,16,25,.82); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.shield p { margin: 0; font-weight: 700; font-size: 15px; max-width: 26ch; }
+.shield button { font: inherit; font-size: 14px; font-weight: 700; background: var(--text); color: var(--bg); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
 .post.is-warned .shield { display: flex; }
 .post.is-warned .badge { z-index: 4; }
 
-.hidden-note { display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; font-size: 14px; color: var(--slate); border: 1px dashed var(--rule); border-radius: var(--radius-m); }
-.hidden-note button { font: inherit; font-size: 13px; font-weight: 600; background: none; border: 0; color: var(--teal); cursor: pointer; padding: 4px; }
+.hidden-note { display: none; align-items: center; justify-content: space-between; gap: 12px; margin: 0 18px 14px; padding: 11px 14px; font-size: 14px; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r-s); }
+.hidden-note button { font: inherit; font-size: 13px; font-weight: 700; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 4px; }
 .post-slot.is-blocked .post { display: none; }
 .post-slot.is-blocked .hidden-note { display: flex; }
+.post-slot.is-blocked { border-top-color: transparent; }
 
-.card { position: absolute; z-index: 10; width: min(330px, calc(100% - 32px)); background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink); border-radius: var(--radius-m); padding: 16px; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(18,32,42,.18); }
+.card { position: absolute; z-index: 10; width: min(330px, calc(100% - 32px)); background: var(--raised); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-m); padding: 18px; font-size: 14px; display: none; box-shadow: 0 18px 40px -16px rgba(0,0,0,.7); }
 .card.open { display: block; }
-.card h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
-.card .sure { margin: 2px 0 12px; color: var(--slate); font-size: 13.5px; }
-.card ul { margin: 0 0 12px; padding-left: 18px; }
+.card h3 { font-size: 17px; letter-spacing: -0.01em; }
+.card .sure { margin: 2px 0 12px; color: var(--muted); font-size: 13.5px; }
+.card ul { margin: 0 0 12px; padding-left: 18px; color: var(--muted); }
 .card li { margin-bottom: 4px; }
-.card .what { margin: 0 0 12px; padding: 8px 10px; background: var(--ai-soft); border-radius: var(--radius-s); }
+.card .what { margin: 0 0 12px; padding: 9px 11px; background: var(--surface); border-radius: var(--r-s); color: var(--muted); }
+.card .what b { color: var(--text); }
 .card .acts { display: flex; flex-wrap: wrap; gap: 8px; }
-.card .acts button { font: inherit; font-size: 13px; font-weight: 600; border: 1.5px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: border-color .14s ease-out, transform .14s ease-out; }
-.card .acts button:hover { border-color: var(--ink); }
-.card .acts button:active { transform: scale(.97); }
-.card .acts .deep { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.demo-foot { font-size: 12.5px; color: var(--slate); margin: 12px 0 0; }
-.demo-toast { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20; max-width: calc(100% - 32px); background: rgba(18,22,28,.94); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 600; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.card .acts button { font: inherit; font-size: 13px; font-weight: 600; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.card .acts button:hover { border-color: var(--text); }
+.card .acts .deep { background: var(--text); color: var(--bg); border-color: var(--text); }
+.demo-foot { font-size: 13px; color: var(--muted); padding: 14px 18px 18px; border-top: 1px solid var(--line); }
+.demo-toast { position: absolute; left: 50%; bottom: 58px; transform: translateX(-50%); z-index: 20; max-width: calc(100% - 32px); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 600; text-align: center; }
 .demo-toast[hidden] { display: none; }
 
-.scanline { position: absolute; left: 0; right: 0; height: 64px; top: -64px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent, var(--teal-glass) 45%, color-mix(in srgb, var(--teal) 30%, transparent) 50%, var(--teal-glass) 55%, transparent); }
-.scanning .scanline { animation: sweep 1.6s cubic-bezier(.4,0,.2,1) forwards; }
-@keyframes sweep { to { top: 100%; } }
-
 /* Sections */
-section.block { padding: 72px 0; border-top: 1.5px solid var(--rule); }
-h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 14px; max-width: 18ch; }
-.section-lede { color: var(--slate); font-size: 18.5px; margin: 0 0 40px; max-width: 38em; }
+section.block { padding: 96px 0; border-top: 1px solid var(--line); }
+h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spacing: -0.035em; margin: 0 0 16px; max-width: 18ch; }
+.section-lede { color: var(--muted); font-size: 19px; margin: 0 0 48px; max-width: 38em; }
 
-.ladder { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--radius-l); overflow: hidden; border: 1.5px solid var(--rule); }
-.rung { padding: 22px 20px 24px; background: var(--panel); border-left: 1.5px solid var(--rule); }
-.rung:first-child { border-left: 0; }
-.rung .bar { height: 10px; border-radius: 999px; margin-bottom: 18px; }
-.rung h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -0.01em; }
-.rung p { margin: 0 0 12px; font-size: 15px; color: var(--slate); }
-.rung .does { font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; }
-.ladder-note { font-size: 15px; color: var(--slate); margin: 16px 0 0; }
+/* Confidence scale: one bar, four stops, no boxes */
+.scale { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 24px; }
+.stop { position: relative; padding-top: 28px; }
+.stop::before { content: ""; position: absolute; top: 0; left: 0; right: -24px; height: 10px; border-radius: 999px; background: var(--bar); }
+.stop:last-child::before { right: 0; }
+.stop h3 { font-size: 20px; letter-spacing: -0.015em; margin: 0 0 8px; }
+.stop p { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
+.stop .does { font-size: 14px; font-weight: 700; color: var(--text); }
+.stop-confirmed { --bar: var(--confirmed); }
+.stop-strong { --bar: var(--strong); }
+.stop-likely { --bar: var(--likely); }
+.stop-possible { --bar: var(--possible); }
+.ladder-note { font-size: 15px; color: var(--muted); margin: 40px 0 0; }
 
-.report { background: var(--panel); border: 1.5px solid var(--rule); border-radius: var(--radius-l); padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 32px; }
-.report h3 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.01em; }
-.report .sure { margin: 0 0 18px; color: var(--slate); font-size: 15px; }
+/* Proof: real screenshots */
+.shots { display: grid; gap: 24px; }
+.shot { margin: 0; }
+.shot img { width: 100%; height: auto; border-radius: var(--r-m); border: 1px solid var(--line); background: var(--surface); }
+.shot figcaption { margin-top: 14px; font-size: 15px; color: var(--muted); }
+.shot figcaption b { color: var(--text); font-weight: 700; }
+.shots-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Investigator: one case-file surface; findings are rows on a shared timeline, not cards */
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-l); overflow: hidden; }
+.case-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; padding: 18px 24px; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--muted); }
+.case-head b { color: var(--text); font-weight: 700; }
+.case-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+.case-media { padding: 24px; border-right: 1px solid var(--line); min-width: 0; }
+.case-side { padding: 28px; }
+.frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r-m); overflow: hidden; background: #0A1020; }
+.frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.region { position: absolute; border: 2px dashed var(--likely); border-radius: 6px; opacity: 0; transition: opacity .2s ease-out; pointer-events: none; }
+.region.on { opacity: 1; }
+.region span { position: absolute; z-index: 1; left: 4px; top: 4px; font-size: 12px; font-weight: 700; line-height: 1; white-space: nowrap; padding: 5px 8px; border-radius: 999px; background: var(--likely); color: #1B1440; }
+.region.low span { top: calc(100% + 6px); left: -2px; }
+.region.high span { top: auto; bottom: calc(100% + 6px); left: -2px; }
+.region.br span { top: auto; left: auto; bottom: 4px; right: 4px; }
+.region.real { border-color: var(--text); }
+.region.real span { background: var(--text); color: var(--bg); }
+.play { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); background: rgba(7,8,14,.78); border: 0; border-radius: 999px; padding: 7px 12px 7px 9px; cursor: pointer; }
+.play svg { width: 16px; height: 16px; fill: currentColor; }
+.play .i-play, .play.is-playing .i-pause { display: block; }
+.play .i-pause, .play.is-playing .i-play { display: none; }
+.lanes { position: relative; margin-top: 16px; }
+.scrub { position: relative; height: 22px; }
+.rail { position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.rail i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--muted); }
+.scrub input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.playhead { position: absolute; top: 11px; bottom: 0; width: 2px; margin-left: -1px; background: rgba(243,241,250,.4); pointer-events: none; }
+.playhead::before { content: ""; position: absolute; top: -7px; left: -6px; width: 14px; height: 14px; border-radius: 50%; background: var(--text); }
+.lanes:has(input:focus-visible) .playhead::before { outline: 2px solid var(--accent); outline-offset: 3px; }
+.ticks { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; padding: 2px 0 8px; }
+.lane { display: block; width: 100%; text-align: left; font: inherit; color: var(--text); background: none; border: 0; border-top: 1px solid var(--line); padding: 12px 0 14px; }
+button.lane { cursor: pointer; }
+.lane-label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.lane-label span:last-child { color: var(--muted); font-weight: 500; text-align: right; }
+button.lane:hover .lane-label span:first-child { text-decoration: underline; text-underline-offset: 3px; }
+.lane[aria-pressed="true"] .lane-label span:first-child { color: var(--accent); }
+.lane-bar { display: block; position: relative; height: 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; }
+.lane-bar i { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--likely); opacity: .5; transition: opacity .2s ease-out; }
+.lane.now .lane-bar i { opacity: 1; }
+.lanes-hint { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.verdict { display: flex; align-items: center; gap: 10px; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 4px; }
+.verdict::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--likely); flex: none; }
+.case-side .sure { margin: 0 0 22px; color: var(--muted); font-size: 15px; }
 .facts { margin: 0; padding: 0; list-style: none; font-size: 15px; }
-.facts li { padding: 10px 0; border-top: 1px solid var(--rule); }
-.facts b { display: block; font-size: 14px; }
-.tracks { display: grid; gap: 14px; align-content: start; }
-.track-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.track-label span:last-child { color: var(--slate); font-weight: 500; }
-.track { position: relative; height: 18px; border-radius: 999px; background: var(--paper); border: 1px solid var(--rule); overflow: hidden; }
-.track i { position: absolute; top: 0; bottom: 0; background: var(--ai-confirmed); border-radius: 999px; }
-.track i.soft { background: var(--ai-likely); }
-.ticks { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--slate); }
+.facts li { padding: 14px 0; border-top: 1px solid var(--line); color: var(--muted); }
+.facts b { display: block; font-size: 14px; color: var(--text); margin-bottom: 2px; }
+.trace { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.trace canvas { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-s); background: #0A1020; }
+.trace span { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
+.case-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 24px; border-top: 1px solid var(--line); }
+.case-foot p { font-size: 15px; color: var(--muted); }
+.btn-line { background: transparent; color: var(--text); border: 1.5px solid var(--line); font-size: 15px; padding: 10px 20px; }
+.btn-line:hover { background: var(--raised); border-color: var(--text); }
+.soon { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
 
-.plans { display: grid; gap: 0; border-top: 1.5px solid var(--ink); }
-.plan { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
-.plan h3 { margin: 0; font-size: 21px; letter-spacing: -0.01em; }
-.plan p { margin: 0; color: var(--slate); }
-.plan .who { color: var(--ink); font-weight: 600; }
+/* Plans */
+.plans { display: grid; border-top: 1px solid var(--text); }
+.plan { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+.plan h3 { font-size: 22px; letter-spacing: -0.015em; }
+.plan p { color: var(--muted); }
+.plan .who { color: var(--text); font-weight: 700; }
 
-.faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 48px; }
-.faq h3 { font-size: 19px; margin: 0 0 6px; letter-spacing: -0.01em; }
-.faq p { margin: 0; color: var(--slate); }
+/* FAQ */
+.faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; }
+.faq h3 { font-size: 19px; margin: 0 0 8px; letter-spacing: -0.01em; }
+.faq p { color: var(--muted); }
 
-.closer { text-align: left; padding: 80px 0 96px; border-top: 1.5px solid var(--rule);
-  background: radial-gradient(50% 65% at 18% 55%, rgba(124,77,255,.09), transparent 70%); }
-.closer h2 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.035em; line-height: 1; margin: 0 0 20px; }
-.site-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 28px 0 36px; font-size: 14px; color: var(--slate); border-top: 1.5px solid var(--rule);
-  box-shadow: 0 -14px 34px -20px rgba(143,123,242,.45); }
-.site-foot a { color: var(--slate); }
+/* Closer */
+.closer { padding: 112px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 48px; align-items: center; }
+.closer img { width: 132px; height: 132px; border-radius: 28px; }
+.closer h2 { font-size: clamp(38px, 5.6vw, 68px); letter-spacing: -0.04em; line-height: .98; margin: 0 0 28px; }
+
+.site-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 28px 0 40px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); }
+.site-foot a { color: var(--muted); }
 
 @media (max-width: 920px) {
-  .hero { grid-template-columns: 1fr; grid-template-areas: "copy" "demo" "form"; row-gap: 32px; padding-top: 16px; }
-  .ladder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .rung:nth-child(3) { border-left: 0; }
-  .rung:nth-child(n+3) { border-top: 1.5px solid var(--rule); }
-  .report { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; grid-template-areas: "copy" "demo"; row-gap: 48px; padding: 24px 0 80px; }
+  .case-body { grid-template-columns: 1fr; }
+  .case-media { border-right: 0; border-bottom: 1px solid var(--line); }
+  .scale { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+  .stop::before { right: -12px; }
+  .stop:nth-child(2n)::before { right: 0; }
+  .faq { grid-template-columns: 1fr; }
+  .plan { grid-template-columns: 1fr; gap: 6px; }
+  .shots-2 { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   body { font-size: 16px; }
-  .wrap { padding: 0 18px; }
+  .wrap { padding: 0 16px; }
+  .site-head { height: 64px; }
   .lede { font-size: 18px; }
-  .ladder { grid-template-columns: 1fr; }
-  .rung { border-left: 0; border-top: 1.5px solid var(--rule); }
-  .rung:first-child { border-top: 0; }
-  .plan { grid-template-columns: 1fr; gap: 6px; }
-  .faq { grid-template-columns: 1fr; }
-  section.block { padding: 56px 0; }
+  .signup-row { flex-direction: column; }
+  .signup .btn { width: 100%; }
+  .scale { grid-template-columns: 1fr; }
+  .stop::before { right: 0; }
+  .closer { grid-template-columns: 1fr; gap: 28px; padding: 80px 0; }
+  section.block { padding: 72px 0; }
+  .post-head, .caption, .hidden-note { padding-left: 14px; padding-right: 14px; }
+  .scene, .hidden-note { margin-left: 14px; margin-right: 14px; }
+  .case-head, .case-foot { padding-left: 16px; padding-right: 16px; }
+  .case-media { padding: 16px; }
+  .case-side { padding: 24px 16px; }
+  .region span { display: none; font-size: 11px; padding: 4px 7px; }
+  .region.picked span, .region[data-f="water"] span { display: block; }
+  .lane-label { flex-direction: column; gap: 2px; }
+  .lane-label span:last-child { text-align: left; }
 }
-@media (prefers-reduced-motion: reduce) { .scanning .scanline { animation: none; } *, *::before, *::after { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
@@ -246,37 +285,39 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       <img src="favicon-32.png" width="28" height="28" alt="">
       ClariFi
     </a>
-    <a class="head-link" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
+    <a class="head-link" href="#join" data-store-link>Download free</a>
   </header>
 
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
-        <img class="mascot-hero" src="mascot.png" width="200" height="200" alt="ClariFi neon detective mascot">
-        <p class="eyebrow"><img src="favicon-32.png" width="18" height="18" alt=""> Your internet detective</p>
-        <h1>Know what's <span class="neon">real</span> in your feed.</h1>
+        <img class="mascot-hero" src="mascot.png" width="148" height="148" alt="ClariFi detective mascot">
+        <h1>Know what's <span class="real">real</span> in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
         <div class="hero-cta">
-          <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
-          <p class="cta-note">Free &middot; Chrome, Edge &amp; Firefox</p>
+          <a class="btn btn-download" href="#join" data-store-link>Download free</a>
+          <p class="cta-note">Free &middot; Chrome &amp; Edge</p>
         </div>
-      </div>
 
         <form class="signup" id="join" data-endpoint="/api/waitlist" novalidate>
           <h2>Stay in the loop</h2>
           <p class="hint">Product updates and news. No spam, ever.</p>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          <div class="signup-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            </div>
+            <button class="btn" type="submit">Stay in the loop</button>
           </div>
           <div class="trap" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" tabindex="-1" autocomplete="off"></div>
-          <button class="btn" type="submit">Stay in the loop</button>
           <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           <p class="fine">We only use your email for ClariFi news. <a href="/privacy">Privacy</a></p>
         </form>
 
+      </div>
+
+
       <div class="demo" id="demo" aria-label="Interactive example of ClariFi">
-        <div class="scan-clip" aria-hidden="true"><div class="scanline"></div></div>
         <div class="demo-top">
           <p>Try it: pick a level</p>
           <div class="levels" role="group" aria-label="Protection level">
@@ -299,18 +340,18 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
               <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Labeled AI</button>
               <div class="shield"><p>Labeled AI by Instagram</p><button type="button" class="reveal">Show post</button></div>
               <div class="post-head"><span class="avatar" style="background:#E8913A"></span><div><b>petvids.daily</b><small>Suggested for you</small></div></div>
-              <div class="scene scene-tiger" role="img" aria-label="Video of a baby and a tiger"></div>
+              <div class="scene scene-sun" role="img" aria-label="Video of a baby and a tiger"></div>
               <p class="caption">Baby and tiger best friends forever #aivideo</p>
             </article>
             <div class="hidden-note"><span>Hidden: labeled AI by Instagram</span><button type="button" class="unhide">Show anyway</button></div>
           </div>
           <div class="post-slot">
             <article class="post" data-rung="likely" data-card="flood">
-              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Likely AI 88%</button>
-              <div class="shield"><p>Likely AI (88%)</p><button type="button" class="reveal">Show post</button></div>
+              <button class="badge" type="button" aria-haspopup="dialog" aria-expanded="false">Likely AI</button>
+              <div class="shield"><p>Likely AI</p><button type="button" class="reveal">Show post</button></div>
               <div class="post-head"><span class="avatar" style="background:#2E3F5E"></span><div><b>newsflash_now</b><small>Trending</small></div></div>
               <div class="scene scene-flood" role="img" aria-label="Video of a flooded street at night"></div>
-              <p class="caption">Downtown is underwater after tonight's storm. Share before it's deleted.</p>
+              <p class="caption">Downtown is underwater after tonight's storm. Share before it's deleted. #aivideo #midjourney #aiart</p>
             </article>
           </div>
         </div>
@@ -322,19 +363,16 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
             <li>Instagram shows its "AI info" label on this post</li>
             <li>The caption includes #aivideo</li>
           </ul>
-          <p class="what"><b>What's AI:</b> the whole video</p>
           <div class="acts"><button type="button">Always hide this account</button><button type="button">Report a mistake</button></div>
         </div>
         <div class="card" id="card-flood" role="dialog" aria-label="Why this post was flagged">
-          <h3>Likely AI, 88%</h3>
+          <h3>Likely AI</h3>
           <p class="sure">An estimate, not confirmed</p>
           <ul>
-            <li>Detector model score: 88%</li>
-            <li>No platform label and no Content Credentials</li>
-            <li>Account is 9 days old and posts about 40 videos a day</li>
+            <li>Uses AI hashtags: #aivideo, #midjourney, #aiart</li>
+            <li>Several weaker AI signals line up</li>
           </ul>
-          <p class="what"><b>What's likely AI:</b> the video; the audio sounds real</p>
-          <div class="acts"><button type="button" class="deep">Deep Scan</button><button type="button">Report a mistake</button></div>
+          <div class="acts"><button type="button">Always hide this account</button><button type="button">Report a mistake</button></div>
         </div>
         <p class="demo-foot">Example posts, not real accounts. Tap a badge to see why it was flagged.</p>
         <div class="demo-toast" id="demo-toast" role="status" hidden></div>
@@ -343,36 +381,115 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
 
     <section class="block" aria-labelledby="ladder-h">
       <h2 class="section" id="ladder-h">Every flag shows how sure it is.</h2>
-      <p class="section-lede">A platform's own AI label is a fact. A detector's score is an estimate. ClariFi never mixes them up, and it only hides posts on strong evidence unless you tell it otherwise.</p>
-      <div class="ladder">
-        <div class="rung"><div class="bar" style="background:var(--ai-confirmed)"></div><h3>Confirmed</h3><p>The platform labeled it AI, or its Content Credentials name an AI tool.</p><p class="does">Can inform, warn or block</p></div>
-        <div class="rung"><div class="bar" style="background:var(--ai-strong)"></div><h3>Strong</h3><p>A hidden AI watermark, the creator says it's AI, or the account is on our reviewed list.</p><p class="does">Can inform, warn or block</p></div>
-        <div class="rung"><div class="bar" style="background:var(--ai-likely)"></div><h3>Likely</h3><p>A detector scores it high, or several weaker signals line up.</p><p class="does">Can inform or warn; block if you opt in</p></div>
-        <div class="rung"><div class="bar" style="background:var(--ai-possible)"></div><h3>Possible</h3><p>AI hashtags or a middling detector score, nothing more.</p><p class="does">Can only inform</p></div>
+      <p class="section-lede">A platform's own AI label is a fact. A guess from weaker signals is only an estimate. ClariFi never mixes them up, and it only hides posts on strong evidence unless you tell it otherwise.</p>
+      <div class="scale">
+        <div class="stop stop-confirmed"><h3>Confirmed</h3><p>The platform put its own AI label on the post.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="stop stop-strong"><h3>Strong</h3><p>The creator says it's AI, the community marks it as AI, or the account is on your always-hide list.</p><p class="does">Can inform, warn or block</p></div>
+        <div class="stop stop-likely"><h3>Likely</h3><p>Several weaker signals line up, like AI hashtags and phrases together.</p><p class="does">Can inform or warn; block if you opt in</p></div>
+        <div class="stop stop-possible"><h3>Possible</h3><p>AI hashtags or an AI phrase on their own, nothing more.</p><p class="does">Can only inform</p></div>
       </div>
-      <p class="ladder-note">Think a flag is wrong? Every card has a "Report a mistake" button, and creators can dispute flags.</p>
+      <p class="ladder-note">Think a flag is wrong? Use "Report a mistake" on its card. Reports stay on your computer.</p>
+    </section>
+
+    <section class="block" aria-labelledby="proof-h">
+      <h2 class="section" id="proof-h">It works where you already scroll.</h2>
+      <p class="section-lede">Screenshots of ClariFi running on example feeds with made-up accounts, plus its settings page.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="img/feed-youtube.webp" width="1120" height="640" loading="lazy" alt="Example YouTube-style feed with ClariFi badges: Labeled AI, Likely AI, Possibly AI and Says it's AI on different videos">
+          <figcaption><b>Know what's AI in your feed.</b> Every badge says how sure ClariFi is.</figcaption>
+        </figure>
+        <div class="shots shots-2">
+          <figure class="shot">
+            <img src="img/see-why-instagram.webp" width="1120" height="640" loading="lazy" alt="Instagram post with the ClariFi card open, listing the platform's AI info label and AI hashtags">
+            <figcaption><b>See why it was flagged.</b> The evidence sits one click away.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="img/blur-or-hide-x.webp" width="1120" height="640" loading="lazy" alt="X timeline with a hidden post and a blurred Likely AI post with a Show post button">
+            <figcaption><b>Blur it or hide it.</b> Your call, per site.</figcaption>
+          </figure>
+        </div>
+        <div class="shots shots-2">
+          <figure class="shot">
+            <img src="img/check-any-page-tiktok.webp" width="1120" height="640" loading="lazy" alt="TikTok For You feed with the ClariFi popup showing the level for the site">
+            <figcaption><b>Check any page at a glance.</b> Change the level or take a break.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="img/every-site.webp" width="1120" height="640" loading="lazy" alt="ClariFi settings page with a level for each site: Off, Inform, Warn or Block">
+            <figcaption><b>Set a level for every site.</b> Settings sync with your browser.</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
 
     <section class="block" aria-labelledby="inv-h">
-      <h2 class="section" id="inv-h">Investigator shows exactly what's AI.</h2>
-      <p class="section-lede">Run a Deep Scan on any post to get a full breakdown: which parts are AI, where in the video, where it came from, and who's posting it.</p>
-      <div class="report">
-        <div>
-          <h3>Likely AI, 88%</h3>
-          <p class="sure">Deep Scan of a 30-second video (example)</p>
-          <ul class="facts">
-            <li><b>What's AI</b>The water and the lights; the street sign looks real</li>
-            <li><b>Provenance</b>No Content Credentials found</li>
-            <li><b>Source trace</b>Oldest copy found 2 days earlier, on a different account</li>
-            <li><b>Account</b>9 days old, 31 of its last 40 posts flagged</li>
-          </ul>
+      <h2 class="section" id="inv-h">Investigator opens the whole case.</h2>
+      <p class="section-lede">Coming soon. A badge tells you a post is probably AI. Investigator shows you why: pick a post, and Deep Scan marks which parts are AI, the exact seconds, where the video first appeared, and who's behind the account.</p>
+      <div class="case" id="case">
+        <div class="case-head">
+          <p><b>Deep Scan</b> &middot; newsflash_now &middot; &ldquo;Downtown is underwater after tonight's storm.&rdquo;</p>
+          <p>Example report</p>
         </div>
-        <div class="tracks" aria-label="Video timeline with flagged seconds">
-          <div><div class="track-label"><span>Background</span><span>0:03 to 0:24</span></div><div class="track"><i style="left:10%;width:70%"></i></div></div>
-          <div><div class="track-label"><span>Lights and water motion</span><span>0:04 to 0:11, 0:18 to 0:27</span></div><div class="track"><i style="left:13%;width:24%"></i><i style="left:60%;width:30%"></i></div></div>
-          <div><div class="track-label"><span>Voice</span><span>Sounds real</span></div><div class="track"></div></div>
-          <div><div class="track-label"><span>On-screen text</span><span>Possibly AI</span></div><div class="track"><i class="soft" style="left:0;width:18%"></i></div></div>
-          <div class="ticks" aria-hidden="true"><span>0:00</span><span>0:10</span><span>0:20</span><span>0:30</span></div>
+        <div class="case-body">
+          <div class="case-media">
+            <div class="frame">
+              <canvas role="img" aria-label="Example video: a city street at night, flooded, with streetlights and a Main St sign"></canvas>
+              <div class="region br" data-f="water" style="left:1.5%;top:63%;width:97%;height:35%" aria-hidden="true"><span>Floodwater &middot; Likely AI</span></div>
+              <div class="region high" data-f="refl" style="left:22.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"><span>Light reflections &middot; Likely AI</span></div>
+              <div class="region" data-f="refl" style="left:56.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"></div>
+              <div class="region" data-f="refl" style="left:84.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"></div>
+              <div class="region real low" data-f="sign" style="left:8.5%;top:36.5%;width:12%;height:10%" aria-hidden="true"><span>Street sign &middot; Looks real</span></div>
+              <button class="play" type="button" aria-label="Pause example video">
+                <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+                <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
+                <span>0:00 / 0:30</span>
+              </button>
+            </div>
+            <div class="lanes">
+              <div class="scrub">
+                <div class="rail"><i></i></div>
+                <input type="range" min="0" max="30" step="0.1" value="0" aria-label="Position in the example video">
+              </div>
+              <div class="ticks" aria-hidden="true"><span>0:00</span><span>0:10</span><span>0:20</span><span>0:30</span></div>
+              <button class="lane" type="button" data-f="water" aria-pressed="false">
+                <span class="lane-label"><span>Floodwater</span><span>Likely AI &middot; 0:03 to 0:24</span></span>
+                <span class="lane-bar"><i style="left:10%;width:70%"></i></span>
+              </button>
+              <button class="lane" type="button" data-f="refl" aria-pressed="false">
+                <span class="lane-label"><span>Light reflections</span><span>Likely AI &middot; 0:04 to 0:11, 0:18 to 0:27</span></span>
+                <span class="lane-bar"><i style="left:13.3%;width:23.4%"></i><i style="left:60%;width:30%"></i></span>
+              </button>
+              <button class="lane" type="button" data-f="sign" aria-pressed="false">
+                <span class="lane-label"><span>Street sign</span><span>Looks real</span></span>
+                <span class="lane-bar"></span>
+              </button>
+              <div class="lane">
+                <span class="lane-label"><span>Voice</span><span>Sounds real</span></span>
+                <span class="lane-bar"></span>
+              </div>
+              <span class="playhead" aria-hidden="true"></span>
+            </div>
+            <p class="lanes-hint">Tap a finding to see where it is in the video.</p>
+          </div>
+          <div class="case-side">
+            <h3 class="verdict">Likely AI</h3>
+            <p class="sure">A Deep Scan estimate, not a platform label.</p>
+            <ul class="facts">
+              <li><b>What's AI</b>The floodwater and the light reflections in it. The street, the sign and the voice look real.</li>
+              <li><b>Source trace</b>The oldest copy was posted 2 days earlier on another account. Same street, no flood.
+                <div class="trace" aria-hidden="true">
+                  <div><canvas data-scene="dry"></canvas><span>Oldest copy, 2 days earlier</span></div>
+                  <div><canvas data-scene="flood"></canvas><span>This post</span></div>
+                </div>
+              </li>
+              <li><b>Account</b>9 days old. 31 of its last 40 posts were flagged.</li>
+              <li><b>Provenance</b>No Content Credentials found.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="case-foot">
+          <p>An example report on a made-up post. Investigator isn't out yet.</p>
+          <a class="btn btn-line" href="#join" data-notify>Get notified when it's ready</a>
         </div>
       </div>
     </section>
@@ -381,26 +498,29 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       <h2 class="section" id="plans-h">Free to start. More when you want it.</h2>
       <p class="section-lede">Early supporters lock in launch pricing.</p>
       <div class="plans">
-        <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and hover cards that explain what's AI, using platform labels, Content Credentials and creator disclosures.</p></div>
-        <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
-        <div class="plan"><h3>Investigator</h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
-        <div class="plan"><h3>Family</h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
+        <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and evidence cards that explain what's AI, using platform labels, creator disclosures, community flags and AI hashtags. Your own always-hide and always-allow lists, and settings that sync through your browser.</p></div>
+        <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, which blur or hide flagged posts instead of only badging them.</p></div>
+        <div class="plan"><h3>Investigator<span class="soon">Coming soon</span></h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
+        <div class="plan"><h3>Family<span class="soon">Coming soon</span></h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
       </div>
     </section>
 
     <section class="block" aria-labelledby="faq-h">
       <h2 class="section" id="faq-h">Questions</h2>
       <div class="faq">
-        <div><h3>Where does it work?</h3><p>First as an extension for Chrome, Edge and Firefox on Windows. The Android app follows and works inside the YouTube, TikTok, Instagram and X apps.</p></div>
-        <div><h3>Does ClariFi see what I browse?</h3><p>Checks run on your device. Nothing leaves it unless you run a Deep Scan on a specific post, and we don't keep your browsing history.</p></div>
-        <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI, 88%" is an estimate, and the card says so.</p></div>
+        <div><h3>Where does it work?</h3><p>It's a browser extension for desktop Chrome and Edge.</p></div>
+        <div><h3>Does ClariFi see what I browse?</h3><p>Checks run on your device. ClariFi never sends the pages you visit or the posts you see anywhere, and it doesn't keep your browsing history.</p></div>
+        <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI" is an estimate, and the card says so.</p></div>
         <div><h3>Will it hide real posts?</h3><p>Block only acts on confirmed or strong evidence unless you choose otherwise. You can always show a hidden post with one tap.</p></div>
       </div>
     </section>
 
     <section class="closer">
-      <h2>See your feed clearly.</h2>
-      <a class="btn" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip" style="display:inline-block;text-decoration:none">Download free</a>
+      <img src="mascot.png" width="132" height="132" alt="" loading="lazy">
+      <div>
+        <h2>See your feed clearly.</h2>
+        <a class="btn btn-download" href="#join" data-store-link>Download free</a>
+      </div>
     </section>
   </main>
 
@@ -410,6 +530,12 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   </footer>
 </div>
 
+<script>
+// Every "Download free" button points here. It's a placeholder until the Chrome Web Store
+// listing is live, so for now it sends people to the email signup. Replace it with the listing URL.
+var STORE_URL = '#join';
+document.querySelectorAll('[data-store-link]').forEach(function (a) { a.setAttribute('href', STORE_URL); });
+</script>
 <script>
 (function () {
   var notes = {
@@ -501,23 +627,17 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCards(); });
 
   render();
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var seen = false;
-    new IntersectionObserver(function (entries, obs) {
-      if (!seen && entries[0].isIntersecting) { seen = true; demo.classList.add('scanning'); obs.disconnect(); }
-    }, { threshold: 0.4 }).observe(demo);
-  }
 
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
   // ClariFi is a desktop extension: on phones the zip is useless, so point
   // download CTAs at the email form instead of dumping project files on people.
   if (isMobile) {
-    document.querySelectorAll('a[href*="releases/download"]').forEach(function (a) {
+    document.querySelectorAll('[data-store-link]').forEach(function (a) {
       a.setAttribute('href', '#join');
       a.textContent = 'Notify me at launch';
     });
     document.querySelectorAll('.cta-note').forEach(function (n) {
-      n.textContent = 'ClariFi runs on desktop Chrome, Edge & Firefox';
+      n.textContent = 'ClariFi runs on desktop Chrome & Edge';
     });
   }
 
@@ -565,6 +685,224 @@ h2.section { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.05; letter-spac
       btn.textContent = 'Stay in the loop';
     });
   });
+})();
+
+// Investigator example: a drawn "video" with a shared timeline of findings
+(function () {
+  var box = document.getElementById('case');
+  if (!box) return;
+  var canvas = box.querySelector('canvas');
+  var g = canvas.getContext('2d');
+  var range = box.querySelector('.scrub input');
+  var head = box.querySelector('.playhead');
+  var fill = box.querySelector('.rail i');
+  var playBtn = box.querySelector('.play');
+  var clock = playBtn.querySelector('span');
+  var lanes = box.querySelectorAll('button.lane');
+  var allLanes = box.querySelectorAll('.lane');
+  var regions = box.querySelectorAll('.region');
+  var minis = box.querySelectorAll('.trace canvas');
+  var DUR = 30, SPEED = 2; // video seconds per real second
+  var SEGS = { water: [[3, 24]], refl: [[4, 11], [18, 27]], sign: [] };
+  var LAMPS = [.26, .60, .88];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t = reduce ? 6 : 0, playing = !reduce, visible = !('IntersectionObserver' in window);
+  var picked = null, dragging = false, raf = 0, last = 0, W = 0, H = 0;
+
+  // Seeded random so the street looks the same on every visit
+  var seed = 11;
+  function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  var far = [], near = [], wins = [], drops = [], x, w, i;
+  for (x = 0; x < 1; x += w) { w = .05 + rnd() * .07; far.push([x, w, .18 + rnd() * .2]); }
+  for (x = -.02; x < 1; x += w + .012) {
+    w = .08 + rnd() * .1;
+    var h = .1 + rnd() * .16;
+    near.push([x, w, h]);
+    for (var cx = x + .012; cx < x + w - .016; cx += .022) {
+      for (var cy = .64 - h + .025; cy < .6; cy += .042) {
+        if (rnd() > .42) wins.push([cx, cy, .25 + rnd() * .55, rnd()]);
+      }
+    }
+  }
+  for (i = 0; i < 90; i++) drops.push([rnd(), rnd(), .5 + rnd() * .5]);
+
+  function fmt(s) { s = Math.floor(s); return '0:' + (s < 10 ? '0' : '') + s; }
+  function inSeg(k) { return (SEGS[k] || []).some(function (s) { return t >= s[0] && t < s[1]; }); }
+
+  function draw(g, W, H, t, flood) {
+    var wl = .64 * H, ph = t * 1.6;
+    var sky = g.createLinearGradient(0, 0, 0, wl);
+    sky.addColorStop(0, '#080D1A'); sky.addColorStop(1, '#1C2846');
+    g.fillStyle = sky; g.fillRect(0, 0, W, wl);
+    g.fillStyle = '#131B30';
+    far.forEach(function (b) { g.fillRect(b[0] * W, wl - b[2] * H, b[1] * W + 1, b[2] * H); });
+    g.fillStyle = '#0B1222';
+    near.forEach(function (b) { g.fillRect(b[0] * W, wl - b[2] * H, b[1] * W, b[2] * H); });
+    wins.forEach(function (o) {
+      var a = o[3] > .93 ? o[2] * (.6 + .4 * Math.sin(t * 7 + o[3] * 40)) : o[2];
+      g.fillStyle = 'rgba(242,198,109,' + a + ')';
+      g.fillRect(o[0] * W, o[1] * H, .009 * W, .02 * H);
+    });
+    // Streetlights
+    LAMPS.forEach(function (lx) {
+      var px = lx * W, top = .36 * H, r = .085 * W;
+      var halo = g.createRadialGradient(px, top, 0, px, top, r);
+      halo.addColorStop(0, 'rgba(250,214,140,.5)'); halo.addColorStop(1, 'rgba(250,214,140,0)');
+      g.fillStyle = halo; g.fillRect(px - r, top - r, r * 2, r * 2);
+      g.fillStyle = '#05080F'; g.fillRect(px - .002 * W, top, .004 * W, wl - top);
+      g.fillStyle = '#FCE6B0'; g.fillRect(px - .012 * W, top - .006 * H, .024 * W, .012 * H);
+    });
+    // Street sign
+    var sx = .145 * W, sy = .385 * H, sw = .1 * W, sh = .052 * H;
+    g.fillStyle = '#05080F'; g.fillRect(sx - .002 * W, sy, .004 * W, wl - sy);
+    g.fillStyle = '#1F6E4C'; g.fillRect(sx - sw / 2, sy, sw, sh);
+    g.strokeStyle = '#E8F1EC'; g.lineWidth = Math.max(1, .0025 * W);
+    g.strokeRect(sx - sw / 2 + .006 * W, sy + .008 * H, sw - .012 * W, sh - .016 * H);
+    g.fillStyle = '#F3F7F4'; g.font = '700 ' + Math.round(.026 * H) + 'px "Schibsted Grotesk", Arial, sans-serif';
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('MAIN ST', sx, sy + sh / 2 + 1);
+    if (!flood) { street(g, W, H, wl); return; }
+    // A car roof just above the waterline
+    g.fillStyle = '#1B2236';
+    g.beginPath(); g.moveTo(.655 * W, wl); g.lineTo(.675 * W, wl - .045 * H); g.lineTo(.76 * W, wl - .045 * H); g.lineTo(.785 * W, wl); g.closePath(); g.fill();
+    g.fillStyle = '#34425F'; g.fillRect(.682 * W, wl - .037 * H, .034 * W, .026 * H); g.fillRect(.722 * W, wl - .037 * H, .032 * W, .026 * H);
+    // Floodwater
+    var sea = g.createLinearGradient(0, wl, 0, H);
+    sea.addColorStop(0, '#17264A'); sea.addColorStop(1, '#0A1222');
+    g.fillStyle = sea; g.fillRect(0, wl, W, H - wl);
+    wins.forEach(function (o) {
+      var ry = wl + (wl - o[1] * H) * .55;
+      if (ry > H) return;
+      var wob = Math.sin(ry * .08 + ph * 2) * .004 * W;
+      g.fillStyle = 'rgba(242,198,109,' + o[2] * .22 + ')';
+      g.fillRect(o[0] * W + wob, ry, .009 * W, .008 * H);
+    });
+    LAMPS.forEach(function (lx) {
+      for (var y = wl + 2; y < H; y += .012 * H) {
+        var d = (y - wl) / (H - wl);
+        var wob = Math.sin(y * .7 + ph * 5 + lx * 9) * .004 * W * (.5 + d);
+        var len = .045 * W * (1 - d * .5) * (.55 + .45 * Math.sin(y * 1.3 + ph * 4 + lx * 5));
+        g.fillStyle = 'rgba(250,214,140,' + (.55 * (1 - d)) + ')';
+        g.fillRect(lx * W + wob - len / 2, y, len, Math.max(1, .004 * H));
+      }
+    });
+    g.fillStyle = 'rgba(150,175,225,.2)';
+    for (var r = 0; r < 26; r++) {
+      var ry = wl + Math.pow(r / 26, 1.6) * (H - wl);
+      var off = ((r * .137 + ph * .03 * (1 + r % 3)) % 1) * W;
+      for (var k = -1; k < 4; k++) g.fillRect(off + k * W * .33 - W * .1, ry, W * (.06 + (r % 4) * .02), Math.max(1, .002 * H));
+    }
+    g.fillStyle = 'rgba(170,195,240,.35)'; g.fillRect(0, wl, W, Math.max(1, .003 * H));
+    // Rain
+    g.strokeStyle = 'rgba(190,205,235,.22)'; g.lineWidth = Math.max(1, .0015 * W); g.beginPath();
+    drops.forEach(function (o) {
+      var y = ((o[1] + t * 1.5 * o[2]) % 1) * H, px = o[0] * W;
+      g.moveTo(px, y); g.lineTo(px - .006 * W, y + .045 * H * o[2]);
+    });
+    g.stroke();
+  }
+
+  // The same street before the flood, for the source-trace comparison
+  function street(g, W, H, wl) {
+    var road = g.createLinearGradient(0, wl, 0, H);
+    road.addColorStop(0, '#1C202B'); road.addColorStop(1, '#0E1017');
+    g.fillStyle = road; g.fillRect(0, wl, W, H - wl);
+    g.fillStyle = '#272C3A'; g.fillRect(0, wl, W, .05 * H);
+    g.fillStyle = 'rgba(232,190,100,.7)';
+    for (var dx = .02; dx < 1; dx += .12) g.fillRect(dx * W, .84 * H, .06 * W, Math.max(1, .008 * H));
+    LAMPS.forEach(function (lx) {
+      var pool = g.createRadialGradient(lx * W, wl + .08 * H, 0, lx * W, wl + .08 * H, .12 * W);
+      pool.addColorStop(0, 'rgba(250,214,140,.2)'); pool.addColorStop(1, 'rgba(250,214,140,0)');
+      g.fillStyle = pool; g.fillRect(lx * W - .12 * W, wl, .24 * W, .3 * H);
+    });
+    g.fillStyle = '#1B2236';
+    g.beginPath(); g.moveTo(.655 * W, wl + .04 * H); g.lineTo(.675 * W, wl - .005 * H); g.lineTo(.76 * W, wl - .005 * H); g.lineTo(.785 * W, wl + .04 * H); g.closePath(); g.fill();
+    g.fillRect(.635 * W, wl + .04 * H, .17 * W, .07 * H);
+    g.fillStyle = '#34425F'; g.fillRect(.682 * W, wl + .003 * H, .034 * W, .026 * H); g.fillRect(.722 * W, wl + .003 * H, .032 * W, .026 * H);
+    g.fillStyle = '#E0524D'; g.fillRect(.795 * W, wl + .055 * H, .008 * W, .016 * H);
+    g.fillStyle = '#05070D';
+    [.672, .77].forEach(function (cx) { g.beginPath(); g.arc(cx * W, wl + .11 * H, .035 * H, 0, Math.PI * 2); g.fill(); });
+  }
+
+  function render() {
+    if (!W) return;
+    draw(g, W, H, t, true);
+    var p = t / DUR * 100;
+    head.style.left = p + '%';
+    fill.style.width = p + '%';
+    if (!dragging) range.value = t.toFixed(1);
+    range.setAttribute('aria-valuetext', fmt(t) + ' of 0:30');
+    clock.textContent = fmt(t) + ' / 0:30';
+    regions.forEach(function (el) {
+      var k = el.getAttribute('data-f');
+      el.classList.toggle('on', picked === k || inSeg(k));
+      el.classList.toggle('picked', picked === k);
+    });
+    allLanes.forEach(function (el) { el.classList.toggle('now', inSeg(el.getAttribute('data-f'))); });
+  }
+
+  function frame(now) {
+    if (playing && !dragging) { t += Math.min(now - last, 100) / 1000 * SPEED; if (t >= DUR) t -= DUR; }
+    last = now;
+    render();
+    raf = visible && playing ? requestAnimationFrame(frame) : 0;
+  }
+  function kick() { if (!raf && visible && playing) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function setPlaying(on) {
+    playing = on;
+    playBtn.classList.toggle('is-playing', on);
+    playBtn.setAttribute('aria-label', (on ? 'Pause' : 'Play') + ' example video');
+    if (on) kick(); else render();
+  }
+
+  function size() {
+    var rect = canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = Math.round(rect.width * d);
+    H = canvas.height = Math.round(rect.height * d);
+    minis.forEach(function (c) {
+      var r = c.getBoundingClientRect();
+      c.width = Math.round(r.width * d); c.height = Math.round(r.height * d);
+      draw(c.getContext('2d'), c.width, c.height, 6, c.getAttribute('data-scene') === 'flood');
+    });
+    render();
+  }
+
+  playBtn.addEventListener('click', function () { setPlaying(!playing); });
+  range.addEventListener('pointerdown', function () { dragging = true; });
+  window.addEventListener('pointerup', function () { dragging = false; });
+  range.addEventListener('input', function () { t = Math.min(+range.value, DUR - .01); render(); });
+  range.addEventListener('change', function () { dragging = false; });
+
+  lanes.forEach(function (el) {
+    el.addEventListener('click', function () {
+      var k = el.getAttribute('data-f');
+      picked = picked === k ? null : k;
+      lanes.forEach(function (o) { o.setAttribute('aria-pressed', String(o.getAttribute('data-f') === picked)); });
+      if (picked && SEGS[k].length) t = SEGS[k][0][0] + 1;
+      setPlaying(false);
+    });
+  });
+
+  var notify = box.querySelector('[data-notify]');
+  var email = document.getElementById('email');
+  if (notify && email) {
+    notify.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('join').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      setTimeout(function () { email.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      kick();
+    }).observe(canvas);
+  }
+  window.addEventListener('resize', size);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+  setPlaying(playing);
+  size();
 })();
 </script>
 </body>
