@@ -168,20 +168,60 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
 .shot figcaption b { color: var(--text); font-weight: 700; }
 .shots-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-/* Investigator */
-.report { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 56px; align-items: start; }
-.report h3 { font-size: 26px; letter-spacing: -0.02em; margin: 0 0 4px; }
-.report .sure { margin: 0 0 22px; color: var(--muted); font-size: 15px; }
+/* Investigator: one case-file surface; findings are rows on a shared timeline, not cards */
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-l); overflow: hidden; }
+.case-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; padding: 18px 24px; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--muted); }
+.case-head b { color: var(--text); font-weight: 700; }
+.case-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+.case-media { padding: 24px; border-right: 1px solid var(--line); min-width: 0; }
+.case-side { padding: 28px; }
+.frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r-m); overflow: hidden; background: #0A1020; }
+.frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.region { position: absolute; border: 2px dashed var(--likely); border-radius: 6px; opacity: 0; transition: opacity .2s ease-out; pointer-events: none; }
+.region.on { opacity: 1; }
+.region span { position: absolute; z-index: 1; left: 4px; top: 4px; font-size: 12px; font-weight: 700; line-height: 1; white-space: nowrap; padding: 5px 8px; border-radius: 999px; background: var(--likely); color: #1B1440; }
+.region.low span { top: calc(100% + 6px); left: -2px; }
+.region.high span { top: auto; bottom: calc(100% + 6px); left: -2px; }
+.region.br span { top: auto; left: auto; bottom: 4px; right: 4px; }
+.region.real { border-color: var(--text); }
+.region.real span { background: var(--text); color: var(--bg); }
+.play { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); background: rgba(7,8,14,.78); border: 0; border-radius: 999px; padding: 7px 12px 7px 9px; cursor: pointer; }
+.play svg { width: 16px; height: 16px; fill: currentColor; }
+.play .i-play, .play.is-playing .i-pause { display: block; }
+.play .i-pause, .play.is-playing .i-play { display: none; }
+.lanes { position: relative; margin-top: 16px; }
+.scrub { position: relative; height: 22px; }
+.rail { position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.rail i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--muted); }
+.scrub input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.playhead { position: absolute; top: 11px; bottom: 0; width: 2px; margin-left: -1px; background: rgba(243,241,250,.4); pointer-events: none; }
+.playhead::before { content: ""; position: absolute; top: -7px; left: -6px; width: 14px; height: 14px; border-radius: 50%; background: var(--text); }
+.lanes:has(input:focus-visible) .playhead::before { outline: 2px solid var(--accent); outline-offset: 3px; }
+.ticks { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; padding: 2px 0 8px; }
+.lane { display: block; width: 100%; text-align: left; font: inherit; color: var(--text); background: none; border: 0; border-top: 1px solid var(--line); padding: 12px 0 14px; }
+button.lane { cursor: pointer; }
+.lane-label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.lane-label span:last-child { color: var(--muted); font-weight: 500; text-align: right; }
+button.lane:hover .lane-label span:first-child { text-decoration: underline; text-underline-offset: 3px; }
+.lane[aria-pressed="true"] .lane-label span:first-child { color: var(--accent); }
+.lane-bar { display: block; position: relative; height: 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; }
+.lane-bar i { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--likely); opacity: .5; transition: opacity .2s ease-out; }
+.lane.now .lane-bar i { opacity: 1; }
+.lanes-hint { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.verdict { display: flex; align-items: center; gap: 10px; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 4px; }
+.verdict::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--likely); flex: none; }
+.case-side .sure { margin: 0 0 22px; color: var(--muted); font-size: 15px; }
 .facts { margin: 0; padding: 0; list-style: none; font-size: 15px; }
 .facts li { padding: 14px 0; border-top: 1px solid var(--line); color: var(--muted); }
 .facts b { display: block; font-size: 14px; color: var(--text); margin-bottom: 2px; }
-.tracks { display: grid; gap: 22px; }
-.track-label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-.track-label span:last-child { color: var(--muted); font-weight: 500; text-align: right; }
-.track { position: relative; height: 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
-.track i { position: absolute; top: 0; bottom: 0; background: var(--confirmed); border-radius: 999px; }
-.track i.soft { background: var(--likely); }
-.ticks { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+.trace { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.trace canvas { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-s); background: #0A1020; }
+.trace span { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
+.case-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 24px; border-top: 1px solid var(--line); }
+.case-foot p { font-size: 15px; color: var(--muted); }
+.btn-line { background: transparent; color: var(--text); border: 1.5px solid var(--line); font-size: 15px; padding: 10px 20px; }
+.btn-line:hover { background: var(--raised); border-color: var(--text); }
+.soon { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
 
 /* Plans */
 .plans { display: grid; border-top: 1px solid var(--text); }
@@ -205,7 +245,8 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
 
 @media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; grid-template-areas: "copy" "demo"; row-gap: 48px; padding: 24px 0 80px; }
-  .report { grid-template-columns: 1fr; gap: 40px; }
+  .case-body { grid-template-columns: 1fr; }
+  .case-media { border-right: 0; border-bottom: 1px solid var(--line); }
   .scale { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
   .stop::before { right: -12px; }
   .stop:nth-child(2n)::before { right: 0; }
@@ -226,6 +267,13 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
   section.block { padding: 72px 0; }
   .post-head, .caption, .hidden-note { padding-left: 14px; padding-right: 14px; }
   .scene, .hidden-note { margin-left: 14px; margin-right: 14px; }
+  .case-head, .case-foot { padding-left: 16px; padding-right: 16px; }
+  .case-media { padding: 16px; }
+  .case-side { padding: 24px 16px; }
+  .region span { display: none; font-size: 11px; padding: 4px 7px; }
+  .region.picked span, .region[data-f="water"] span { display: block; }
+  .lane-label { flex-direction: column; gap: 2px; }
+  .lane-label span:last-child { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 </style>
@@ -375,25 +423,73 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
     </section>
 
     <section class="block" aria-labelledby="inv-h">
-      <h2 class="section" id="inv-h">Investigator shows exactly what's AI.</h2>
-      <p class="section-lede">Run a Deep Scan on any post to get a full breakdown: which parts are AI, where in the video, where it came from, and who's posting it.</p>
-      <div class="report">
-        <div>
-          <h3>Likely AI</h3>
-          <p class="sure">Deep Scan of a 30-second video (example)</p>
-          <ul class="facts">
-            <li><b>What's AI</b>The water and the lights; the street sign looks real</li>
-            <li><b>Provenance</b>No Content Credentials found</li>
-            <li><b>Source trace</b>Oldest copy found 2 days earlier, on a different account</li>
-            <li><b>Account</b>9 days old, 31 of its last 40 posts flagged</li>
-          </ul>
+      <h2 class="section" id="inv-h">Investigator opens the whole case.</h2>
+      <p class="section-lede">Coming soon. A badge tells you a post is probably AI. Investigator shows you why: pick a post, and Deep Scan marks which parts are AI, the exact seconds, where the video first appeared, and who's behind the account.</p>
+      <div class="case" id="case">
+        <div class="case-head">
+          <p><b>Deep Scan</b> &middot; newsflash_now &middot; &ldquo;Downtown is underwater after tonight's storm.&rdquo;</p>
+          <p>Example report</p>
         </div>
-        <div class="tracks" aria-label="Video timeline with flagged seconds">
-          <div><div class="track-label"><span>Background</span><span>0:03 to 0:24</span></div><div class="track"><i style="left:10%;width:70%"></i></div></div>
-          <div><div class="track-label"><span>Lights and water motion</span><span>0:04 to 0:11, 0:18 to 0:27</span></div><div class="track"><i style="left:13%;width:24%"></i><i style="left:60%;width:30%"></i></div></div>
-          <div><div class="track-label"><span>Voice</span><span>Sounds real</span></div><div class="track"></div></div>
-          <div><div class="track-label"><span>On-screen text</span><span>Possibly AI</span></div><div class="track"><i class="soft" style="left:0;width:18%"></i></div></div>
-          <div class="ticks" aria-hidden="true"><span>0:00</span><span>0:10</span><span>0:20</span><span>0:30</span></div>
+        <div class="case-body">
+          <div class="case-media">
+            <div class="frame">
+              <canvas role="img" aria-label="Example video: a city street at night, flooded, with streetlights and a Main St sign"></canvas>
+              <div class="region br" data-f="water" style="left:1.5%;top:63%;width:97%;height:35%" aria-hidden="true"><span>Floodwater &middot; Likely AI</span></div>
+              <div class="region high" data-f="refl" style="left:22.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"><span>Light reflections &middot; Likely AI</span></div>
+              <div class="region" data-f="refl" style="left:56.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"></div>
+              <div class="region" data-f="refl" style="left:84.5%;top:65.5%;width:7%;height:24%" aria-hidden="true"></div>
+              <div class="region real low" data-f="sign" style="left:8.5%;top:36.5%;width:12%;height:10%" aria-hidden="true"><span>Street sign &middot; Looks real</span></div>
+              <button class="play" type="button" aria-label="Pause example video">
+                <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+                <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
+                <span>0:00 / 0:30</span>
+              </button>
+            </div>
+            <div class="lanes">
+              <div class="scrub">
+                <div class="rail"><i></i></div>
+                <input type="range" min="0" max="30" step="0.1" value="0" aria-label="Position in the example video">
+              </div>
+              <div class="ticks" aria-hidden="true"><span>0:00</span><span>0:10</span><span>0:20</span><span>0:30</span></div>
+              <button class="lane" type="button" data-f="water" aria-pressed="false">
+                <span class="lane-label"><span>Floodwater</span><span>Likely AI &middot; 0:03 to 0:24</span></span>
+                <span class="lane-bar"><i style="left:10%;width:70%"></i></span>
+              </button>
+              <button class="lane" type="button" data-f="refl" aria-pressed="false">
+                <span class="lane-label"><span>Light reflections</span><span>Likely AI &middot; 0:04 to 0:11, 0:18 to 0:27</span></span>
+                <span class="lane-bar"><i style="left:13.3%;width:23.4%"></i><i style="left:60%;width:30%"></i></span>
+              </button>
+              <button class="lane" type="button" data-f="sign" aria-pressed="false">
+                <span class="lane-label"><span>Street sign</span><span>Looks real</span></span>
+                <span class="lane-bar"></span>
+              </button>
+              <div class="lane">
+                <span class="lane-label"><span>Voice</span><span>Sounds real</span></span>
+                <span class="lane-bar"></span>
+              </div>
+              <span class="playhead" aria-hidden="true"></span>
+            </div>
+            <p class="lanes-hint">Tap a finding to see where it is in the video.</p>
+          </div>
+          <div class="case-side">
+            <h3 class="verdict">Likely AI</h3>
+            <p class="sure">A Deep Scan estimate, not a platform label.</p>
+            <ul class="facts">
+              <li><b>What's AI</b>The floodwater and the light reflections in it. The street, the sign and the voice look real.</li>
+              <li><b>Source trace</b>The oldest copy was posted 2 days earlier on another account. Same street, no flood.
+                <div class="trace" aria-hidden="true">
+                  <div><canvas data-scene="dry"></canvas><span>Oldest copy, 2 days earlier</span></div>
+                  <div><canvas data-scene="flood"></canvas><span>This post</span></div>
+                </div>
+              </li>
+              <li><b>Account</b>9 days old. 31 of its last 40 posts were flagged.</li>
+              <li><b>Provenance</b>No Content Credentials found.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="case-foot">
+          <p>An example report on a made-up post. Investigator isn't out yet.</p>
+          <a class="btn btn-line" href="#join" data-notify>Get notified when it's ready</a>
         </div>
       </div>
     </section>
@@ -402,10 +498,10 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
       <h2 class="section" id="plans-h">Free to start. More when you want it.</h2>
       <p class="section-lede">Early supporters lock in launch pricing.</p>
       <div class="plans">
-        <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and hover cards that explain what's AI, using platform labels, Content Credentials and creator disclosures.</p></div>
+        <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and evidence cards that explain what's AI, using platform labels, creator disclosures, community flags and AI hashtags.</p></div>
         <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
-        <div class="plan"><h3>Investigator</h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
-        <div class="plan"><h3>Family</h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
+        <div class="plan"><h3>Investigator<span class="soon">Coming soon</span></h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
+        <div class="plan"><h3>Family<span class="soon">Coming soon</span></h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
       </div>
     </section>
 
@@ -583,6 +679,224 @@ h2.section { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.02; letter-spac
       btn.textContent = 'Stay in the loop';
     });
   });
+})();
+
+// Investigator example: a drawn "video" with a shared timeline of findings
+(function () {
+  var box = document.getElementById('case');
+  if (!box) return;
+  var canvas = box.querySelector('canvas');
+  var g = canvas.getContext('2d');
+  var range = box.querySelector('.scrub input');
+  var head = box.querySelector('.playhead');
+  var fill = box.querySelector('.rail i');
+  var playBtn = box.querySelector('.play');
+  var clock = playBtn.querySelector('span');
+  var lanes = box.querySelectorAll('button.lane');
+  var allLanes = box.querySelectorAll('.lane');
+  var regions = box.querySelectorAll('.region');
+  var minis = box.querySelectorAll('.trace canvas');
+  var DUR = 30, SPEED = 2; // video seconds per real second
+  var SEGS = { water: [[3, 24]], refl: [[4, 11], [18, 27]], sign: [] };
+  var LAMPS = [.26, .60, .88];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t = reduce ? 6 : 0, playing = !reduce, visible = !('IntersectionObserver' in window);
+  var picked = null, dragging = false, raf = 0, last = 0, W = 0, H = 0;
+
+  // Seeded random so the street looks the same on every visit
+  var seed = 11;
+  function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  var far = [], near = [], wins = [], drops = [], x, w, i;
+  for (x = 0; x < 1; x += w) { w = .05 + rnd() * .07; far.push([x, w, .18 + rnd() * .2]); }
+  for (x = -.02; x < 1; x += w + .012) {
+    w = .08 + rnd() * .1;
+    var h = .1 + rnd() * .16;
+    near.push([x, w, h]);
+    for (var cx = x + .012; cx < x + w - .016; cx += .022) {
+      for (var cy = .64 - h + .025; cy < .6; cy += .042) {
+        if (rnd() > .42) wins.push([cx, cy, .25 + rnd() * .55, rnd()]);
+      }
+    }
+  }
+  for (i = 0; i < 90; i++) drops.push([rnd(), rnd(), .5 + rnd() * .5]);
+
+  function fmt(s) { s = Math.floor(s); return '0:' + (s < 10 ? '0' : '') + s; }
+  function inSeg(k) { return (SEGS[k] || []).some(function (s) { return t >= s[0] && t < s[1]; }); }
+
+  function draw(g, W, H, t, flood) {
+    var wl = .64 * H, ph = t * 1.6;
+    var sky = g.createLinearGradient(0, 0, 0, wl);
+    sky.addColorStop(0, '#080D1A'); sky.addColorStop(1, '#1C2846');
+    g.fillStyle = sky; g.fillRect(0, 0, W, wl);
+    g.fillStyle = '#131B30';
+    far.forEach(function (b) { g.fillRect(b[0] * W, wl - b[2] * H, b[1] * W + 1, b[2] * H); });
+    g.fillStyle = '#0B1222';
+    near.forEach(function (b) { g.fillRect(b[0] * W, wl - b[2] * H, b[1] * W, b[2] * H); });
+    wins.forEach(function (o) {
+      var a = o[3] > .93 ? o[2] * (.6 + .4 * Math.sin(t * 7 + o[3] * 40)) : o[2];
+      g.fillStyle = 'rgba(242,198,109,' + a + ')';
+      g.fillRect(o[0] * W, o[1] * H, .009 * W, .02 * H);
+    });
+    // Streetlights
+    LAMPS.forEach(function (lx) {
+      var px = lx * W, top = .36 * H, r = .085 * W;
+      var halo = g.createRadialGradient(px, top, 0, px, top, r);
+      halo.addColorStop(0, 'rgba(250,214,140,.5)'); halo.addColorStop(1, 'rgba(250,214,140,0)');
+      g.fillStyle = halo; g.fillRect(px - r, top - r, r * 2, r * 2);
+      g.fillStyle = '#05080F'; g.fillRect(px - .002 * W, top, .004 * W, wl - top);
+      g.fillStyle = '#FCE6B0'; g.fillRect(px - .012 * W, top - .006 * H, .024 * W, .012 * H);
+    });
+    // Street sign
+    var sx = .145 * W, sy = .385 * H, sw = .1 * W, sh = .052 * H;
+    g.fillStyle = '#05080F'; g.fillRect(sx - .002 * W, sy, .004 * W, wl - sy);
+    g.fillStyle = '#1F6E4C'; g.fillRect(sx - sw / 2, sy, sw, sh);
+    g.strokeStyle = '#E8F1EC'; g.lineWidth = Math.max(1, .0025 * W);
+    g.strokeRect(sx - sw / 2 + .006 * W, sy + .008 * H, sw - .012 * W, sh - .016 * H);
+    g.fillStyle = '#F3F7F4'; g.font = '700 ' + Math.round(.026 * H) + 'px "Schibsted Grotesk", Arial, sans-serif';
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('MAIN ST', sx, sy + sh / 2 + 1);
+    if (!flood) { street(g, W, H, wl); return; }
+    // A car roof just above the waterline
+    g.fillStyle = '#1B2236';
+    g.beginPath(); g.moveTo(.655 * W, wl); g.lineTo(.675 * W, wl - .045 * H); g.lineTo(.76 * W, wl - .045 * H); g.lineTo(.785 * W, wl); g.closePath(); g.fill();
+    g.fillStyle = '#34425F'; g.fillRect(.682 * W, wl - .037 * H, .034 * W, .026 * H); g.fillRect(.722 * W, wl - .037 * H, .032 * W, .026 * H);
+    // Floodwater
+    var sea = g.createLinearGradient(0, wl, 0, H);
+    sea.addColorStop(0, '#17264A'); sea.addColorStop(1, '#0A1222');
+    g.fillStyle = sea; g.fillRect(0, wl, W, H - wl);
+    wins.forEach(function (o) {
+      var ry = wl + (wl - o[1] * H) * .55;
+      if (ry > H) return;
+      var wob = Math.sin(ry * .08 + ph * 2) * .004 * W;
+      g.fillStyle = 'rgba(242,198,109,' + o[2] * .22 + ')';
+      g.fillRect(o[0] * W + wob, ry, .009 * W, .008 * H);
+    });
+    LAMPS.forEach(function (lx) {
+      for (var y = wl + 2; y < H; y += .012 * H) {
+        var d = (y - wl) / (H - wl);
+        var wob = Math.sin(y * .7 + ph * 5 + lx * 9) * .004 * W * (.5 + d);
+        var len = .045 * W * (1 - d * .5) * (.55 + .45 * Math.sin(y * 1.3 + ph * 4 + lx * 5));
+        g.fillStyle = 'rgba(250,214,140,' + (.55 * (1 - d)) + ')';
+        g.fillRect(lx * W + wob - len / 2, y, len, Math.max(1, .004 * H));
+      }
+    });
+    g.fillStyle = 'rgba(150,175,225,.2)';
+    for (var r = 0; r < 26; r++) {
+      var ry = wl + Math.pow(r / 26, 1.6) * (H - wl);
+      var off = ((r * .137 + ph * .03 * (1 + r % 3)) % 1) * W;
+      for (var k = -1; k < 4; k++) g.fillRect(off + k * W * .33 - W * .1, ry, W * (.06 + (r % 4) * .02), Math.max(1, .002 * H));
+    }
+    g.fillStyle = 'rgba(170,195,240,.35)'; g.fillRect(0, wl, W, Math.max(1, .003 * H));
+    // Rain
+    g.strokeStyle = 'rgba(190,205,235,.22)'; g.lineWidth = Math.max(1, .0015 * W); g.beginPath();
+    drops.forEach(function (o) {
+      var y = ((o[1] + t * 1.5 * o[2]) % 1) * H, px = o[0] * W;
+      g.moveTo(px, y); g.lineTo(px - .006 * W, y + .045 * H * o[2]);
+    });
+    g.stroke();
+  }
+
+  // The same street before the flood, for the source-trace comparison
+  function street(g, W, H, wl) {
+    var road = g.createLinearGradient(0, wl, 0, H);
+    road.addColorStop(0, '#1C202B'); road.addColorStop(1, '#0E1017');
+    g.fillStyle = road; g.fillRect(0, wl, W, H - wl);
+    g.fillStyle = '#272C3A'; g.fillRect(0, wl, W, .05 * H);
+    g.fillStyle = 'rgba(232,190,100,.7)';
+    for (var dx = .02; dx < 1; dx += .12) g.fillRect(dx * W, .84 * H, .06 * W, Math.max(1, .008 * H));
+    LAMPS.forEach(function (lx) {
+      var pool = g.createRadialGradient(lx * W, wl + .08 * H, 0, lx * W, wl + .08 * H, .12 * W);
+      pool.addColorStop(0, 'rgba(250,214,140,.2)'); pool.addColorStop(1, 'rgba(250,214,140,0)');
+      g.fillStyle = pool; g.fillRect(lx * W - .12 * W, wl, .24 * W, .3 * H);
+    });
+    g.fillStyle = '#1B2236';
+    g.beginPath(); g.moveTo(.655 * W, wl + .04 * H); g.lineTo(.675 * W, wl - .005 * H); g.lineTo(.76 * W, wl - .005 * H); g.lineTo(.785 * W, wl + .04 * H); g.closePath(); g.fill();
+    g.fillRect(.635 * W, wl + .04 * H, .17 * W, .07 * H);
+    g.fillStyle = '#34425F'; g.fillRect(.682 * W, wl + .003 * H, .034 * W, .026 * H); g.fillRect(.722 * W, wl + .003 * H, .032 * W, .026 * H);
+    g.fillStyle = '#E0524D'; g.fillRect(.795 * W, wl + .055 * H, .008 * W, .016 * H);
+    g.fillStyle = '#05070D';
+    [.672, .77].forEach(function (cx) { g.beginPath(); g.arc(cx * W, wl + .11 * H, .035 * H, 0, Math.PI * 2); g.fill(); });
+  }
+
+  function render() {
+    if (!W) return;
+    draw(g, W, H, t, true);
+    var p = t / DUR * 100;
+    head.style.left = p + '%';
+    fill.style.width = p + '%';
+    if (!dragging) range.value = t.toFixed(1);
+    range.setAttribute('aria-valuetext', fmt(t) + ' of 0:30');
+    clock.textContent = fmt(t) + ' / 0:30';
+    regions.forEach(function (el) {
+      var k = el.getAttribute('data-f');
+      el.classList.toggle('on', picked === k || inSeg(k));
+      el.classList.toggle('picked', picked === k);
+    });
+    allLanes.forEach(function (el) { el.classList.toggle('now', inSeg(el.getAttribute('data-f'))); });
+  }
+
+  function frame(now) {
+    if (playing && !dragging) { t += Math.min(now - last, 100) / 1000 * SPEED; if (t >= DUR) t -= DUR; }
+    last = now;
+    render();
+    raf = visible && playing ? requestAnimationFrame(frame) : 0;
+  }
+  function kick() { if (!raf && visible && playing) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function setPlaying(on) {
+    playing = on;
+    playBtn.classList.toggle('is-playing', on);
+    playBtn.setAttribute('aria-label', (on ? 'Pause' : 'Play') + ' example video');
+    if (on) kick(); else render();
+  }
+
+  function size() {
+    var rect = canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = Math.round(rect.width * d);
+    H = canvas.height = Math.round(rect.height * d);
+    minis.forEach(function (c) {
+      var r = c.getBoundingClientRect();
+      c.width = Math.round(r.width * d); c.height = Math.round(r.height * d);
+      draw(c.getContext('2d'), c.width, c.height, 6, c.getAttribute('data-scene') === 'flood');
+    });
+    render();
+  }
+
+  playBtn.addEventListener('click', function () { setPlaying(!playing); });
+  range.addEventListener('pointerdown', function () { dragging = true; });
+  window.addEventListener('pointerup', function () { dragging = false; });
+  range.addEventListener('input', function () { t = Math.min(+range.value, DUR - .01); render(); });
+  range.addEventListener('change', function () { dragging = false; });
+
+  lanes.forEach(function (el) {
+    el.addEventListener('click', function () {
+      var k = el.getAttribute('data-f');
+      picked = picked === k ? null : k;
+      lanes.forEach(function (o) { o.setAttribute('aria-pressed', String(o.getAttribute('data-f') === picked)); });
+      if (picked && SEGS[k].length) t = SEGS[k][0][0] + 1;
+      setPlaying(false);
+    });
+  });
+
+  var notify = box.querySelector('[data-notify]');
+  var email = document.getElementById('email');
+  if (notify && email) {
+    notify.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('join').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      setTimeout(function () { email.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      kick();
+    }).observe(canvas);
+  }
+  window.addEventListener('resize', size);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+  setPlaying(playing);
+  size();
 })();
 </script>
 </body>
