@@ -180,3 +180,11 @@ test('Plain Google web result is not flagged', () => {
 test('Google defaults to inform level', () => {
   assert.equal(S.normalize(null).levels.google, 'inform');
 });
+
+test('A hashtag right before another element still counts', () => {
+  // React-built pages put no whitespace between elements, so textContent
+  // would read "#aivideo" and the next line as one word.
+  const r = run('youtube', '<ytd-rich-item-renderer><h3>Sky jellyfish #aivideo</h3><a href="/@SkyDrift">SkyDrift</a><div>61K views</div></ytd-rich-item-renderer>', 'ytd-rich-item-renderer');
+  assert.equal(r.rung, 'possible');
+  assert.match(r.evidence[0].text, /#aivideo/);
+});

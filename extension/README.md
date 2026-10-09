@@ -1,4 +1,4 @@
-# ClariFi beta 0.1: browser extension
+# ClariFi: browser extension
 
 ClariFi flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, and shows the evidence behind every flag. Pick a level per site: **Inform** adds a badge, **Warn** blurs the post until you choose to view it, **Block** hides it.
 
@@ -22,7 +22,7 @@ ClariFi flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads 
 - **Toolbar icon:** shows how many posts are flagged on the page. The popup changes the level for the current site and pauses ClariFi for 15 minutes, 1 hour, or until you resume.
 - **Settings:** per-site levels, whether Block also hides Likely posts, note vs. full removal, hashtag signals, your account lists, and mistake reports.
 
-## What this beta checks
+## What ClariFi checks
 
 | Evidence | Examples | Rung |
 | --- | --- | --- |
@@ -50,14 +50,14 @@ Open each site, scroll for a minute, and note anything wrong in a mistake report
 Platforms change their page code often. Everything site-specific lives in `src/content/sites.js`: where posts are (`posts`), the label wording (`labels`), and how to read the account name (`author`). Most fixes are a one-line edit there, then click the reload icon on `chrome://extensions`.
 
 ## Privacy
-Checks run on your computer. This beta makes no network requests at all. Settings sync through your browser account; mistake reports stay on this computer until you download them.
+Checks run on your computer, and ClariFi never sends the pages you visit or the posts you see anywhere. Its only network request is a plan check with ExtensionPay (extensionpay.com), which runs ClariFi's paid plans. Settings sync through your browser account; mistake reports stay on this computer until you download them. Full policy: https://getclarifi.vercel.app/privacy
 
 ## For developers
 ```
 npm install jsdom
 node --test tests/detect.test.js
 ```
-14 tests cover labels, disclosures, negation, questions, hashtags, flair, account lists, level actions and settings validation.
+25 tests cover labels, disclosures, negation, questions, hashtags, flair, account lists, level actions and settings validation.
 
 ```
 manifest.json          Chrome/Edge/Firefox (Manifest V3)
