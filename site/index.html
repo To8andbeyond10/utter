@@ -285,7 +285,7 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
       <img src="favicon-32.png" width="28" height="28" alt="">
       ClariFi
     </a>
-    <a class="head-link" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
+    <a class="head-link" href="#join" data-store-link>Download free</a>
   </header>
 
   <main id="top">
@@ -295,8 +295,8 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
         <h1>Know what's <span class="real">real</span> in your feed.</h1>
         <p class="lede">ClariFi spots AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit. It shows you the evidence behind every flag, and blurs or hides AI posts when you want it to.</p>
         <div class="hero-cta">
-          <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
-          <p class="cta-note">Free &middot; Chrome, Edge &amp; Firefox</p>
+          <a class="btn btn-download" href="#join" data-store-link>Download free</a>
+          <p class="cta-note">Free &middot; Chrome &amp; Edge</p>
         </div>
 
         <form class="signup" id="join" data-endpoint="/api/waitlist" novalidate>
@@ -388,7 +388,7 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
         <div class="stop stop-likely"><h3>Likely</h3><p>Several weaker signals line up, like AI hashtags and phrases together.</p><p class="does">Can inform or warn; block if you opt in</p></div>
         <div class="stop stop-possible"><h3>Possible</h3><p>AI hashtags or an AI phrase on their own, nothing more.</p><p class="does">Can only inform</p></div>
       </div>
-      <p class="ladder-note">Think a flag is wrong? Every card has a "Report a mistake" button, and creators can dispute flags.</p>
+      <p class="ladder-note">Think a flag is wrong? Use "Report a mistake" on its card. Reports stay on your computer.</p>
     </section>
 
     <section class="block" aria-labelledby="proof-h">
@@ -499,7 +499,7 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
       <p class="section-lede">Early supporters lock in launch pricing.</p>
       <div class="plans">
         <div class="plan"><h3>Free</h3><p><span class="who">For anyone curious.</span> Badges and evidence cards that explain what's AI, using platform labels, creator disclosures, community flags and AI hashtags.</p></div>
-        <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, detector models, your own account rules, and the same settings on every device.</p></div>
+        <div class="plan"><h3>Plus</h3><p><span class="who">For a cleaner feed.</span> Warn and Block levels, your own account rules, and the same settings on every device.</p></div>
         <div class="plan"><h3>Investigator<span class="soon">Coming soon</span></h3><p><span class="who">For digging in.</span> Deep Scan reports on any post, report history, and shareable report cards for calling out fakes.</p></div>
         <div class="plan"><h3>Family<span class="soon">Coming soon</span></h3><p><span class="who">For parents.</span> Protection on your kids' devices, settings locked behind a PIN, a curated list of AI kids' channels, and a weekly summary.</p></div>
       </div>
@@ -508,7 +508,7 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
     <section class="block" aria-labelledby="faq-h">
       <h2 class="section" id="faq-h">Questions</h2>
       <div class="faq">
-        <div><h3>Where does it work?</h3><p>First as an extension for Chrome, Edge and Firefox on Windows. The Android app follows and works inside the YouTube, TikTok, Instagram and X apps.</p></div>
+        <div><h3>Where does it work?</h3><p>It's a browser extension for desktop Chrome and Edge.</p></div>
         <div><h3>Does ClariFi see what I browse?</h3><p>Checks run on your device. ClariFi never sends the pages you visit or the posts you see anywhere, and it doesn't keep your browsing history.</p></div>
         <div><h3>How accurate is it?</h3><p>As accurate as its evidence, and it tells you which kind it has. "Labeled by YouTube" is a fact. "Likely AI" is an estimate, and the card says so.</p></div>
         <div><h3>Will it hide real posts?</h3><p>Block only acts on confirmed or strong evidence unless you choose otherwise. You can always show a hidden post with one tap.</p></div>
@@ -519,7 +519,7 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
       <img src="mascot.png" width="132" height="132" alt="" loading="lazy">
       <div>
         <h2>See your feed clearly.</h2>
-        <a class="btn btn-download" href="https://github.com/To8andbeyond10/utter/releases/download/v0.1.0-beta/clarifi-extension-latest.zip">Download free</a>
+        <a class="btn btn-download" href="#join" data-store-link>Download free</a>
       </div>
     </section>
   </main>
@@ -530,6 +530,12 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
   </footer>
 </div>
 
+<script>
+// Every "Download free" button points here. It's a placeholder until the Chrome Web Store
+// listing is live, so for now it sends people to the email signup. Replace it with the listing URL.
+var STORE_URL = '#join';
+document.querySelectorAll('[data-store-link]').forEach(function (a) { a.setAttribute('href', STORE_URL); });
+</script>
 <script>
 (function () {
   var notes = {
@@ -626,12 +632,12 @@ button.lane:hover .lane-label span:first-child { text-decoration: underline; tex
   // ClariFi is a desktop extension: on phones the zip is useless, so point
   // download CTAs at the email form instead of dumping project files on people.
   if (isMobile) {
-    document.querySelectorAll('a[href*="releases/download"]').forEach(function (a) {
+    document.querySelectorAll('[data-store-link]').forEach(function (a) {
       a.setAttribute('href', '#join');
       a.textContent = 'Notify me at launch';
     });
     document.querySelectorAll('.cta-note').forEach(function (n) {
-      n.textContent = 'ClariFi runs on desktop Chrome, Edge & Firefox';
+      n.textContent = 'ClariFi runs on desktop Chrome & Edge';
     });
   }
 
