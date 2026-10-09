@@ -165,7 +165,10 @@
     resetArmed = false;
     e.target.textContent = 'Reset all settings';
     settings = S.normalize(null);
-    await chrome.storage.sync.clear();
+    // ExtensionPay keeps its keys in sync storage too. Clearing them would
+    // disconnect this browser from the user's paid plan, so keep them.
+    const stored = await chrome.storage.sync.get(null);
+    await chrome.storage.sync.remove(Object.keys(stored).filter((k) => !k.startsWith('extensionpay_')));
     await chrome.storage.sync.set(settings);
     renderAll();
     flashSaved('Settings reset');

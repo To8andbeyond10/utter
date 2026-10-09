@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ClariFi",
   "short_name": "ClariFi",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "See what's AI in your feed. Flags AI-made posts on YouTube, TikTok, Instagram, X, Facebook, Threads and Reddit, with the evidence.",
   "icons": {
     "16": "icons/icon16.png",
