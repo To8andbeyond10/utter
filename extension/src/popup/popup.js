@@ -86,6 +86,8 @@
       }
     });
     tier = await CB.getTier();
+    // The plan check can move Warn/Block sites back to Inform, so reload.
+    settings = await S.load();
     await refreshStatus();
   }
 

@@ -99,6 +99,19 @@
     return [...tags];
   }
 
+  // The post's text with a space between text nodes. textContent runs
+  // neighbouring elements together, so "#aiart" + "2h" would read "#aiart2h".
+  function fullText(post, limit) {
+    const parts = [];
+    let len = 0;
+    const walker = post.ownerDocument.createTreeWalker(post, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode() && len < limit) {
+      const t = walker.currentNode.nodeValue;
+      if (t && t.trim()) { parts.push(t); len += t.length + 1; }
+    }
+    return parts.join(' ').slice(0, limit);
+  }
+
   function add(evidence, rung, kind, text) {
     evidence.push({ rung, kind, text });
   }
@@ -131,7 +144,7 @@
       add(evidence, 'strong', 'rule', (author.startsWith('@') ? author : '@' + author) + ' is on your always-hide list');
     }
 
-    const full = (post.textContent || '').slice(0, 5000);
+    const full = fullText(post, 5000);
 
     const said = findDisclosure(full);
     if (said) add(evidence, 'strong', 'disclosure', 'The post says "' + said.trim().slice(0, 48) + '"');

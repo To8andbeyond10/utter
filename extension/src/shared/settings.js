@@ -73,6 +73,17 @@
     return siteId + ':' + String(handle).trim().toLowerCase().replace(/^@/, '');
   }
 
+  // Warn and Block need Plus. Returns the levels with those set back to
+  // Inform, or null when no site was on a paid level.
+  function freeLevels(levels) {
+    let changed = false;
+    const out = Object.assign({}, levels);
+    for (const k of Object.keys(out)) {
+      if (out[k] === 'warn' || out[k] === 'block') { out[k] = 'inform'; changed = true; }
+    }
+    return changed ? out : null;
+  }
+
   function siteName(id) {
     const site = SITES.find((x) => x.id === id);
     return site ? site.name : id;
@@ -80,6 +91,6 @@
 
   root.ClariFiSettings = {
     SITES, LEVELS, DEFAULTS, PAUSE_FOREVER,
-    normalize, load, save, isPaused, ruleKey, siteName
+    normalize, load, save, isPaused, ruleKey, siteName, freeLevels
   };
 })(globalThis);

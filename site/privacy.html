@@ -17,7 +17,8 @@ main { max-width: 680px; margin: 0 auto; padding: 48px 22px 80px; }
 .brand { display:inline-flex; align-items:center; gap:10px; color:var(--ink); text-decoration:none; font-weight:800; font-size:19px; letter-spacing:-0.01em; }
 .brand img { border-radius:50%; }
 h1 { font-size: 40px; letter-spacing: -0.03em; line-height: 1.05; margin: 24px 0 8px; }
-h2 { font-size: 20px; margin: 32px 0 6px; }
+h2 { font-size: 24px; letter-spacing: -0.015em; margin: 40px 0 4px; }
+h3 { font-size: 18px; margin: 24px 0 4px; }
 p, li { color: var(--slate); }
 a { color: var(--brand); }
 </style>
@@ -26,17 +27,38 @@ a { color: var(--brand); }
 <main>
   <a class="brand" href="/"><img src="favicon-32.png" width="26" height="26" alt="">ClariFi</a>
   <h1>Privacy</h1>
-  <p>Last updated September 30, 2026.</p>
-  <h2>What the waitlist collects</h2>
+  <p>Last updated October 9, 2026. This page covers the ClariFi browser extension and the waitlist on this site.</p>
+
+  <h2>The ClariFi extension</h2>
+
+  <h3>What it reads</h3>
+  <p>On YouTube, TikTok, Instagram, X, Facebook, Threads, Reddit and Google search, ClariFi reads the text and labels of the posts on the page to look for AI labels, creator disclosures and AI hashtags. When you click the detective on an image or video, it also reads that media's alt text and nearby caption. All of this happens on your device. ClariFi never sends the pages you visit, the posts you see or your browsing history anywhere, and it doesn't collect them.</p>
+
+  <h3>What it stores</h3>
+  <ul>
+    <li><b>Your settings</b>, including the accounts you add to your always-hide and always-allow lists. They're kept in your browser's extension storage and sync to your other computers if browser sync is on.</li>
+    <li><b>Mistake reports</b>, when you choose "Report a mistake." Each one holds the site, the page address, the account name and why ClariFi flagged the post. Reports stay on your computer until you download or clear them on the settings page. ClariFi never sends them.</li>
+  </ul>
+
+  <h3>Plans and payments</h3>
+  <p>ClariFi uses ExtensionPay (extensionpay.com) to run its paid plans, and ExtensionPay takes payments through Stripe. When you install ClariFi, ExtensionPay gives your copy a random ID, and ClariFi uses it to check whether you've paid. That check contains no browsing data. If you upgrade, you pay on ExtensionPay's checkout page, so your card details go to Stripe and never pass through ClariFi. We can see the email address you pay with and whether your plan is active, and we use them only to run your plan and answer you if you need help. <a href="https://extensionpay.com">ExtensionPay</a>'s terms and <a href="https://stripe.com/privacy">Stripe's privacy policy</a> also apply.</p>
+
+  <h3>What we never do</h3>
+  <p>We don't sell your data, share it with advertisers, or use it for anything other than running ClariFi. ClariFi's use of information follows the <a href="https://developer.chrome.com/docs/webstore/program-policies">Chrome Web Store User Data Policy</a>, including its Limited Use requirements.</p>
+
+  <h3>Removing your data</h3>
+  <p>"Reset all settings" on the settings page clears your settings and lists, and "Clear reports" deletes your mistake reports. Uninstalling ClariFi removes everything it stored in that browser. To cancel a paid plan, open ClariFi's settings and choose "Manage subscription."</p>
+
+  <h2>The waitlist</h2>
+
+  <h3>What it collects</h3>
   <p>Your email address, the three answers you pick on the form, and the date you joined. Nothing else.</p>
-  <h2>How it's used</h2>
+  <h3>How it's used</h3>
   <p>To email you when ClariFi is ready and to decide what to build first. We don't sell or share your email.</p>
-  <h2>Where it's stored</h2>
+  <h3>Where it's stored</h3>
   <p>In private storage on Vercel, the service that hosts this site. Only the ClariFi team can read it.</p>
-  <h2>Leaving the list</h2>
+  <h3>Leaving the list</h3>
   <p>Reply to any email from us and ask to be removed. Your record is deleted within 7 days.</p>
-  <h2>The ClariFi app</h2>
-  <p>When the app launches, its checks run on your device. It won't send what you browse anywhere unless you choose to run a Deep Scan on a specific post. The app will have its own privacy policy with full details.</p>
 </main>
 </body>
 </html>

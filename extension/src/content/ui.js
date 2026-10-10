@@ -107,6 +107,10 @@
     .toast[hidden] { display: none; }
   `;
 
+  // Deep Scan and the Investigator plan aren't available yet, so the card
+  // leaves out their upsell until they are.
+  const DEEP_SCAN_READY = false;
+
   const RUNG_ORDER = ['possible', 'likely', 'strong', 'confirmed'];
   const SURE = {
     confirmed: 'Confirmed: the platform says so',
@@ -296,7 +300,9 @@
         el('span', null, 'Deep Scan'),
         el('span', { class: 'tag' }, 'Investigator')
       );
-      card.append(top, meter, el('p', { class: 'sure' }), el('ul', { class: 'ev' }), el('p', { class: 'acct' }), acts, upsell, el('p', { class: 'brand' }, 'ClariFi'));
+      card.append(top, meter, el('p', { class: 'sure' }), el('ul', { class: 'ev' }), el('p', { class: 'acct' }), acts);
+      if (DEEP_SCAN_READY) card.append(upsell);
+      card.append(el('p', { class: 'brand' }, 'ClariFi'));
       toastEl = el('div', { class: 'toast', role: 'status', hidden: '' });
       wrap.append(card, toastEl);
       shadow.append(style, wrap);
