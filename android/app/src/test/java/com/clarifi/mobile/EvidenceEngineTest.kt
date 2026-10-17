@@ -1,6 +1,7 @@
 package com.clarifi.mobile
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -37,5 +38,27 @@ class EvidenceEngineTest {
     @Test fun noSignalNeverMeansVerifiedHuman() {
         val r = EvidenceEngine.analyze("Sunset over the bay")
         assertEquals(EvidenceEngine.Rung.NONE, r.rung)
+        assertTrue(r.meaning.contains("doesn't mean the content is human-made"))
+    }
+    @Test fun blankScreenIsNoTextNotAClearResult() {
+        val r = EvidenceEngine.analyze("  \n ·  ", "text read from your screen on this device")
+        assertEquals(EvidenceEngine.Status.NO_TEXT, r.status)
+        assertEquals("No readable text found", r.headline)
+    }
+    @Test fun failureIsReportedAsAnErrorNotAsNoSignal() {
+        val r = EvidenceEngine.failure("Screen capture wasn't approved, so nothing was read.")
+        assertEquals(EvidenceEngine.Status.ERROR, r.status)
+        assertEquals("Couldn't check this screen", r.headline)
+        assertTrue(r.meaning.contains("wasn't approved"))
+    }
+    @Test fun wordsReadAreCounted() {
+        val r = EvidenceEngine.analyze("Sunset over the bay #aiart")
+        assertEquals(5, r.wordCount)
+    }
+    @Test fun noHeadlineClaimsTheMediaItselfIsAi() {
+        EvidenceEngine.Rung.values().forEach { rung ->
+            val copy = (rung.headline + " " + rung.meaning).lowercase()
+            assertFalse(copy, copy.contains("this image is") || copy.contains("this video is") || copy.contains("deepfake"))
+        }
     }
 }

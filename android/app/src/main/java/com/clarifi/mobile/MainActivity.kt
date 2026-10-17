@@ -93,6 +93,8 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         hasPermission = Settings.canDrawOverlays(this)
+        // The bubble can be hidden from the overlay itself (drag to ✕), so re-read the saved state.
+        bubbleEnabled = BubbleSettings.isEnabled(this) && hasPermission
         capturedResult = AnalysisSession.latest
         if (pendingStart && hasPermission) {
             pendingStart = false
@@ -154,7 +156,7 @@ private fun ClariFiHome(
     )
     LaunchedEffect(capturedResult) { if (capturedResult != null) analysis = capturedResult }
     LaunchedEffect(sharedText) {
-        if (sharedText.isNotBlank()) analysis = EvidenceEngine.analyze(sharedText, "Shared from another app")
+        if (sharedText.isNotBlank()) analysis = EvidenceEngine.analyze(sharedText, "text shared from another app")
     }
 
     Box(Modifier.fillMaxSize().background(Night)) {
@@ -187,7 +189,7 @@ private fun ClariFiHome(
                     Text("Look closer.\nSee the signs.", fontSize = 35.sp, lineHeight = 39.sp,
                         letterSpacing = (-1.8).sp, fontWeight = FontWeight.Bold, color = Light)
                     Spacer(Modifier.height(10.dp))
-                    Text("Reveal the evidence behind AI-content claims — right where you scroll.",
+                    Text("See what captions, hashtags and labels say about AI, right where you scroll.",
                         color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                 }
                 Box(Modifier.weight(.78f).height(188.dp), contentAlignment = Alignment.Center) {
@@ -207,7 +209,7 @@ private fun ClariFiHome(
                 Spacer(Modifier.height(12.dp))
                 Text("Your lens on every app.", color = Light, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                 Spacer(Modifier.height(6.dp))
-                Text("Tap the movable monocle bubble for a one-time screen check. You approve every capture.",
+                Text("Tap the bubble for a one-time check of the text on your screen. Drag it anywhere and it tucks into the nearest edge; drop it on ✕ to hide it. You approve every capture.",
                     color = Muted, fontSize = 12.5.sp, lineHeight = 19.sp)
                 Spacer(Modifier.height(18.dp))
                 Box(Modifier.fillMaxWidth().height(50.dp).clip(RoundedCornerShape(16.dp))
@@ -261,7 +263,7 @@ private fun ClariFiHome(
                 Spacer(Modifier.height(12.dp))
                 Text("Analyze text  →", color = Lavender, fontSize = 14.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.End).clickable {
-                        if (manualInput.isNotBlank()) analysis = EvidenceEngine.analyze(manualInput, "Pasted text")
+                        if (manualInput.isNotBlank()) analysis = EvidenceEngine.analyze(manualInput, "text you pasted")
                     }.padding(8.dp))
             }
             if (analysis != null) {
@@ -288,23 +290,49 @@ private fun GlassPanel(content: @Composable ColumnScope.() -> Unit) {
 
 @Composable
 private fun ResultCard(result: EvidenceEngine.Result) {
+    val accent = when {
+        result.status == EvidenceEngine.Status.ERROR -> Color(0xFFFFB0B0)
+        result.status == EvidenceEngine.Status.NO_TEXT -> Muted
+        result.rung.priority >= EvidenceEngine.Rung.STRONG.priority -> Color(0xFFFFD68C)
+        result.rung == EvidenceEngine.Rung.NONE -> Light
+        else -> Lavender
+    }
     GlassPanel {
-        Text("EVIDENCE BREAKDOWN", fontSize = 10.sp, color = Lavender, letterSpacing = 1.5.sp)
-        Spacer(Modifier.height(8.dp))
-        Text(result.rung.label, color = if (result.rung == EvidenceEngine.Rung.NONE) Light else Lavender,
-            fontWeight = FontWeight.Bold, fontSize = 27.sp)
-        Spacer(Modifier.height(4.dp))
-        Text(result.origin, color = Muted, fontSize = 11.sp)
-        Spacer(Modifier.height(12.dp))
-        if (result.evidence.isEmpty()) {
-            Text("No explicit AI text signals found. This does not verify that the content is human-made.",
-                color = Light, fontSize = 12.sp, lineHeight = 18.sp)
-        } else result.evidence.forEach { item ->
-            Text("•  ${item.description}", color = Light, fontSize = 12.sp, lineHeight = 18.sp,
-                modifier = Modifier.padding(bottom = 7.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("WHAT THE TEXT SAYS", fontSize = 10.sp, color = Lavender, letterSpacing = 1.5.sp,
+                modifier = Modifier.weight(1f))
+            if (result.status == EvidenceEngine.Status.OK) {
+                Text(result.rung.label.uppercase(), color = accent, fontSize = 10.sp, fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp,
+                    modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(accent.copy(alpha = .16f))
+                        .border(1.dp, accent.copy(alpha = .45f), RoundedCornerShape(20.dp))
+                        .padding(horizontal = 10.dp, vertical = 4.dp))
+            }
         }
+        Spacer(Modifier.height(10.dp))
+        Text(result.headline, color = accent, fontWeight = FontWeight.Bold, fontSize = 23.sp, lineHeight = 28.sp)
         Spacer(Modifier.height(6.dp))
-        Text("Textual indicators only · Not a deepfake detector or proof of origin.",
+        Text(result.meaning, color = Light, fontSize = 13.sp, lineHeight = 19.sp)
+        if (result.evidence.isNotEmpty()) {
+            Spacer(Modifier.height(14.dp))
+            Text("WHAT CLARIFI FOUND", fontSize = 10.sp, color = Muted, letterSpacing = 1.2.sp, fontWeight = FontWeight.Bold)
+            result.evidence.forEach { item ->
+                Spacer(Modifier.height(9.dp))
+                val strong = item.rung.priority >= EvidenceEngine.Rung.STRONG.priority
+                Text("${item.kind.uppercase()}  ·  ${item.rung.label.uppercase()}", fontSize = 10.sp,
+                    color = if (strong) Color(0xFFFFD68C) else Lavender, fontWeight = FontWeight.Bold, letterSpacing = .8.sp)
+                Text(item.description, color = Light, fontSize = 12.5.sp, lineHeight = 18.sp)
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        val source = when (result.status) {
+            EvidenceEngine.Status.OK -> "Source: ${result.origin} · ${result.wordCount} words read on this device"
+            EvidenceEngine.Status.NO_TEXT -> "Source: ${result.origin}"
+            EvidenceEngine.Status.ERROR -> "Nothing was saved or uploaded."
+        }
+        Text(source, color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
+        Spacer(Modifier.height(4.dp))
+        Text("ClariFi reads text only. It can't tell whether an image or video itself is AI-made.",
             color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
     }
 }

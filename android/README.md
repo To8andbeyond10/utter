@@ -40,11 +40,20 @@ gradle --no-daemon testDebugUnitTest assembleDebug
 1. Open ClariFi and grant *Display over other apps* after tapping **Enable floating button**. Grant notifications if prompted.
 2. Confirm the purple mascot bubble appears above another app. Drag it, adjust transparency in ClariFi, then confirm the adjustment takes effect.
 3. In TikTok, Instagram, or another app, tap the floating bubble. Accept the **system** screen-capture dialog (choose the intended screen/app). Wait for the evidence card.
-4. Verify `#aiart` yields **Possible**, three distinct AI hashtags yield **Likely**, and an explicit `made with Midjourney` disclosure yields **Strong**.
-5. Verify `NOT made with AI` does **not** trigger a Strong claim, and screenshot `AI info` is **not** considered Confirmed.
+4. Verify `#aiart` yields **Weak**, three distinct AI hashtags yield **Moderate**, and an explicit `made with Midjourney` disclosure yields **Strong** ("The text says it's AI-made").
+5. Verify `NOT made with AI` does **not** trigger a Strong claim, and screenshot `AI info` is **not** considered Verified.
 6. Share text from another app to **ClariFi** and verify its evidence breakdown appears without overlay permission.
 7. Deny capture consent and verify capture cancels and bubble returns. Stop the bubble in ClariFi; verify the overlay disappears.
 8. Test on Android 14, 15 and 16: different OS versions may render capture consent and protected content differently.
+
+## Milestone 2, batch 1 (bubble motion and evidence panel)
+
+- The bubble glides to the nearest screen edge after a drag (with fling momentum), stays clear of the status bar, nav bar and cutouts, and remembers its edge and height across restarts and rotation.
+- Dragging shows a ✕ target at the bottom; dropping the bubble there hides it and turns the floating button off.
+- Tap feedback (press scale, haptics); no always-on pulse animation, and animations are skipped when Android's animations are turned off.
+- The result card opens next to the bubble, closes on an outside tap, and offers Check again / Details / Close.
+- Wording describes what the text says, never whether the media is AI-made. Failed captures show "Couldn't check this screen" with the reason, and screens with no readable text say so instead of showing "No signal".
+- Each finding names its kind (disclosure, hashtags, mention, label-like text) and quotes the matched text; the card states its source and how many words were read on device.
 
 ## Known limitations and next milestone
 

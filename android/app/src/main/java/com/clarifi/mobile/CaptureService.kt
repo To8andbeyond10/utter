@@ -44,18 +44,18 @@ class CaptureService : Service() {
         val data: Intent? = if (Build.VERSION.SDK_INT >= 33) intent?.getParcelableExtra(RESULT_DATA, Intent::class.java)
             else intent?.getParcelableExtra(RESULT_DATA)
         if (resultCode != Activity.RESULT_OK || data == null) {
-            finishError("Screen capture was not approved")
+            finishError("Screen capture wasn't approved, so nothing was read.")
             return START_NOT_STICKY
         }
         try {
             val manager = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
             projection = manager.getMediaProjection(resultCode, data)
             projection!!.registerCallback(object : MediaProjection.Callback() {
-                override fun onStop() { if (!completed && !stopping) finishError("Screen capture ended early") }
+                override fun onStop() { if (!completed && !stopping) finishError("Screen capture stopped before a frame arrived. Try again.") }
             }, handler)
             // Give the consent activity time to disappear, so we capture the previous app.
             handler.postDelayed({ beginCapture() }, 950)
-        } catch (e: Exception) { finishError("Screen capture could not start") }
+        } catch (e: Exception) { finishError("Android didn't start the screen capture. Try again.") }
         return START_NOT_STICKY
     }
 
@@ -68,7 +68,7 @@ class CaptureService : Service() {
             val width = metrics?.width() ?: resources.displayMetrics.widthPixels
             val height = metrics?.height() ?: resources.displayMetrics.heightPixels
             val density = resources.displayMetrics.densityDpi
-            if (width < 1 || height < 1) { finishError("Screen dimensions unavailable"); return }
+            if (width < 1 || height < 1) { finishError("ClariFi couldn't read the screen size. Try again."); return }
             reader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 2)
             reader!!.setOnImageAvailableListener({ source ->
                 if (completed || stopping) return@setOnImageAvailableListener
@@ -84,12 +84,12 @@ class CaptureService : Service() {
                 } catch (_: Exception) { null }
                 finally { image.close() }
                 if (cropped != null) { completed = true; recognize(cropped) }
-                else finishError("Unable to read the captured frame")
+                else finishError("The captured frame couldn't be read. Try again.")
             }, handler)
             display = projection!!.createVirtualDisplay("ClariFi one-time screen check", width, height, density,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, reader!!.surface, null, handler)
-            handler.postDelayed({ if (!completed) finishError("No screen image was available") }, 6000)
-        } catch (_: Exception) { finishError("Screen capture was blocked by the device") }
+            handler.postDelayed({ if (!completed) finishError("No screen image arrived in time. Some apps block capture.") }, 6000)
+        } catch (_: Exception) { finishError("This device blocked the screen capture.") }
     }
 
     private fun recognize(bitmap: Bitmap) {
@@ -100,19 +100,18 @@ class CaptureService : Service() {
             recognizer.process(InputImage.fromBitmap(bitmap, 0))
                 .addOnSuccessListener { text ->
                     val content = text.text
-                    AnalysisSession.latest = EvidenceEngine.analyze(content, "Screen text (on-device OCR)")
+                    AnalysisSession.latest = EvidenceEngine.analyze(content, "text read from your screen on this device")
                     publish()
                 }
-                .addOnFailureListener { finishError("Text recognition failed") }
+                .addOnFailureListener { finishError("On-device text recognition failed. Try again.") }
                 .addOnCompleteListener { bitmap.recycle(); recognizer.close() }
         } catch (_: Exception) {
-            bitmap.recycle(); recognizer.close(); finishError("Unable to analyze this screenshot")
+            bitmap.recycle(); recognizer.close(); finishError("ClariFi couldn't analyze this screen. Try again.")
         }
     }
     private fun finishError(message: String) {
         if (stopping) return
-        AnalysisSession.latest = EvidenceEngine.Result(EvidenceEngine.Rung.NONE, emptyList(),
-            message, "")
+        AnalysisSession.latest = EvidenceEngine.failure(message)
         publish()
     }
     private fun publish() {
