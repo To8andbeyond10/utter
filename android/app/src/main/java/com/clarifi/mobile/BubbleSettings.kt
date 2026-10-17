@@ -26,6 +26,15 @@ object BubbleSettings {
     fun setVisibility(ctx: Context, level: Int) = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
         .putInt("visibility", level.coerceIn(MIN_LEVEL, MAX_LEVEL)).remove("opacity").apply()
 
+    /** Which screen edge the bubble rests on, and how far down that edge (0 = top, 1 = bottom). */
+    data class Dock(val left: Boolean, val fraction: Float)
+    fun dock(ctx: Context): Dock {
+        val prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        return Dock(prefs.getBoolean("dock_left", false), prefs.getFloat("dock_fraction", .33f).coerceIn(0f, 1f))
+    }
+    fun setDock(ctx: Context, dock: Dock) = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+        .putBoolean("dock_left", dock.left).putFloat("dock_fraction", dock.fraction.coerceIn(0f, 1f)).apply()
+
     /** Asset path (served from repo brand/) of the mascot for a visibility step. */
     fun mascotAsset(level: Int): String {
         val l = level.coerceIn(MIN_LEVEL, MAX_LEVEL)
