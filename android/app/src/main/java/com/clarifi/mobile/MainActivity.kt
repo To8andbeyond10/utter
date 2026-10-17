@@ -3,7 +3,6 @@ package com.clarifi.mobile
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -47,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import kotlin.math.roundToInt
 
 private val Night = Color(0xFF090815)
 private val Surface = Color(0xFF161329)
@@ -76,8 +76,8 @@ class MainActivity : ComponentActivity() {
                     permissionGranted = hasPermission,
                     running = bubbleEnabled,
                     onToggle = { if (bubbleEnabled) stopBubble() else requestBubble() },
-                    onOpacity = { BubbleSettings.setOpacity(this, it); updateBubble() },
-                    opacity = BubbleSettings.opacity(this)
+                    onVisibility = { BubbleSettings.setVisibility(this, it); updateBubble() },
+                    visibility = BubbleSettings.visibility(this)
                 )
             }
         }
@@ -139,13 +139,13 @@ private fun ClariFiHome(
     permissionGranted: Boolean,
     running: Boolean,
     onToggle: () -> Unit,
-    onOpacity: (Float) -> Unit,
-    opacity: Float
+    onVisibility: (Int) -> Unit,
+    visibility: Int
 ) {
     val ctx = LocalContext.current
     var manualInput by remember { mutableStateOf("") }
     var analysis by remember { mutableStateOf<EvidenceEngine.Result?>(AnalysisSession.latest) }
-    var alpha by remember { mutableFloatStateOf(opacity) }
+    var level by remember { mutableIntStateOf(visibility) }
     val motion = rememberInfiniteTransition(label = "mascot breath")
     val mascotScale by motion.animateFloat(
         initialValue = .975f, targetValue = 1.025f,
@@ -218,11 +218,21 @@ private fun ClariFiHome(
                 }
                 if (running) {
                     Spacer(Modifier.height(17.dp))
-                    Text("BUBBLE TRANSPARENCY", fontSize = 10.sp, color = Lavender, letterSpacing = 1.4.sp)
-                    Slider(value = alpha, onValueChange = { alpha = it; onOpacity(it) },
-                        valueRange = .3f..1f,
-                        colors = SliderDefaults.colors(thumbColor = Lavender, activeTrackColor = Plum))
-                    Text("${((1f - alpha) * 100).toInt()}% transparent", color = Muted, fontSize = 11.sp)
+                    Text("BUBBLE VISIBILITY", fontSize = 10.sp, color = Lavender, letterSpacing = 1.4.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Slider(value = level.toFloat(),
+                            onValueChange = {
+                                val next = it.roundToInt()
+                                if (next != level) { level = next; onVisibility(next) }
+                            },
+                            valueRange = BubbleSettings.MIN_LEVEL.toFloat()..BubbleSettings.MAX_LEVEL.toFloat(),
+                            steps = BubbleSettings.MAX_LEVEL - BubbleSettings.MIN_LEVEL - 1,
+                            modifier = Modifier.weight(1f),
+                            colors = SliderDefaults.colors(thumbColor = Lavender, activeTrackColor = Plum))
+                        Spacer(Modifier.width(12.dp))
+                        MascotImage(level, "Bubble preview", Modifier.size(40.dp))
+                    }
+                    Text("${level * 10}% visible", color = Muted, fontSize = 11.sp)
                 }
             }
             Spacer(Modifier.height(18.dp))
@@ -300,12 +310,17 @@ private fun ResultCard(result: EvidenceEngine.Result) {
 }
 
 @Composable
+private fun MascotImage(level: Int, description: String, modifier: Modifier = Modifier) {
+    val ctx = LocalContext.current
+    val bmp = remember(level) { BubbleSettings.loadMascot(ctx, level) }
+    if (bmp != null) Image(bitmap = bmp.asImageBitmap(), contentDescription = description, modifier = modifier)
+    else Box(modifier)
+}
+
+@Composable
 private fun MascotVisual(modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
-    val mascot = remember {
-        try { ctx.assets.open("clarifi-mascot.png").use { BitmapFactory.decodeStream(it) } }
-        catch (_: Exception) { null }
-    }
+    val mascot = remember { BubbleSettings.loadMascot(ctx) }
     Box(modifier, contentAlignment = Alignment.Center) {
         Canvas(Modifier.fillMaxSize()) {
             drawCircle(brush = Brush.radialGradient(listOf(Color(0x66764EE9), Color.Transparent)),

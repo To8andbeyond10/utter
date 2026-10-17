@@ -6,7 +6,6 @@ import android.animation.ValueAnimator
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -38,6 +37,7 @@ class OverlayService : Service() {
 
     private lateinit var wm: WindowManager
     private var bubble: FrameLayout? = null
+    private var bubbleImage: ImageView? = null
     private var panel: View? = null
     private var pulse: ObjectAnimator? = null
     private var params: WindowManager.LayoutParams? = null
@@ -56,7 +56,7 @@ class OverlayService : Service() {
             HIDE -> hideBubble()
             SHOW -> showBubble()
             RESULT -> { showBubble(); showResultPanel() }
-            REFRESH -> bubble?.alpha = BubbleSettings.opacity(this)
+            REFRESH -> bubbleImage?.let { applyMascot(it) }
             else -> if (BubbleSettings.isEnabled(this) && Settings.canDrawOverlays(this)) showBubble() else stopSelf()
         }
         return START_NOT_STICKY
@@ -66,17 +66,17 @@ class OverlayService : Service() {
         if (!Settings.canDrawOverlays(this)) return
         if (bubble != null) { bubble!!.visibility = View.VISIBLE; return }
         val size = dp(64)
+        // The transparent circular mascot is the whole button: no backing shape, no view alpha.
+        // Fading comes only from the pre-faded PNG, so the 64dp touch target stays the same at every step.
         val view = FrameLayout(this).apply {
-            background = gradient(Color.rgb(31, 22, 63), Color.rgb(63, 38, 116), 32f, Color.rgb(169, 135, 255))
-            elevation = dp(14).toFloat()
-            alpha = BubbleSettings.opacity(this@OverlayService)
             contentDescription = "ClariFi tap to analyze the screen"
         }
-        val mascot = try { assets.open("clarifi-mascot.png").use { BitmapFactory.decodeStream(it) } } catch (_: Exception) { null }
-        if (mascot != null) {
-            val img = ImageView(this).apply { setImageBitmap(mascot); scaleType = ImageView.ScaleType.FIT_CENTER }
-            view.addView(img, FrameLayout.LayoutParams(dp(55), dp(55), Gravity.CENTER))
+        val img = ImageView(this).apply { scaleType = ImageView.ScaleType.FIT_CENTER }
+        if (applyMascot(img)) {
+            view.addView(img, FrameLayout.LayoutParams(size, size, Gravity.CENTER))
+            bubbleImage = img
         } else {
+            view.background = gradient(Color.rgb(31, 22, 63), Color.rgb(63, 38, 116), 32f, Color.rgb(169, 135, 255))
             view.addView(label("◎", 38f, Color.rgb(234, 214, 255), true),
                 FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
         }
@@ -122,6 +122,11 @@ class OverlayService : Service() {
             interpolator = AccelerateDecelerateInterpolator()
             start()
         }
+    }
+    private fun applyMascot(img: ImageView): Boolean {
+        val bmp = BubbleSettings.loadMascot(this, BubbleSettings.visibility(this)) ?: return false
+        img.setImageBitmap(bmp)
+        return true
     }
     private fun hideBubble() { bubble?.visibility = View.INVISIBLE; dismissPanel() }
     private fun requestCapture() {
@@ -197,6 +202,7 @@ class OverlayService : Service() {
         dismissPanel()
         bubble?.let { try { wm.removeView(it) } catch (_: Exception) {} }
         bubble = null
+        bubbleImage = null
         super.onDestroy()
     }
 }
